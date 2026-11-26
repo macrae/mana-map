@@ -387,6 +387,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # it is the same kind of thing — a resource that sits on the board until it
     # is spent, once.
     bought_draws = []
+    # LEAGUE GUILDMAGE (2026-11-26): permanents with "{X}{R}, {T}: Copy target instant or sorcery
+    # spell you control with mana value X". Each entry is the card's name and the pips.
+    spell_copiers = []
     blood = 0
     blood_by_turn = []
     # Permanents that pay when an artifact you control is sacrificed, and the
@@ -550,6 +553,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 "colors": card["colors"],
                 "is_land": card["is_land"],
                 "is_creature": card["combat"]["is_creature"]})
+        if card["draw"]["spell_copy_x_pips"] is not None:
+            spell_copiers.append({"name": card["name"], "pips": card["draw"]["spell_copy_x_pips"]})
         if not card["draw"]["activated_wheel"]:
             return
         wheel_engines.append({
@@ -2198,6 +2203,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         if _y is card or _y["engine"]["flashback"] \
                                 or not (_y["draw"]["wheel_draws"] or _y["draw"]["spell_draw"]):
                             continue
+                        # A SECOND RESOLUTION GRANTS NOTHING NEW (a copied Will of the Jeskai):
+                        # a card that already has the grant this turn is not granted it twice.
+                        if any(y is _y for _g0, y in granted_flashback):
+                            continue
                         _g = dict(_y)
                         _g["engine"] = dict(_y["engine"], flashback={"cost": int(_y["cmc"]),
                                                                      "pips": _y["pips"]})
@@ -3815,6 +3824,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                              c["draw"]["spell_draw_greatest_mv"],
                                              c["draw"]["life_gain_paid_draw"],
                                              c["draw"]["end_step_opp_two_draws"],
+                                             # League Guildmage: cast, or it copies nothing.
+                                             c["draw"]["spell_copy_x_pips"] is not None,
                                              # Cast, or the limit it lifts is never lifted.
                                              model_hand_limit and c["no_max_hand"],
                                              # Library of Leng's other half (2026-11-25).
@@ -4493,6 +4504,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                     continue
                 _note_cast(card)
+                _copy_spell(card)
                 _resolve_draw(card)
             # A WHEEL IN THE GRAVEYARD IS A WHEEL (Shattered Perception), a loot a loot (Faithless
             # Looting), 2026-11-04. The gates are the same; the card goes to exile, so `_note_cast`
@@ -4515,7 +4527,32 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     yard_spell_cards[:] = [y for y in yard_spell_cards if y is not _orig]
                 hand.append(card)
                 _note_cast(card, from_yard=True)
+                if card["draw"]["wheel_draws"]:
+                    _copy_spell(card)
                 _resolve_draw(card)
+
+        def _copy_spell(card):
+            """LEAGUE GUILDMAGE (2026-11-26): "{X}{R}, {T}: Copy target instant or sorcery spell you
+            control with mana value X." The copy goes on the stack above the wheel and resolves
+            first, so the wheel resolves twice: every discard and every draw happens again, and
+            the opponents refill twice. A copy is not a cast (no cast triggers, no cascade, no
+            storm), but magecraft says "cast or copy". POLICY, AUTHORED: a pilot copies every wheel
+            they can pay for, with a copier that can tap (untapped, not summoning sick). Copying a
+            draw spell or anything else is not modelled: a floor."""
+            if not spell_copiers:
+                return
+            for _sc in spell_copiers:
+                _row = _can_tap(_sc["name"])
+                if _row is None:
+                    continue
+                if not spend(int(card["cmc"]) + len(_sc["pips"]), _sc["pips"] or None):
+                    return
+                if not battlefield[_row][12]["vigilance"]:
+                    _e = battlefield[_row]
+                    battlefield[_row] = _e[:7] + (True,) + _e[8:]
+                _magecraft(1)
+                _resolve_draw(card)
+                return
 
         def _fire_engine_wheels():
             """THE WHEEL THAT IS ALREADY ON THE TABLE (the comment above `_can_tap`'s block)."""

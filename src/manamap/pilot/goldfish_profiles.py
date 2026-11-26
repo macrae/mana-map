@@ -411,6 +411,12 @@ _WHEEL_RE = re.compile(
 #: pilot takes the bigger of the two, which `wheel_greatest` already says; only the caster draws.
 #: SMUGGLER'S SHARE (2026-11-25): "At the beginning of each end step, draw a card for each opponent
 #: who drew two or more cards this turn". Our wheels make every opponent draw seven.
+#: A {T} COPY OF A SPELL WHOSE PRICE IS ITS MANA VALUE (2026-11-26, League Guildmage): "{X}{R},
+#: {T}: Copy target instant or sorcery spell you control with mana value X." Group 1 is the
+#: coloured part of the cost.
+_SPELL_COPY_X_RE = re.compile(
+    r"\{x\}((?:\{[wubrg]\})*),\s*\{t\}:\s*copy target instant or sorcery spell you control "
+    r"with mana value x", re.I)
 _END_STEP_OPP_TWO_DRAWS_RE = re.compile(
     r"at the beginning of each end step, draw a card for each opponent who drew two or more cards "
     r"this turn", re.I)
@@ -2908,9 +2914,15 @@ def draw_profile(card):
            "grant_flashback": None,
            # Smuggler's Share: a card at an end step per opponent who drew two or more that turn.
            "end_step_opp_two_draws": 0,
+           # League Guildmage: {X}+these pips, {T}: copy an instant or sorcery of mana value X.
+           # None when the card has no such ability; a (possibly empty) list of pips when it does.
+           "spell_copy_x_pips": None,
            "unmodelled": None}
     if _END_STEP_OPP_TWO_DRAWS_RE.search(text):
         out["end_step_opp_two_draws"] = 1
+    _scx = _SPELL_COPY_X_RE.search(text)
+    if _scx:
+        out["spell_copy_x_pips"] = cast_pips(_scx.group(1)) if _scx.group(1) else []
     _dd = _DRAW_DOUBLER_RE.search(text)
     if _dd:
         out["draw_multiplier"] = 3 if _dd.group(1).lower() == "three" else 2

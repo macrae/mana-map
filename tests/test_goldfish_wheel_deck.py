@@ -484,7 +484,10 @@ def test_thor_pings_for_each_noncreature_spells_mana_value():
                             _band=False)["metrics"]["combat"]["mean_damage_by_turn"]["10"]
     no_ping = thor.split("Whenever you cast a noncreature spell")[0]
     assert no_ping != thor
-    assert damage_by_10(thor) > damage_by_10(no_ping) + 10
+    # THE MARGIN IS NOT A PINNED FIGURE. The deck is the live branch, so a staged swap moves the gap
+    # (about 30 on 2026-11-25, 9 after Magus for Valeria on 2026-11-26); with the bug back the arms
+    # read identically, so any clear positive gap is the rule.
+    assert damage_by_10(thor) > damage_by_10(no_ping) + 3
 
 
 def test_thor_hands_back_a_spell_from_the_graveyard_on_entry():
@@ -523,3 +526,43 @@ def test_thor_hands_back_a_spell_from_the_graveyard_on_entry():
         assert found, "wheels cast not reported"
         return found[0]
     assert wheels_by_10(entry_only) > wheels_by_10("Flying") + 0.05
+
+
+def test_league_guildmage_copies_a_wheel_so_it_resolves_twice():
+    """League Guildmage: "{X}{R}, {T}: Copy target instant or sorcery spell you control with mana
+    value X." Six Guildmages on sharknado's branch resolve more wheels by turn ten than six
+    Guildmages with only the draw half (2026-11-26). Put the bug back -- never register the
+    copier -- and the arms match."""
+    import copy
+    from manamap.pilot import card_pool, common
+    gm = card_pool.corpus_oracle()["League Guildmage"]
+    draw_only = gm.split(" {X}{R}")[0]
+    assert draw_only != gm
+    base = common.load_deck_cards("sharknado", branch="jaws-v1")
+    swap = {"Willie Lumpkin, Postman", "Brainstorm", "Shelter", "Loran's Escape",
+            "Slip Out the Back", "Get Lost"}
+
+    def wheels_by_10(text):
+        d = copy.deepcopy(base)
+        hit = 0
+        for c in d["cards"]:
+            if c["name"] in swap:
+                hit += 1
+                c.update({"name": f"Guildmage {hit}", "oracle_text": text, "cmc": 2.0,
+                          "type_line": "Creature — Human Wizard", "mana_cost": "{U}{R}",
+                          "power": "2", "toughness": "2"})
+        assert hit == 6
+        m = goldfish.run("sharknado", doc=d, iterations=1500, seed=7, quiet=True,
+                         _band=False)["metrics"]
+        found = []
+
+        def walk(x):
+            if isinstance(x, dict):
+                for k, v in x.items():
+                    if k == "mean_wheels_cast_by_turn":
+                        found.append(v["10"])
+                    walk(v)
+        walk(m)
+        assert found, "wheels cast not reported"
+        return found[0]
+    assert wheels_by_10(gm) > wheels_by_10(draw_only) + 0.05
