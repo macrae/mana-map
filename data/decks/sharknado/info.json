@@ -523,24 +523,24 @@
       ],
       "has_cards": true,
       "study": {
-        "id": "027",
-        "question": "Violent Eruption (instant, 4 damage divided; madness {1}{R}{R} off the deck's discards) in -- and for what?",
+        "id": "029",
+        "question": "Qala, Ajani's Pridemate (a counter for every life gained -- every Shabraz draw is a life gain -- and when she attacks the other attackers get +X power, X her counters) in -- a second shark-sized body that doubles Shabraz's hit -- and for what?",
         "branch": "jaws-v1",
-        "file": "027-violent-eruption-instant-4-damage-divided-madnes.json",
+        "file": "029-qala-ajani-s-pridemate-a-counter-for-every-life.json",
         "decision": "no-change",
         "decided_by": [
           "pilot",
           "deck-doctor"
         ],
-        "pilot_words": "ok... pass on these three cards :)",
+        "pilot_words": "ok, no change on these then that's fine... keep em on a shortlist and noted somewhere",
         "decided_at": "2026-11-25",
         "opened": "2026-11-25",
         "swap": {
           "out": null,
-          "in": "Violent Eruption"
+          "in": "Qala, Ajani's Pridemate"
         },
         "goldfish_saw": [
-          0,
+          1,
           1
         ]
       },
@@ -8770,14 +8770,58 @@
   ],
   "studies": [
     {
-      "id": "028",
-      "question": "Smuggler's Share (each end step: draw a card for each opponent who drew two or more cards this turn; a Treasure for each who had two or more lands enter) in -- every symmetric wheel becomes three cards for us -- and for what?",
+      "id": "030",
+      "question": "Flare of Duplication (copy target instant or sorcery; free by sacrificing a nontoken red creature) in -- a copied wheel doubles our payoffs; Fork as the alternative -- and for what?",
       "branch": "jaws-v1",
-      "file": "028-smuggler-s-share-each-end-step-draw-a-card-for-e.json",
+      "file": "030-flare-of-duplication-copy-target-instant-or-sorc.json",
       "decision": "open",
       "decided_by": [],
       "pilot_words": "",
       "decided_at": null,
+      "opened": "2026-11-25",
+      "swap": {
+        "out": null,
+        "in": "Flare of Duplication"
+      },
+      "goldfish_saw": [
+        0,
+        2
+      ]
+    },
+    {
+      "id": "029",
+      "question": "Qala, Ajani's Pridemate (a counter for every life gained -- every Shabraz draw is a life gain -- and when she attacks the other attackers get +X power, X her counters) in -- a second shark-sized body that doubles Shabraz's hit -- and for what?",
+      "branch": "jaws-v1",
+      "file": "029-qala-ajani-s-pridemate-a-counter-for-every-life.json",
+      "decision": "no-change",
+      "decided_by": [
+        "pilot",
+        "deck-doctor"
+      ],
+      "pilot_words": "ok, no change on these then that's fine... keep em on a shortlist and noted somewhere",
+      "decided_at": "2026-11-25",
+      "opened": "2026-11-25",
+      "swap": {
+        "out": null,
+        "in": "Qala, Ajani's Pridemate"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "028",
+      "question": "Smuggler's Share (each end step: draw a card for each opponent who drew two or more cards this turn; a Treasure for each who had two or more lands enter) in -- every symmetric wheel becomes three cards for us -- and for what?",
+      "branch": "jaws-v1",
+      "file": "028-smuggler-s-share-each-end-step-draw-a-card-for-e.json",
+      "decision": "no-change",
+      "decided_by": [
+        "pilot",
+        "deck-doctor"
+      ],
+      "pilot_words": "ok, no change on these then that's fine... keep em on a shortlist and noted somewhere",
+      "decided_at": "2026-11-25",
       "opened": "2026-11-25",
       "swap": {
         "out": null,
@@ -10704,7 +10748,7 @@
     "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug sharknado` re-reads them when you want, never on its own",
     "DeckCheck copy is V12, sleeved is V14 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-28) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
-    "study 028 is open: Smuggler's Share (each end step: draw a card for each opponent who dre — `manamap pilot study sharknado call 028 …`, then `install`",
+    "study 030 is open: Flare of Duplication (copy target instant or sorcery; free by sacrific — `manamap pilot study sharknado call 030 …`, then `install`",
     "study 006 is open: Audit: things seem sideways. The strategy, in the pilot's words: land  — `manamap pilot study sharknado call 006 …`, then `install`",
     "engine.json's reading was written for another list — `/engine-reading sharknado` rewrites it over the computed graph",
     "open questions routed: diagnose ×9, goldfish ×7, research-strategy ×5, resolve-stack ×5",

@@ -1,968 +1,995 @@
 {
- "slug": "sharknado",
- "sets": [
-  {
-   "id": "wheel-interaction",
-   "title": "Wheels that also interact",
-   "source": "Q002",
-   "query": "manamap pilot card-search --deck sharknado --all --oracle '(discards? (their|your) hand|discard any number|shuffles? (their|your) hand|puts? (their|your) hand on the bottom|each player (discards|shuffles)|then draws? (that many|seven|cards equal))' --oracle '(counter target|destroy (target|all|each)|exile (target|all|each)|return (target|all|each).{0,40}(owner|hand)|deals? \\d+ damage to (target|each|any)|damage to any target)' --limit 60",
-   "created": "2026-10-07",
-   "cards": [
+  "slug": "sharknado",
+  "sets": [
     {
-     "name": "Fateful Showdown",
-     "pays": "both",
-     "axis": "interaction",
-     "why": "instant: damage equal to your hand size to any target, then discard the hand and draw that many",
-     "verdict": "watching",
-     "note": null,
-     "at": "2026-10-08T19:19:55-07:00"
+      "id": "wheel-interaction",
+      "title": "Wheels that also interact",
+      "source": "Q002",
+      "query": "manamap pilot card-search --deck sharknado --all --oracle '(discards? (their|your) hand|discard any number|shuffles? (their|your) hand|puts? (their|your) hand on the bottom|each player (discards|shuffles)|then draws? (that many|seven|cards equal))' --oracle '(counter target|destroy (target|all|each)|exile (target|all|each)|return (target|all|each).{0,40}(owner|hand)|deals? \\d+ damage to (target|each|any)|damage to any target)' --limit 60",
+      "created": "2026-10-07",
+      "cards": [
+        {
+          "name": "Fateful Showdown",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "instant: damage equal to your hand size to any target, then discard the hand and draw that many",
+          "verdict": "watching",
+          "note": null,
+          "at": "2026-10-08T19:19:55-07:00"
+        },
+        {
+          "name": "Collective Defiance",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "escalate: wheel yourself (discard all, draw that many) plus 4 to a creature and 3 to an opponent",
+          "verdict": "watching",
+          "note": null,
+          "at": "2026-10-08T19:21:20-07:00"
+        },
+        {
+          "name": "Incendiary Command",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "choose two: everyone wheels, 2 to each creature, 4 to a player — a wheel with a small sweeper",
+          "verdict": "watching",
+          "note": null,
+          "at": "2026-10-08T19:21:56-07:00"
+        },
+        {
+          "name": "The Elder Dragon War",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "saga: 2 to each creature and opponent, then discard any and draw that many, then a 4/4 flying Dragon",
+          "verdict": "watching",
+          "note": null,
+          "at": "2026-10-08T19:23:35-07:00"
+        },
+        {
+          "name": "Rites of Refusal",
+          "pays": "brallin",
+          "axis": "interaction",
+          "why": "instant: discard any number to counter a spell unless they pay 3 per card — the discard IS the counter",
+          "verdict": "watching",
+          "note": null,
+          "at": "2026-10-09T22:51:26-07:00"
+        },
+        {
+          "name": "Null Brooch",
+          "pays": "brallin",
+          "axis": "interaction",
+          "why": "discard your hand: counter a noncreature spell, every turn — a counterspell on a stick, no draw",
+          "verdict": "watching",
+          "note": null,
+          "at": "2026-10-09T22:51:39-07:00"
+        },
+        {
+          "name": "Snort",
+          "pays": "both",
+          "axis": "momentum",
+          "why": "each player may wheel to five; every opponent who does takes 5; flashback wheels again",
+          "verdict": "watching",
+          "note": null,
+          "at": "2026-10-08T19:24:27-07:00"
+        },
+        {
+          "name": "Moonveil Regent",
+          "pays": "both",
+          "axis": "momentum",
+          "why": "flyer: on every spell you may discard your hand and draw one per colour of that spell — a repeatable wheel",
+          "verdict": "pass",
+          "note": null,
+          "at": "2026-10-09T22:51:45-07:00"
+        },
+        {
+          "name": "Jace, the Mind Sculptor",
+          "pays": "shabraz",
+          "axis": "interaction",
+          "why": "0: draw three, put two back every turn; −1 bounces a creature — a Game Changer",
+          "verdict": "pass",
+          "note": null,
+          "at": "2026-10-09T22:55:34-07:00"
+        },
+        {
+          "name": "Joshua, Phoenix's Dominant // Phoenix, Warden of Fire",
+          "pays": "both",
+          "axis": "momentum",
+          "why": "enters: discard two, draw two; flips into a saga that burns each opponent and returns creatures",
+          "verdict": "pass",
+          "note": null,
+          "at": "2026-10-09T22:55:35-07:00"
+        },
+        {
+          "name": "Cathartic Pyre",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "instant, choose one: 3 to a creature or planeswalker, OR discard two and draw two — not both",
+          "verdict": "watching",
+          "note": null,
+          "at": "2026-10-09T22:52:50-07:00"
+        },
+        {
+          "name": "Day's Undoing",
+          "pays": "shabraz",
+          "axis": "momentum",
+          "why": "everyone shuffles hand and graveyard back and draws seven; ends your turn; no interaction",
+          "verdict": "watching",
+          "note": null,
+          "at": "2026-10-08T19:27:01-07:00"
+        },
+        {
+          "name": "Hex Magic",
+          "pays": "shabraz",
+          "axis": "momentum",
+          "why": "exile your hand and draw that many, playable next turn — exile is not discard, so no Brallin",
+          "verdict": "watching",
+          "note": null,
+          "at": "2026-10-08T19:27:13-07:00"
+        },
+        {
+          "name": "Into the Fire",
+          "pays": "shabraz",
+          "axis": "interaction",
+          "why": "choose one: 2 to every creature, OR bottom any number and draw that many plus one — a bottom, so no Brallin",
+          "verdict": "watching",
+          "note": null,
+          "at": "2026-10-09T22:52:58-07:00"
+        },
+        {
+          "name": "Invasion of Kaldheim // Pyre of the World Tree",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "enters: exile hand, draw that many (Shabraz); flipped, each land you discard pings any target for 2 (Brallin)",
+          "verdict": "pass",
+          "note": null,
+          "at": "2026-10-09T22:53:25-07:00"
+        },
+        {
+          "name": "Chandra, Heart of Fire",
+          "pays": "brallin",
+          "axis": "interaction",
+          "why": "+1 discard your hand and impulse three; +1 2 damage to any target — a discard with no draw",
+          "verdict": "pass",
+          "note": null,
+          "at": "2026-10-09T22:55:36-07:00"
+        },
+        {
+          "name": "Chandra, Flame's Catalyst",
+          "pays": "both",
+          "axis": "momentum",
+          "why": "+1 3 to each opponent every turn; −8 discard your hand, draw seven and cast them free",
+          "verdict": "pass",
+          "note": null,
+          "at": "2026-10-09T22:55:37-07:00"
+        },
+        {
+          "name": "Umaro, Raging Yeti",
+          "pays": "both",
+          "axis": "other",
+          "why": "each combat, at random: team pump, discard your hand and draw four, or 5 to any target — random",
+          "verdict": "watching",
+          "note": null,
+          "at": "2026-10-08T19:30:17-07:00"
+        },
+        {
+          "name": "Ajani Unrelenting",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "−2 discard your hand, draw one per creature; −3 4 to each creature but your tokens",
+          "verdict": "watching",
+          "note": null,
+          "at": "2026-10-09T22:54:59-07:00"
+        },
+        {
+          "name": "Chandra Ablaze",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "+1 discard a red card for 4 to any target; −2 everyone discards their hand and draws three",
+          "verdict": "watching",
+          "note": null,
+          "at": "2026-10-08T19:31:08-07:00"
+        },
+        {
+          "name": "Sarkhan, the Dragonspeaker",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "−3 4 to a creature; +1 a 4/4 flying haste Dragon; ultimate draws two and discards the hand each turn",
+          "verdict": "watching",
+          "note": null,
+          "at": "2026-10-09T22:54:22-07:00"
+        },
+        {
+          "name": "Serum Powder",
+          "pays": "none",
+          "axis": "ramp",
+          "why": "a mana rock; its hand reset works only at mulligan, so it pays neither commander",
+          "verdict": "pass",
+          "note": null,
+          "at": "2026-10-09T22:54:37-07:00"
+        },
+        {
+          "name": "Apocalypse",
+          "pays": "brallin",
+          "axis": "interaction",
+          "why": "exile ALL permanents (yours too) and discard your hand — a total reset",
+          "verdict": "pass",
+          "note": null,
+          "at": "2026-10-09T22:54:43-07:00"
+        },
+        {
+          "name": "Colossus of the Blood Age",
+          "pays": "both",
+          "axis": "other",
+          "why": "enters: 3 to each opponent, gain 3; dies: discard any number, draw that many plus one",
+          "verdict": "watching",
+          "note": null,
+          "at": "2026-10-09T22:55:10-07:00"
+        },
+        {
+          "name": "Turtles in Time",
+          "pays": "shabraz",
+          "axis": "interaction",
+          "why": "bounce every creature, then everyone may shuffle hand and graveyard back and draw seven — a 7-mana reset",
+          "verdict": "watching",
+          "note": null,
+          "at": "2026-10-09T22:55:23-07:00"
+        }
+      ]
     },
     {
-     "name": "Collective Defiance",
-     "pays": "both",
-     "axis": "interaction",
-     "why": "escalate: wheel yourself (discard all, draw that many) plus 4 to a creature and 3 to an opponent",
-     "verdict": "watching",
-     "note": null,
-     "at": "2026-10-08T19:21:20-07:00"
+      "id": "free-interaction",
+      "title": "Free interaction for the wheel turn (DeckCheck roast, 2026-10-18)",
+      "source": "deckcheck-roast-2026-10-18",
+      "query": "DeckCheck Explore Cards, Scryfall: id<=urw t:instant mv<=3 f:commander usd<10 (alternative or discounted costs) (counter|destroy|exile|damage); 32 results, 4 kept",
+      "created": "2026-10-18",
+      "cards": [
+        {
+          "name": "March of Swirling Mist",
+          "pays": "none",
+          "axis": "protection",
+          "why": "instant, X blue cards from hand pay for it: phase out up to X creatures — both commanders dodge spot removal AND a wrath, paid with the fresh hand the wheel just dealt",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Snapback",
+          "pays": "none",
+          "axis": "interaction",
+          "why": "instant, exile a blue card from hand instead of paying: bounce a creature — a free answer with the mana tapped, or bounce Brallin in response to removal",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Flare of Denial",
+          "pays": "none",
+          "axis": "interaction",
+          "why": "instant, sacrifice a nontoken blue creature instead of paying: counter target spell — a hard counter for zero mana off a spent Archivist or Skulker",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "March of Otherworldly Light",
+          "pays": "none",
+          "axis": "interaction",
+          "why": "instant, exile an artifact, creature or enchantment with mana value X or less; white cards from hand reduce it — a second Swords that also hits Rhystic Study and Smothering Tithe",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        }
+      ]
     },
     {
-     "name": "Incendiary Command",
-     "pays": "both",
-     "axis": "interaction",
-     "why": "choose two: everyone wheels, 2 to each creature, 4 to a player — a wheel with a small sweeper",
-     "verdict": "watching",
-     "note": null,
-     "at": "2026-10-08T19:21:56-07:00"
+      "id": "wheel-turn-protection",
+      "title": "Protection that also beats a wrath (DeckCheck roast, query 2, 2026-10-18)",
+      "source": "deckcheck-roast-2026-10-18",
+      "query": "DeckCheck Explore Cards, Scryfall: id<=urw t:instant mv<=3 f:commander usd<10 (phase out|indestructible|hexproof|protection from) -\"you control gain\"; 49 results, 3 kept (+ March of Swirling Mist, already in free-interaction)",
+      "created": "2026-10-18",
+      "cards": [
+        {
+          "name": "Blacksmith's Skill",
+          "pays": "none",
+          "axis": "protection",
+          "why": "one white: target PERMANENT gains hexproof and indestructible — a commander against spot removal or a destroy wrath, or Smothering Tithe against the artifact hate; Loran's Escape is the same card with scry 1 on a creature or artifact",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Valorous Stance",
+          "pays": "none",
+          "axis": "protection",
+          "why": "two mana, modal: indestructible on one creature, OR destroy a creature with toughness 4 or more — protection that is removal when nothing needs saving",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Final Showdown",
+          "pays": "none",
+          "axis": "protection",
+          "why": "spree, from one white: +1 one creature indestructible, +1 ALL creatures lose abilities until end of turn (an instant-speed stop on a combo creature), +5 destroy all creatures — a protection spell that is also the deck's only wrath",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        }
+      ]
     },
     {
-     "name": "The Elder Dragon War",
-     "pays": "both",
-     "axis": "interaction",
-     "why": "saga: 2 to each creature and opponent, then discard any and draw that many, then a 4/4 flying Dragon",
-     "verdict": "watching",
-     "note": null,
-     "at": "2026-10-08T19:23:35-07:00"
+      "id": "instant-fuel",
+      "title": "Instant-speed draw and discard that also interacts (DeckCheck roast, query 3, 2026-10-18)",
+      "source": "deckcheck-roast-2026-10-18",
+      "query": "DeckCheck Explore Cards, Scryfall: id<=urw t:instant mv<=3 f:commander usd<10 o:draw (o:discard or o:\"each player\"); 47 results, 6 kept (Cathartic Pyre already on wheel-interaction, Tolarian Winds already in the deck)",
+      "created": "2026-10-18",
+      "cards": [
+        {
+          "name": "Prismari Command",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "three mana, choose two: 2 damage anywhere, a player loots two, a Treasure, destroy an artifact — removal and a loot in one card, Brallin and Shabraz both trigger",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Izzet Charm",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "two mana, choose one: soft-counter a noncreature spell, 2 to a creature, or draw two discard two — the cheapest card here that is interaction on their turn and fuel on ours",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Three Steps Ahead",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "spree from one blue: +{1}{U} counter a spell, +{2} draw two discard one, +{3} copy a creature or artifact — a hard counter that loots when the mana is there, a loot when it is not",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "You Find the Villains' Lair",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "three mana, choose one: hard counter, or draw two discard two — Counterspell with a loot mode; Refute is the same slot with both halves at once",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Frantic Search",
+          "pays": "both",
+          "axis": "momentum",
+          "why": "draw two, discard two, untap three lands: a free instant-speed loot — two Brallin pings and two Shabraz counters on the wheel turn for no net mana",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Dangerous Wager",
+          "pays": "brallin",
+          "axis": "momentum",
+          "why": "two mana instant: discard your hand, draw two — a seven-card hand is 7 damage to each opponent through Brallin at instant speed, and a fresh two after a counterspell fight",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        }
+      ]
     },
     {
-     "name": "Rites of Refusal",
-     "pays": "brallin",
-     "axis": "interaction",
-     "why": "instant: discard any number to counter a spell unless they pay 3 per card — the discard IS the counter",
-     "verdict": "watching",
-     "note": null,
-     "at": "2026-10-09T22:51:26-07:00"
+      "id": "synergy-recommender",
+      "title": "DeckCheck Synergetic Cards tab, the ones that fit the wheel-turn experiment (2026-10-18)",
+      "source": "deckcheck-synergetic-2026-10-18",
+      "query": "DeckCheck Explore Cards > Synergetic Cards for N381DOgjy9ZU, 300 by relevance; 6 kept",
+      "created": "2026-10-18",
+      "cards": [
+        {
+          "name": "Teferi, Master of Time",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "loyalty abilities at instant speed on ANY turn: +1 loot (Brallin and Shabraz trigger on every player's turn, three or four times a round), -3 phases out a creature they control — removal and fuel on their turns",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Swan Song",
+          "pays": "none",
+          "axis": "interaction",
+          "why": "one blue: hard counter for an enchantment, instant or sorcery — the one counter cheap enough to hold up on the wheel turn; they get a 2/2 Bird",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Heartwarming Redemption",
+          "pays": "both",
+          "axis": "momentum",
+          "why": "four-mana INSTANT: discard your hand, draw that many plus one, gain life equal to the new hand — a self-wheel on their end step: seven Brallin pings, eight Shabraz draws and a life gain that is a counter again",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Captain Howler, Sea Scourge",
+          "pays": "brallin",
+          "axis": "momentum",
+          "why": "ward 2 + 2 life; whenever you discard, target creature gets +2/+0 per card discarded and draws on combat damage — a seven-card wheel is +14/+0 on a flying Shabraz, commander damage in one swing",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Cool but Rude",
+          "pays": "brallin",
+          "axis": "momentum",
+          "why": "Class, level 2 for {1}{R} more: whenever you discard a card, 2 damage to each opponent — a second Brallin that doubles every wheel; the goldfish cannot buy a Class level yet, so it stays dark until modelled",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Monument to Endurance",
+          "pays": "brallin",
+          "axis": "momentum",
+          "why": "three colourless: on each discard choose one not yet chosen this turn — draw, a Treasure, or each opponent loses 3 — every wheel turn pays all three; colourless, so it dodges the mana base the roast mocked",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        }
+      ]
     },
     {
-     "name": "Null Brooch",
-     "pays": "brallin",
-     "axis": "interaction",
-     "why": "discard your hand: counter a noncreature spell, every turn — a counterspell on a stick, no draw",
-     "verdict": "watching",
-     "note": null,
-     "at": "2026-10-09T22:51:39-07:00"
+      "id": "recommender-optimizations",
+      "title": "DeckCheck Recommendations tab, the ones that optimize the plan (2026-10-18)",
+      "source": "deckcheck-recommendations-2026-10-18",
+      "query": "DeckCheck Explore Cards > Recommendations for N381DOgjy9ZU, 200 by relevance (Recommander); 7 kept",
+      "created": "2026-10-18",
+      "cards": [
+        {
+          "name": "Spider-Man, New Champion",
+          "pays": "brallin",
+          "axis": "momentum",
+          "why": "three-mana 3/3 reach: whenever you discard one or more cards, deals THAT MUCH damage to any target — a wheel is 7 to one face or a dead creature; red, so Torbran makes it 9; the one payoff here that also removes",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Grand Abolisher",
+          "pays": "none",
+          "axis": "protection",
+          "why": "two white: during your turn opponents cannot cast spells or activate abilities — the roast's exact scene (removal in response to the wheel) cannot happen; needs WW, and white is the colour the deck has to spare",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Silence",
+          "pays": "none",
+          "axis": "protection",
+          "why": "one white instant: opponents cannot cast spells this turn — Abolisher for one turn, cast before the wheel; no body to remove first",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Fevered Visions",
+          "pays": "shabraz",
+          "axis": "momentum",
+          "why": "three mana: every player draws at their end step, and an opponent holding four or more takes 2 — after a wheel every opponent is holding seven, so 6 damage a round for handing out the cards the roast complained about",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Kitsa, Otterball Elite",
+          "pays": "both",
+          "axis": "momentum",
+          "why": "two-mana Otter Wizard: tap to loot; {2}, tap: COPY an instant or sorcery you control — a second Windfall, or a second Molten Psyche, on the same turn; the body is small, the ability is not",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Wear // Tear",
+          "pays": "none",
+          "axis": "interaction",
+          "why": "instant, one red or one white, fuse for both: destroy an artifact and/or an enchantment — their Rhystic Study, their Smothering Tithe, a Rest in Peace, at the cost the deck can hold up",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Akroma's Will",
+          "pays": "none",
+          "axis": "protection",
+          "why": "four-mana instant, both modes with a commander out: creatures gain lifelink, indestructible and protection from all colours (a wrath and every removal spell blank), AND flying, vigilance, double strike — the protection spell that is also the alpha strike; priced like it",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        }
+      ]
     },
     {
-     "name": "Snort",
-     "pays": "both",
-     "axis": "momentum",
-     "why": "each player may wheel to five; every opponent who does takes 5; flashback wheels again",
-     "verdict": "watching",
-     "note": null,
-     "at": "2026-10-08T19:24:27-07:00"
+      "id": "cheap-answers-2026-10-25",
+      "title": "Cheap answers in Jeskai (after game 003)",
+      "source": "card-scout 2026-10-25",
+      "query": "card-search --cmc-max 3 removal/interaction",
+      "created": "2026-10-25",
+      "cards": [
+        {
+          "name": "Izzet Charm",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "UR instant: soft counter, 2 to a creature, or draw two/discard two (feeds both commanders)",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Abrade",
+          "pays": "none",
+          "axis": "interaction",
+          "why": "1R instant: 3 to a creature or destroy an artifact",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Thraben Charm",
+          "pays": "none",
+          "axis": "interaction",
+          "why": "1W instant: creature damage, destroy an enchantment, or exile graveyards",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Refute",
+          "pays": "both",
+          "axis": "interaction",
+          "why": "1UU hard counter that loots",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Reality Shift",
+          "pays": "none",
+          "axis": "interaction",
+          "why": "1U instant exile any creature; they manifest a 2/2",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Cathar Commando",
+          "pays": "none",
+          "axis": "interaction",
+          "why": "1W flash body; sac to destroy an artifact or enchantment",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Arcane Denial",
+          "pays": "shabraz",
+          "axis": "interaction",
+          "why": "1U counter; you draw one, they draw two",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        }
+      ]
     },
     {
-     "name": "Moonveil Regent",
-     "pays": "both",
-     "axis": "momentum",
-     "why": "flyer: on every spell you may discard your hand and draw one per colour of that spell — a repeatable wheel",
-     "verdict": "pass",
-     "note": null,
-     "at": "2026-10-09T22:51:45-07:00"
+      "id": "ability-copiers-2026-10-25",
+      "title": "Ability copiers (Echo, judged thin 2026-10-25)",
+      "source": "jarvis 2026-10-25",
+      "query": "Sean pasted it; Jarvis read it against answers-v1",
+      "created": "2026-10-25",
+      "cards": [
+        {
+          "name": "Echo, Perceptive Prodigy",
+          "pays": "both",
+          "axis": "other",
+          "why": "{2}{U} 1/4 vigilance; {1},{T}: copy an activated or triggered ability from a creature source. Best on Jace's Archivist (a second instant-speed wheel), Stoneforge Mystic and Kitsa; one copy of one Brallin or Shabraz trigger is thin. Not a Knowledge Is Power cut (KIP scales with every wheel and the doublers); if ever, Zephyr Boots or Mask of Memory.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        }
+      ]
     },
     {
-     "name": "Jace, the Mind Sculptor",
-     "pays": "shabraz",
-     "axis": "interaction",
-     "why": "0: draw three, put two back every turn; −1 bounces a creature — a Game Changer",
-     "verdict": "pass",
-     "note": null,
-     "at": "2026-10-09T22:55:34-07:00"
+      "id": "jeskai-spells-2026-10-25",
+      "title": "Jeskai noncreature-spell payoffs",
+      "source": "jarvis 2026-10-25",
+      "query": "Sean pasted Jeskai cards; oracle read from cards.csv",
+      "created": "2026-10-25",
+      "cards": [
+        {
+          "name": "Pollywog Prodigy",
+          "pays": "shabraz",
+          "axis": "momentum",
+          "why": "{1}{U} 1/3 evolve; draws when an opponent casts a noncreature spell with MV below its power. Needs evolving to 3+ to read much on an 18-creature list; Ledger Shredder does the same job better (flies, loots for Brallin too).",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Whirlwind of Thought",
+          "pays": "shabraz",
+          "axis": "momentum",
+          "why": "{1}{U}{R}{W}: draw on every noncreature spell (46 on answers-v1), each a Shabraz counter. Four mana and no discard, so nothing for Brallin.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Kykar, Wind's Fury",
+          "pays": "none",
+          "axis": "ramp",
+          "why": "{1}{U}{R}{W} flyer: a 1/1 Spirit per noncreature spell, sac one for {R}. Ramp and chump bodies; the tokens trigger neither commander.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        }
+      ]
     },
     {
-     "name": "Joshua, Phoenix's Dominant // Phoenix, Warden of Fire",
-     "pays": "both",
-     "axis": "momentum",
-     "why": "enters: discard two, draw two; flips into a saga that burns each opponent and returns creatures",
-     "verdict": "pass",
-     "note": null,
-     "at": "2026-10-09T22:55:35-07:00"
+      "id": "will-of-the-jeskai",
+      "title": "Will of the Jeskai: a late mana sink, not a speed card",
+      "source": "Q031",
+      "query": "per-hand table and rules check, Q031 and Q032",
+      "created": "2026-11-04",
+      "cards": [
+        {
+          "name": "Will of the Jeskai",
+          "pays": "both",
+          "axis": "other",
+          "why": "Late-game refill for the mana-rich, empty-hand game: always draws five, opponents may decline, and with a commander out spells discarded to it gain flashback that turn. Not a speed card: Wheel of Fortune beats it per mana in every hand state, and its lines want seven to nine mana.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        }
+      ]
     },
     {
-     "name": "Cathartic Pyre",
-     "pays": "both",
-     "axis": "interaction",
-     "why": "instant, choose one: 3 to a creature or planeswalker, OR discard two and draw two — not both",
-     "verdict": "watching",
-     "note": null,
-     "at": "2026-10-09T22:52:50-07:00"
+      "id": "library-watch-2026-11",
+      "title": "From the pilot's library: watch, not in the package",
+      "source": "Q036",
+      "query": "manamap pilot try sharknado --branch draw-engine-v1",
+      "created": "2026-11-04",
+      "cards": [
+        {
+          "name": "Monument to Endurance",
+          "pays": "brallin",
+          "axis": "ramp",
+          "why": "Discard payoff, one mode each a turn. Reads as Treasure, slightly slower wheels; its life loss is scored on one seat.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Narset, Jeskai Waymaster",
+          "pays": "both",
+          "axis": "momentum",
+          "why": "End-step wheel off spells cast. The read is a floor: it fires only when the turn cast as many spells as the hand holds.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        }
+      ]
     },
     {
-     "name": "Day's Undoing",
-     "pays": "shabraz",
-     "axis": "momentum",
-     "why": "everyone shuffles hand and graveyard back and draws seven; ends your turn; no interaction",
-     "verdict": "watching",
-     "note": null,
-     "at": "2026-10-08T19:27:01-07:00"
+      "id": "shabraz-humans-2026-11-06",
+      "title": "Cheap Humans that draw (Shabraz flies them for {W/U})",
+      "source": "card-scout 2026-11-06",
+      "query": "card-search --deck sharknado --type Human --cmc-max 3 --oracle draw",
+      "created": "2026-11-06",
+      "cards": [
+        {
+          "name": "Willie Lumpkin, Postman",
+          "pays": "shabraz",
+          "axis": "momentum",
+          "why": "Unblockable, draws on every combat hit, and every draw grows Shabraz; the opponent may draw too but then cannot attack you.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Sokka, Lateral Strategist",
+          "pays": "shabraz",
+          "axis": "momentum",
+          "why": "Draws whenever he attacks with another creature, so every Shabraz attack triggers him.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Leitmotif Composer",
+          "pays": "shabraz",
+          "axis": "momentum",
+          "why": "Draws on combat damage; Shabraz's {W/U} flying makes it connect.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Esper Sentinel",
+          "pays": "shabraz",
+          "axis": "momentum",
+          "why": "One mana; draws off each opponent's first noncreature spell unless they pay.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Shang-Chi and the Ten Rings",
+          "pays": "shabraz",
+          "axis": "momentum",
+          "why": "Grows on every draw beside Shabraz; at ten counters draws five and gains 5 life. A payoff, not a draw source.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        }
+      ]
     },
     {
-     "name": "Hex Magic",
-     "pays": "shabraz",
-     "axis": "momentum",
-     "why": "exile your hand and draw that many, playable next turn — exile is not discard, so no Brallin",
-     "verdict": "watching",
-     "note": null,
-     "at": "2026-10-08T19:27:13-07:00"
+      "id": "vision-shortlist",
+      "title": "The vision short list (held, not added)",
+      "source": "jarvis",
+      "query": "pasted by the pilot",
+      "created": "2026-11-25",
+      "cards": [
+        {
+          "name": "Lucy MacLean, Positively Armed",
+          "pays": "shabraz",
+          "axis": "other",
+          "why": "Pilot 2026-11-25: 'hold her... don't add, but keep her on a short list'. A Human; once a turn a token copy to an opponent draws a card, and Jaws pings when they sacrifice the Treasure; a 5-drop in a crowded slot.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        }
+      ]
     },
     {
-     "name": "Into the Fire",
-     "pays": "shabraz",
-     "axis": "interaction",
-     "why": "choose one: 2 to every creature, OR bottom any number and draw that many plus one — a bottom, so no Brallin",
-     "verdict": "watching",
-     "note": null,
-     "at": "2026-10-09T22:52:58-07:00"
+      "id": "a-table-pool",
+      "title": "Study 017: the A-table pool",
+      "source": "pilot",
+      "query": "study 017 slot A",
+      "created": "2026-11-25",
+      "cards": [
+        {
+          "name": "Venser, Shaper Savant",
+          "pays": "shabraz",
+          "axis": "interaction",
+          "why": "Slot A (pilot-brought): flash; on entry return target spell or permanent to its owner's hand -- answers a creature spell on the stack or Purphoros on the battlefield; a Human Wizard body.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Orvar, the All-Form",
+          "pays": "n/a",
+          "axis": "other",
+          "why": "Pilot-brought for slot A; not a counter: a changeling 3/3 (Human and Shark) that copies a permanent of yours when an instant or sorcery targets it.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Imoen, Mystic Trickster",
+          "pays": "n/a",
+          "axis": "other",
+          "why": "Pilot-brought for slot A; not a counter: ward 2 and draws at end step only with the initiative, which the branch never takes.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Counterspell",
+          "pays": "n/a",
+          "axis": "interaction",
+          "why": "Slot A (pilot-brought): {U}{U} hard counter for any spell -- Krenko, Purphoros or a combo piece before it resolves.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Mana Drain",
+          "pays": "n/a",
+          "axis": "interaction",
+          "why": "Slot A (pilot-brought): {U}{U} hard counter for any spell; its colourless mana next main phase pays for Shabraz or a wheel. Not a Game Changer.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Tragic Arrogance",
+          "pays": "n/a",
+          "axis": "interaction",
+          "why": "Slot C (pilot-brought): YOU choose what each player keeps (one artifact, creature, enchantment, planeswalker); the rest are sacrificed -- breaks Krenko's board; every noncreature artifact sacrificed pings via Jaws. Hits our own wide board too.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Cataclysmic Gearhulk",
+          "pays": "n/a",
+          "axis": "interaction",
+          "why": "Slot C (pilot-brought): each player chooses what to keep -- so Tom keeps Purphoros; a 4/5 vigilance body; sacrifices pings via Jaws; hits our own board.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "The Eternal Wanderer",
+          "pays": "n/a",
+          "axis": "interaction",
+          "why": "Slot C (pilot-brought): 6-mana planeswalker; +1 exiles an artifact or creature until its owner's next end step (tempo); -4 each player keeps one creature; 0 makes a 2/2 double-strike Samurai.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Council's Judgment",
+          "pays": "n/a",
+          "axis": "interaction",
+          "why": "Slot B: {1}{W}{W} sorcery; each player votes a nonland permanent you don't control, exile the most-voted -- it does not target, so it gets past hexproof and indestructible (Purphoros).",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Banishing Light",
+          "pays": "n/a",
+          "axis": "interaction",
+          "why": "Slot B: {2}{W} enchantment; exile target nonland permanent an opponent controls until Banishing Light leaves -- answers Purphoros, Krenko, Sol Ring.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Oblivion Ring",
+          "pays": "n/a",
+          "axis": "interaction",
+          "why": "Slot B: {2}{W} enchantment; exile another target nonland permanent until O-Ring leaves -- the same job as Banishing Light.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Fiery Confluence",
+          "pays": "n/a",
+          "axis": "interaction",
+          "why": "Slot C: {2}{R}{R} sorcery, choose three (repeats allowed): 1 damage to each creature; 2 to each opponent; destroy target artifact -- kills goblin/zombie tokens (not our 0/4 and 3/3 Humans at one ping), up to three artifacts, or 6 to each opponent; a noncreature spell for Longshot and Typhoon.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Delayed Blast Fireball",
+          "pays": "n/a",
+          "axis": "interaction",
+          "why": "Slot C (pilot-brought): {1}{R}{R} instant, ONE-SIDED -- 2 to each opponent and each creature they control; foretold ({2}, then {4}{R}{R}) it is 5. Spares our own board.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Violent Eruption",
+          "pays": "n/a",
+          "axis": "interaction",
+          "why": "Slot C (pilot-brought): {1}{R}{R}{R} instant, 4 damage divided; madness {1}{R}{R} -- a wheel, loot, Blood token or Theorist discard casts it cheaply.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Slagstorm",
+          "pays": "n/a",
+          "axis": "interaction",
+          "why": "Slot C (pilot-brought): {1}{R}{R} sorcery, 3 to each creature OR 3 to each player -- symmetric: it kills our own small Humans too.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Soul-Guide Lantern",
+          "pays": "n/a",
+          "axis": "interaction",
+          "why": "Slot D: {1} artifact; on entry exile a card from an opponent's graveyard; {T}, sacrifice: exile each opponent's graveyard; or {T}, sacrifice: draw a card -- the draw grows Shabraz and the sacrifice pings via Jaws.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Relic of Progenitus",
+          "pays": "n/a",
+          "axis": "interaction",
+          "why": "Slot D: {1} artifact; {T}: target player exiles a card from their graveyard; {1}, exile Relic: exile all graveyards, draw a card -- exiling is not sacrificing, so no Jaws ping; it also clears ours (Theorist, flashback).",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Thraben Inspector",
+          "pays": "n/a",
+          "axis": "other",
+          "why": "Slot E: {W} 1/1 Human; investigate on entry -- the Clue is a draw (Shabraz) and a sacrificed artifact (a Jaws ping).",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Novice Inspector",
+          "pays": "n/a",
+          "axis": "other",
+          "why": "Slot E: {W} Human Detective; the same investigate on entry -- a second copy of the effect.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Charming Scoundrel",
+          "pays": "n/a",
+          "axis": "other",
+          "why": "Slot E: {1}{R} Human Rogue, haste; on entry choose: loot, a Treasure, or a Wicked Role.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Ragavan, Nimble Pilferer",
+          "pays": "n/a",
+          "axis": "other",
+          "why": "Slot E (not a Human): {R}; on combat damage a Treasure and an impulse card from that player's library; dash {1}{R}. Not a Game Changer.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Ivora, Insatiable Heir",
+          "pays": "n/a",
+          "axis": "other",
+          "why": "Slot E (not a Human, a Vampire): {1}{R} trample; a Blood token on entry and on each hit; +1/+1 counter on every discard.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        }
+      ]
     },
     {
-     "name": "Invasion of Kaldheim // Pyre of the World Tree",
-     "pays": "both",
-     "axis": "interaction",
-     "why": "enters: exile hand, draw that many (Shabraz); flipped, each land you discard pings any target for 2 (Brallin)",
-     "verdict": "pass",
-     "note": null,
-     "at": "2026-10-09T22:53:25-07:00"
-    },
-    {
-     "name": "Chandra, Heart of Fire",
-     "pays": "brallin",
-     "axis": "interaction",
-     "why": "+1 discard your hand and impulse three; +1 2 damage to any target — a discard with no draw",
-     "verdict": "pass",
-     "note": null,
-     "at": "2026-10-09T22:55:36-07:00"
-    },
-    {
-     "name": "Chandra, Flame's Catalyst",
-     "pays": "both",
-     "axis": "momentum",
-     "why": "+1 3 to each opponent every turn; −8 discard your hand, draw seven and cast them free",
-     "verdict": "pass",
-     "note": null,
-     "at": "2026-10-09T22:55:37-07:00"
-    },
-    {
-     "name": "Umaro, Raging Yeti",
-     "pays": "both",
-     "axis": "other",
-     "why": "each combat, at random: team pump, discard your hand and draw four, or 5 to any target — random",
-     "verdict": "watching",
-     "note": null,
-     "at": "2026-10-08T19:30:17-07:00"
-    },
-    {
-     "name": "Ajani Unrelenting",
-     "pays": "both",
-     "axis": "interaction",
-     "why": "−2 discard your hand, draw one per creature; −3 4 to each creature but your tokens",
-     "verdict": "watching",
-     "note": null,
-     "at": "2026-10-09T22:54:59-07:00"
-    },
-    {
-     "name": "Chandra Ablaze",
-     "pays": "both",
-     "axis": "interaction",
-     "why": "+1 discard a red card for 4 to any target; −2 everyone discards their hand and draws three",
-     "verdict": "watching",
-     "note": null,
-     "at": "2026-10-08T19:31:08-07:00"
-    },
-    {
-     "name": "Sarkhan, the Dragonspeaker",
-     "pays": "both",
-     "axis": "interaction",
-     "why": "−3 4 to a creature; +1 a 4/4 flying haste Dragon; ultimate draws two and discards the hand each turn",
-     "verdict": "watching",
-     "note": null,
-     "at": "2026-10-09T22:54:22-07:00"
-    },
-    {
-     "name": "Serum Powder",
-     "pays": "none",
-     "axis": "ramp",
-     "why": "a mana rock; its hand reset works only at mulligan, so it pays neither commander",
-     "verdict": "pass",
-     "note": null,
-     "at": "2026-10-09T22:54:37-07:00"
-    },
-    {
-     "name": "Apocalypse",
-     "pays": "brallin",
-     "axis": "interaction",
-     "why": "exile ALL permanents (yours too) and discard your hand — a total reset",
-     "verdict": "pass",
-     "note": null,
-     "at": "2026-10-09T22:54:43-07:00"
-    },
-    {
-     "name": "Colossus of the Blood Age",
-     "pays": "both",
-     "axis": "other",
-     "why": "enters: 3 to each opponent, gain 3; dies: discard any number, draw that many plus one",
-     "verdict": "watching",
-     "note": null,
-     "at": "2026-10-09T22:55:10-07:00"
-    },
-    {
-     "name": "Turtles in Time",
-     "pays": "shabraz",
-     "axis": "interaction",
-     "why": "bounce every creature, then everyone may shuffle hand and graveyard back and draw seven — a 7-mana reset",
-     "verdict": "watching",
-     "note": null,
-     "at": "2026-10-09T22:55:23-07:00"
+      "id": "held-2026-11-25",
+      "title": "Held for later: no change today, kept on the shortlist (studies 028, 029)",
+      "source": "studies 028-029",
+      "query": "pilot, 2026-11-25: keep em on a shortlist",
+      "created": "2026-11-25",
+      "cards": [
+        {
+          "name": "Smuggler's Share",
+          "pays": "shabraz",
+          "axis": "momentum",
+          "why": "a card per opponent who drew two or more at each end step; pays after our each-player draws, which jaws-v1 casts few of (study 028). Revisit if wheels come back or once its opponents-turn trigger is modelled.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        },
+        {
+          "name": "Qala, Ajani's Pridemate",
+          "pays": "shabraz",
+          "axis": "momentum",
+          "why": "a counter per Shabraz draw, and +X power to the other attackers; closest swap was for Library of Leng, killed by T6 +0.5 pts, a ceiling with no blockers or removal (study 029). The test is a game at the table.",
+          "verdict": "unreviewed",
+          "note": null,
+          "at": null
+        }
+      ]
     }
-   ]
-  },
-  {
-   "id": "free-interaction",
-   "title": "Free interaction for the wheel turn (DeckCheck roast, 2026-10-18)",
-   "source": "deckcheck-roast-2026-10-18",
-   "query": "DeckCheck Explore Cards, Scryfall: id<=urw t:instant mv<=3 f:commander usd<10 (alternative or discounted costs) (counter|destroy|exile|damage); 32 results, 4 kept",
-   "created": "2026-10-18",
-   "cards": [
-    {
-     "name": "March of Swirling Mist",
-     "pays": "none",
-     "axis": "protection",
-     "why": "instant, X blue cards from hand pay for it: phase out up to X creatures — both commanders dodge spot removal AND a wrath, paid with the fresh hand the wheel just dealt",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Snapback",
-     "pays": "none",
-     "axis": "interaction",
-     "why": "instant, exile a blue card from hand instead of paying: bounce a creature — a free answer with the mana tapped, or bounce Brallin in response to removal",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Flare of Denial",
-     "pays": "none",
-     "axis": "interaction",
-     "why": "instant, sacrifice a nontoken blue creature instead of paying: counter target spell — a hard counter for zero mana off a spent Archivist or Skulker",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "March of Otherworldly Light",
-     "pays": "none",
-     "axis": "interaction",
-     "why": "instant, exile an artifact, creature or enchantment with mana value X or less; white cards from hand reduce it — a second Swords that also hits Rhystic Study and Smothering Tithe",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    }
-   ]
-  },
-  {
-   "id": "wheel-turn-protection",
-   "title": "Protection that also beats a wrath (DeckCheck roast, query 2, 2026-10-18)",
-   "source": "deckcheck-roast-2026-10-18",
-   "query": "DeckCheck Explore Cards, Scryfall: id<=urw t:instant mv<=3 f:commander usd<10 (phase out|indestructible|hexproof|protection from) -\"you control gain\"; 49 results, 3 kept (+ March of Swirling Mist, already in free-interaction)",
-   "created": "2026-10-18",
-   "cards": [
-    {
-     "name": "Blacksmith's Skill",
-     "pays": "none",
-     "axis": "protection",
-     "why": "one white: target PERMANENT gains hexproof and indestructible — a commander against spot removal or a destroy wrath, or Smothering Tithe against the artifact hate; Loran's Escape is the same card with scry 1 on a creature or artifact",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Valorous Stance",
-     "pays": "none",
-     "axis": "protection",
-     "why": "two mana, modal: indestructible on one creature, OR destroy a creature with toughness 4 or more — protection that is removal when nothing needs saving",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Final Showdown",
-     "pays": "none",
-     "axis": "protection",
-     "why": "spree, from one white: +1 one creature indestructible, +1 ALL creatures lose abilities until end of turn (an instant-speed stop on a combo creature), +5 destroy all creatures — a protection spell that is also the deck's only wrath",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    }
-   ]
-  },
-  {
-   "id": "instant-fuel",
-   "title": "Instant-speed draw and discard that also interacts (DeckCheck roast, query 3, 2026-10-18)",
-   "source": "deckcheck-roast-2026-10-18",
-   "query": "DeckCheck Explore Cards, Scryfall: id<=urw t:instant mv<=3 f:commander usd<10 o:draw (o:discard or o:\"each player\"); 47 results, 6 kept (Cathartic Pyre already on wheel-interaction, Tolarian Winds already in the deck)",
-   "created": "2026-10-18",
-   "cards": [
-    {
-     "name": "Prismari Command",
-     "pays": "both",
-     "axis": "interaction",
-     "why": "three mana, choose two: 2 damage anywhere, a player loots two, a Treasure, destroy an artifact — removal and a loot in one card, Brallin and Shabraz both trigger",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Izzet Charm",
-     "pays": "both",
-     "axis": "interaction",
-     "why": "two mana, choose one: soft-counter a noncreature spell, 2 to a creature, or draw two discard two — the cheapest card here that is interaction on their turn and fuel on ours",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Three Steps Ahead",
-     "pays": "both",
-     "axis": "interaction",
-     "why": "spree from one blue: +{1}{U} counter a spell, +{2} draw two discard one, +{3} copy a creature or artifact — a hard counter that loots when the mana is there, a loot when it is not",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "You Find the Villains' Lair",
-     "pays": "both",
-     "axis": "interaction",
-     "why": "three mana, choose one: hard counter, or draw two discard two — Counterspell with a loot mode; Refute is the same slot with both halves at once",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Frantic Search",
-     "pays": "both",
-     "axis": "momentum",
-     "why": "draw two, discard two, untap three lands: a free instant-speed loot — two Brallin pings and two Shabraz counters on the wheel turn for no net mana",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Dangerous Wager",
-     "pays": "brallin",
-     "axis": "momentum",
-     "why": "two mana instant: discard your hand, draw two — a seven-card hand is 7 damage to each opponent through Brallin at instant speed, and a fresh two after a counterspell fight",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    }
-   ]
-  },
-  {
-   "id": "synergy-recommender",
-   "title": "DeckCheck Synergetic Cards tab, the ones that fit the wheel-turn experiment (2026-10-18)",
-   "source": "deckcheck-synergetic-2026-10-18",
-   "query": "DeckCheck Explore Cards > Synergetic Cards for N381DOgjy9ZU, 300 by relevance; 6 kept",
-   "created": "2026-10-18",
-   "cards": [
-    {
-     "name": "Teferi, Master of Time",
-     "pays": "both",
-     "axis": "interaction",
-     "why": "loyalty abilities at instant speed on ANY turn: +1 loot (Brallin and Shabraz trigger on every player's turn, three or four times a round), -3 phases out a creature they control — removal and fuel on their turns",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Swan Song",
-     "pays": "none",
-     "axis": "interaction",
-     "why": "one blue: hard counter for an enchantment, instant or sorcery — the one counter cheap enough to hold up on the wheel turn; they get a 2/2 Bird",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Heartwarming Redemption",
-     "pays": "both",
-     "axis": "momentum",
-     "why": "four-mana INSTANT: discard your hand, draw that many plus one, gain life equal to the new hand — a self-wheel on their end step: seven Brallin pings, eight Shabraz draws and a life gain that is a counter again",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Captain Howler, Sea Scourge",
-     "pays": "brallin",
-     "axis": "momentum",
-     "why": "ward 2 + 2 life; whenever you discard, target creature gets +2/+0 per card discarded and draws on combat damage — a seven-card wheel is +14/+0 on a flying Shabraz, commander damage in one swing",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Cool but Rude",
-     "pays": "brallin",
-     "axis": "momentum",
-     "why": "Class, level 2 for {1}{R} more: whenever you discard a card, 2 damage to each opponent — a second Brallin that doubles every wheel; the goldfish cannot buy a Class level yet, so it stays dark until modelled",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Monument to Endurance",
-     "pays": "brallin",
-     "axis": "momentum",
-     "why": "three colourless: on each discard choose one not yet chosen this turn — draw, a Treasure, or each opponent loses 3 — every wheel turn pays all three; colourless, so it dodges the mana base the roast mocked",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    }
-   ]
-  },
-  {
-   "id": "recommender-optimizations",
-   "title": "DeckCheck Recommendations tab, the ones that optimize the plan (2026-10-18)",
-   "source": "deckcheck-recommendations-2026-10-18",
-   "query": "DeckCheck Explore Cards > Recommendations for N381DOgjy9ZU, 200 by relevance (Recommander); 7 kept",
-   "created": "2026-10-18",
-   "cards": [
-    {
-     "name": "Spider-Man, New Champion",
-     "pays": "brallin",
-     "axis": "momentum",
-     "why": "three-mana 3/3 reach: whenever you discard one or more cards, deals THAT MUCH damage to any target — a wheel is 7 to one face or a dead creature; red, so Torbran makes it 9; the one payoff here that also removes",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Grand Abolisher",
-     "pays": "none",
-     "axis": "protection",
-     "why": "two white: during your turn opponents cannot cast spells or activate abilities — the roast's exact scene (removal in response to the wheel) cannot happen; needs WW, and white is the colour the deck has to spare",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Silence",
-     "pays": "none",
-     "axis": "protection",
-     "why": "one white instant: opponents cannot cast spells this turn — Abolisher for one turn, cast before the wheel; no body to remove first",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Fevered Visions",
-     "pays": "shabraz",
-     "axis": "momentum",
-     "why": "three mana: every player draws at their end step, and an opponent holding four or more takes 2 — after a wheel every opponent is holding seven, so 6 damage a round for handing out the cards the roast complained about",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Kitsa, Otterball Elite",
-     "pays": "both",
-     "axis": "momentum",
-     "why": "two-mana Otter Wizard: tap to loot; {2}, tap: COPY an instant or sorcery you control — a second Windfall, or a second Molten Psyche, on the same turn; the body is small, the ability is not",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Wear // Tear",
-     "pays": "none",
-     "axis": "interaction",
-     "why": "instant, one red or one white, fuse for both: destroy an artifact and/or an enchantment — their Rhystic Study, their Smothering Tithe, a Rest in Peace, at the cost the deck can hold up",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Akroma's Will",
-     "pays": "none",
-     "axis": "protection",
-     "why": "four-mana instant, both modes with a commander out: creatures gain lifelink, indestructible and protection from all colours (a wrath and every removal spell blank), AND flying, vigilance, double strike — the protection spell that is also the alpha strike; priced like it",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    }
-   ]
-  },
-  {
-   "id": "cheap-answers-2026-10-25",
-   "title": "Cheap answers in Jeskai (after game 003)",
-   "source": "card-scout 2026-10-25",
-   "query": "card-search --cmc-max 3 removal/interaction",
-   "created": "2026-10-25",
-   "cards": [
-    {
-     "name": "Izzet Charm",
-     "pays": "both",
-     "axis": "interaction",
-     "why": "UR instant: soft counter, 2 to a creature, or draw two/discard two (feeds both commanders)",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Abrade",
-     "pays": "none",
-     "axis": "interaction",
-     "why": "1R instant: 3 to a creature or destroy an artifact",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Thraben Charm",
-     "pays": "none",
-     "axis": "interaction",
-     "why": "1W instant: creature damage, destroy an enchantment, or exile graveyards",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Refute",
-     "pays": "both",
-     "axis": "interaction",
-     "why": "1UU hard counter that loots",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Reality Shift",
-     "pays": "none",
-     "axis": "interaction",
-     "why": "1U instant exile any creature; they manifest a 2/2",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Cathar Commando",
-     "pays": "none",
-     "axis": "interaction",
-     "why": "1W flash body; sac to destroy an artifact or enchantment",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Arcane Denial",
-     "pays": "shabraz",
-     "axis": "interaction",
-     "why": "1U counter; you draw one, they draw two",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    }
-   ]
-  },
-  {
-   "id": "ability-copiers-2026-10-25",
-   "title": "Ability copiers (Echo, judged thin 2026-10-25)",
-   "source": "jarvis 2026-10-25",
-   "query": "Sean pasted it; Jarvis read it against answers-v1",
-   "created": "2026-10-25",
-   "cards": [
-    {
-     "name": "Echo, Perceptive Prodigy",
-     "pays": "both",
-     "axis": "other",
-     "why": "{2}{U} 1/4 vigilance; {1},{T}: copy an activated or triggered ability from a creature source. Best on Jace's Archivist (a second instant-speed wheel), Stoneforge Mystic and Kitsa; one copy of one Brallin or Shabraz trigger is thin. Not a Knowledge Is Power cut (KIP scales with every wheel and the doublers); if ever, Zephyr Boots or Mask of Memory.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    }
-   ]
-  },
-  {
-   "id": "jeskai-spells-2026-10-25",
-   "title": "Jeskai noncreature-spell payoffs",
-   "source": "jarvis 2026-10-25",
-   "query": "Sean pasted Jeskai cards; oracle read from cards.csv",
-   "created": "2026-10-25",
-   "cards": [
-    {
-     "name": "Pollywog Prodigy",
-     "pays": "shabraz",
-     "axis": "momentum",
-     "why": "{1}{U} 1/3 evolve; draws when an opponent casts a noncreature spell with MV below its power. Needs evolving to 3+ to read much on an 18-creature list; Ledger Shredder does the same job better (flies, loots for Brallin too).",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Whirlwind of Thought",
-     "pays": "shabraz",
-     "axis": "momentum",
-     "why": "{1}{U}{R}{W}: draw on every noncreature spell (46 on answers-v1), each a Shabraz counter. Four mana and no discard, so nothing for Brallin.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Kykar, Wind's Fury",
-     "pays": "none",
-     "axis": "ramp",
-     "why": "{1}{U}{R}{W} flyer: a 1/1 Spirit per noncreature spell, sac one for {R}. Ramp and chump bodies; the tokens trigger neither commander.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    }
-   ]
-  },
-  {
-   "id": "will-of-the-jeskai",
-   "title": "Will of the Jeskai: a late mana sink, not a speed card",
-   "source": "Q031",
-   "query": "per-hand table and rules check, Q031 and Q032",
-   "created": "2026-11-04",
-   "cards": [
-    {
-     "name": "Will of the Jeskai",
-     "pays": "both",
-     "axis": "other",
-     "why": "Late-game refill for the mana-rich, empty-hand game: always draws five, opponents may decline, and with a commander out spells discarded to it gain flashback that turn. Not a speed card: Wheel of Fortune beats it per mana in every hand state, and its lines want seven to nine mana.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    }
-   ]
-  },
-  {
-   "id": "library-watch-2026-11",
-   "title": "From the pilot's library: watch, not in the package",
-   "source": "Q036",
-   "query": "manamap pilot try sharknado --branch draw-engine-v1",
-   "created": "2026-11-04",
-   "cards": [
-    {
-     "name": "Monument to Endurance",
-     "pays": "brallin",
-     "axis": "ramp",
-     "why": "Discard payoff, one mode each a turn. Reads as Treasure, slightly slower wheels; its life loss is scored on one seat.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Narset, Jeskai Waymaster",
-     "pays": "both",
-     "axis": "momentum",
-     "why": "End-step wheel off spells cast. The read is a floor: it fires only when the turn cast as many spells as the hand holds.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    }
-   ]
-  },
-  {
-   "id": "shabraz-humans-2026-11-06",
-   "title": "Cheap Humans that draw (Shabraz flies them for {W/U})",
-   "source": "card-scout 2026-11-06",
-   "query": "card-search --deck sharknado --type Human --cmc-max 3 --oracle draw",
-   "created": "2026-11-06",
-   "cards": [
-    {
-     "name": "Willie Lumpkin, Postman",
-     "pays": "shabraz",
-     "axis": "momentum",
-     "why": "Unblockable, draws on every combat hit, and every draw grows Shabraz; the opponent may draw too but then cannot attack you.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Sokka, Lateral Strategist",
-     "pays": "shabraz",
-     "axis": "momentum",
-     "why": "Draws whenever he attacks with another creature, so every Shabraz attack triggers him.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Leitmotif Composer",
-     "pays": "shabraz",
-     "axis": "momentum",
-     "why": "Draws on combat damage; Shabraz's {W/U} flying makes it connect.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Esper Sentinel",
-     "pays": "shabraz",
-     "axis": "momentum",
-     "why": "One mana; draws off each opponent's first noncreature spell unless they pay.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Shang-Chi and the Ten Rings",
-     "pays": "shabraz",
-     "axis": "momentum",
-     "why": "Grows on every draw beside Shabraz; at ten counters draws five and gains 5 life. A payoff, not a draw source.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    }
-   ]
-  },
-  {
-   "id": "vision-shortlist",
-   "title": "The vision short list (held, not added)",
-   "source": "jarvis",
-   "query": "pasted by the pilot",
-   "created": "2026-11-25",
-   "cards": [
-    {
-     "name": "Lucy MacLean, Positively Armed",
-     "pays": "shabraz",
-     "axis": "other",
-     "why": "Pilot 2026-11-25: 'hold her... don't add, but keep her on a short list'. A Human; once a turn a token copy to an opponent draws a card, and Jaws pings when they sacrifice the Treasure; a 5-drop in a crowded slot.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    }
-   ]
-  },
-  {
-   "id": "a-table-pool",
-   "title": "Study 017: the A-table pool",
-   "source": "pilot",
-   "query": "study 017 slot A",
-   "created": "2026-11-25",
-   "cards": [
-    {
-     "name": "Venser, Shaper Savant",
-     "pays": "shabraz",
-     "axis": "interaction",
-     "why": "Slot A (pilot-brought): flash; on entry return target spell or permanent to its owner's hand -- answers a creature spell on the stack or Purphoros on the battlefield; a Human Wizard body.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Orvar, the All-Form",
-     "pays": "n/a",
-     "axis": "other",
-     "why": "Pilot-brought for slot A; not a counter: a changeling 3/3 (Human and Shark) that copies a permanent of yours when an instant or sorcery targets it.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Imoen, Mystic Trickster",
-     "pays": "n/a",
-     "axis": "other",
-     "why": "Pilot-brought for slot A; not a counter: ward 2 and draws at end step only with the initiative, which the branch never takes.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Counterspell",
-     "pays": "n/a",
-     "axis": "interaction",
-     "why": "Slot A (pilot-brought): {U}{U} hard counter for any spell -- Krenko, Purphoros or a combo piece before it resolves.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Mana Drain",
-     "pays": "n/a",
-     "axis": "interaction",
-     "why": "Slot A (pilot-brought): {U}{U} hard counter for any spell; its colourless mana next main phase pays for Shabraz or a wheel. Not a Game Changer.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Tragic Arrogance",
-     "pays": "n/a",
-     "axis": "interaction",
-     "why": "Slot C (pilot-brought): YOU choose what each player keeps (one artifact, creature, enchantment, planeswalker); the rest are sacrificed -- breaks Krenko's board; every noncreature artifact sacrificed pings via Jaws. Hits our own wide board too.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Cataclysmic Gearhulk",
-     "pays": "n/a",
-     "axis": "interaction",
-     "why": "Slot C (pilot-brought): each player chooses what to keep -- so Tom keeps Purphoros; a 4/5 vigilance body; sacrifices pings via Jaws; hits our own board.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "The Eternal Wanderer",
-     "pays": "n/a",
-     "axis": "interaction",
-     "why": "Slot C (pilot-brought): 6-mana planeswalker; +1 exiles an artifact or creature until its owner's next end step (tempo); -4 each player keeps one creature; 0 makes a 2/2 double-strike Samurai.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Council's Judgment",
-     "pays": "n/a",
-     "axis": "interaction",
-     "why": "Slot B: {1}{W}{W} sorcery; each player votes a nonland permanent you don't control, exile the most-voted -- it does not target, so it gets past hexproof and indestructible (Purphoros).",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Banishing Light",
-     "pays": "n/a",
-     "axis": "interaction",
-     "why": "Slot B: {2}{W} enchantment; exile target nonland permanent an opponent controls until Banishing Light leaves -- answers Purphoros, Krenko, Sol Ring.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Oblivion Ring",
-     "pays": "n/a",
-     "axis": "interaction",
-     "why": "Slot B: {2}{W} enchantment; exile another target nonland permanent until O-Ring leaves -- the same job as Banishing Light.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Fiery Confluence",
-     "pays": "n/a",
-     "axis": "interaction",
-     "why": "Slot C: {2}{R}{R} sorcery, choose three (repeats allowed): 1 damage to each creature; 2 to each opponent; destroy target artifact -- kills goblin/zombie tokens (not our 0/4 and 3/3 Humans at one ping), up to three artifacts, or 6 to each opponent; a noncreature spell for Longshot and Typhoon.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Delayed Blast Fireball",
-     "pays": "n/a",
-     "axis": "interaction",
-     "why": "Slot C (pilot-brought): {1}{R}{R} instant, ONE-SIDED -- 2 to each opponent and each creature they control; foretold ({2}, then {4}{R}{R}) it is 5. Spares our own board.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Violent Eruption",
-     "pays": "n/a",
-     "axis": "interaction",
-     "why": "Slot C (pilot-brought): {1}{R}{R}{R} instant, 4 damage divided; madness {1}{R}{R} -- a wheel, loot, Blood token or Theorist discard casts it cheaply.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Slagstorm",
-     "pays": "n/a",
-     "axis": "interaction",
-     "why": "Slot C (pilot-brought): {1}{R}{R} sorcery, 3 to each creature OR 3 to each player -- symmetric: it kills our own small Humans too.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Soul-Guide Lantern",
-     "pays": "n/a",
-     "axis": "interaction",
-     "why": "Slot D: {1} artifact; on entry exile a card from an opponent's graveyard; {T}, sacrifice: exile each opponent's graveyard; or {T}, sacrifice: draw a card -- the draw grows Shabraz and the sacrifice pings via Jaws.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Relic of Progenitus",
-     "pays": "n/a",
-     "axis": "interaction",
-     "why": "Slot D: {1} artifact; {T}: target player exiles a card from their graveyard; {1}, exile Relic: exile all graveyards, draw a card -- exiling is not sacrificing, so no Jaws ping; it also clears ours (Theorist, flashback).",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Thraben Inspector",
-     "pays": "n/a",
-     "axis": "other",
-     "why": "Slot E: {W} 1/1 Human; investigate on entry -- the Clue is a draw (Shabraz) and a sacrificed artifact (a Jaws ping).",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Novice Inspector",
-     "pays": "n/a",
-     "axis": "other",
-     "why": "Slot E: {W} Human Detective; the same investigate on entry -- a second copy of the effect.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Charming Scoundrel",
-     "pays": "n/a",
-     "axis": "other",
-     "why": "Slot E: {1}{R} Human Rogue, haste; on entry choose: loot, a Treasure, or a Wicked Role.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Ragavan, Nimble Pilferer",
-     "pays": "n/a",
-     "axis": "other",
-     "why": "Slot E (not a Human): {R}; on combat damage a Treasure and an impulse card from that player's library; dash {1}{R}. Not a Game Changer.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    },
-    {
-     "name": "Ivora, Insatiable Heir",
-     "pays": "n/a",
-     "axis": "other",
-     "why": "Slot E (not a Human, a Vampire): {1}{R} trample; a Blood token on entry and on each hit; +1/+1 counter on every discard.",
-     "verdict": "unreviewed",
-     "note": null,
-     "at": null
-    }
-   ]
-  }
- ]
+  ]
 }

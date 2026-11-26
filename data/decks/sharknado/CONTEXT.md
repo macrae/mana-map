@@ -282,15 +282,15 @@ One line each for the older games: 001 (2026-10-06, no result): Sol Ring fast st
 ## Studies
 
 <!-- ctx:gen studies -->
-- **028 open** (—) — Smuggler's Share (each end step: draw a card for each opponent who drew two or more cards this turn; a Treasure for each who had two or more · on `jaws-v1` · open · goldfish saw 1/1 named cards
+- **030 open** (—) — Flare of Duplication (copy target instant or sorcery; free by sacrificing a nontoken red creature) in -- a copied wheel doubles our payoffs; · on `jaws-v1` · open · goldfish saw 0/2 named cards
+- **029 no-change** (pilot, deck-doctor) — Qala, Ajani's Pridemate (a counter for every life gained -- every Shabraz draw is a life gain -- and when she attacks the other attackers ge · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “ok, no change on these then that's fine... keep em on a shortlist and noted somewhere”
+- **028 no-change** (pilot, deck-doctor) — Smuggler's Share (each end step: draw a card for each opponent who drew two or more cards this turn; a Treasure for each who had two or more · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “ok, no change on these then that's fine... keep em on a shortlist and noted somewhere”
 - **027 no-change** (pilot, deck-doctor) — Violent Eruption (instant, 4 damage divided; madness {1}{R}{R} off the deck's discards) in -- and for what? · on `jaws-v1` · 2026-11-25 · goldfish saw 0/1 named cards · “ok... pass on these three cards :)”
 - **026 no-change** (pilot, deck-doctor) — Fiery Confluence (choose three, repeats allowed: 1 to each creature, 2 to each opponent, or destroy an artifact) in -- goblin and zombie tok · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “ok... pass on these three cards :)”
 - **025 no-change** (pilot, deck-doctor) — Zndrsplt, Eye of Wisdom (flip coins at combat until you lose; any player's won flip draws us a card -- each a Shabraz counter, doubled by Kr · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “ok... pass on these three cards :)”
 - **024 no-change** (pilot, deck-doctor) — A tutor that finds Krang (an artifact creature) or Smothering Tithe (an enchantment) inside bracket 3 -- Enlightened Tutor is a Game Changer · on `jaws-v1` · 2026-11-25 · goldfish saw 4/4 named cards · “yeah I'm not sure long term plans for enduring curiosity is worth it”
 - **023 approve** (pilot, deck-doctor) — Krang, the All-Powerful (a draw-caused trigger of ours triggers an additional time: Shabraz two counters and two life per card, Smothering T · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “approve Krang for Archmage Emeritus”
-- **022 no-change** (pilot, deck-doctor) — Killmonger, Ruthless Usurper (a 3-mana Human with trample; on each hit the player sacrifices an artifact -- a Jaws ping -- and we make a Tre · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “you are right.. sokka is probably better than killmonger lolol”
-- **021 no-change** (pilot, deck-doctor) — Violent Eruption in for Windfall -- from the ranked list of the weakest cards left? · on `jaws-v1` · 2026-11-25 · goldfish saw 1/2 named cards · “no, no windfall is an amazing card in this deck jfc”
-- … 20 earlier: `manamap pilot study sharknado list`
+- … 22 earlier: `manamap pilot study sharknado list`
 <!-- /ctx:gen studies -->
 
 ## Change history
