@@ -455,3 +455,71 @@ def test_living_laser_copies_itself_per_card_discarded_this_turn():
         return goldfish.run("sharknado", doc=d, iterations=1500, seed=7, quiet=True,
                             _band=False)["metrics"]["combat"]["mean_damage_by_turn"]["10"]
     assert damage_by_10(laser) > damage_by_10("Haste") + 20
+
+
+def test_thor_pings_for_each_noncreature_spells_mana_value():
+    """Thor, God of Thunder: whenever you cast a noncreature spell, damage equal to its mana value,
+    and on entry a spell back from the graveyard. Six Thors on sharknado's branch out-damage six
+    Thors with the ping struck by turn ten (2026-11-25; 219 against 189 for a plain 5/5 flier).
+    Put the bug back -- read the per-cast amount as the fixed field, zero for Thor -- and the arms
+    match."""
+    import copy
+    from manamap.pilot import card_pool, common
+    thor = card_pool.corpus_oracle()["Thor, God of Thunder"]
+    base = common.load_deck_cards("sharknado", branch="jaws-v1")
+    swap = {"Willie Lumpkin, Postman", "Brainstorm", "Shelter", "Loran's Escape",
+            "Slip Out the Back", "Get Lost"}
+
+    def damage_by_10(text):
+        d = copy.deepcopy(base)
+        hit = 0
+        for c in d["cards"]:
+            if c["name"] in swap:
+                hit += 1
+                c.update({"name": f"Thor {hit}", "oracle_text": text, "cmc": 5.0,
+                          "type_line": "Creature — God Warrior Hero", "mana_cost": "{3}{R}{R}",
+                          "power": "5", "toughness": "5"})
+        assert hit == len(swap)
+        return goldfish.run("sharknado", doc=d, iterations=1500, seed=7, quiet=True,
+                            _band=False)["metrics"]["combat"]["mean_damage_by_turn"]["10"]
+    no_ping = thor.split("Whenever you cast a noncreature spell")[0]
+    assert no_ping != thor
+    assert damage_by_10(thor) > damage_by_10(no_ping) + 10
+
+
+def test_thor_hands_back_a_spell_from_the_graveyard_on_entry():
+    """Thor's other half: on entry, an instant or sorcery from the graveyard to play until the end
+    of next turn (a wheel first). Six Thors with only that half read more wheels cast by turn ten
+    than six plain fliers (2026-11-25). Put the bug back -- never register the entry -- and the
+    arms match."""
+    import copy
+    from manamap.pilot import card_pool, common
+    thor = card_pool.corpus_oracle()["Thor, God of Thunder"]
+    entry_only = thor.split("Whenever you cast a noncreature spell")[0]
+    base = common.load_deck_cards("sharknado", branch="jaws-v1")
+    swap = {"Willie Lumpkin, Postman", "Brainstorm", "Shelter", "Loran's Escape",
+            "Slip Out the Back", "Get Lost"}
+
+    def wheels_by_10(text):
+        d = copy.deepcopy(base)
+        hit = 0
+        for c in d["cards"]:
+            if c["name"] in swap:
+                hit += 1
+                c.update({"name": f"Thor {hit}", "oracle_text": text, "cmc": 5.0,
+                          "type_line": "Creature — God Warrior Hero", "mana_cost": "{3}{R}{R}",
+                          "power": "5", "toughness": "5"})
+        m = goldfish.run("sharknado", doc=d, iterations=1500, seed=7, quiet=True,
+                         _band=False)["metrics"]
+        found = []
+
+        def walk(x):
+            if isinstance(x, dict):
+                for k, v in x.items():
+                    if k == "mean_wheels_cast_by_turn":
+                        found.append(v["10"])
+                    walk(v)
+        walk(m)
+        assert found, "wheels cast not reported"
+        return found[0]
+    assert wheels_by_10(entry_only) > wheels_by_10("Flying") + 0.05

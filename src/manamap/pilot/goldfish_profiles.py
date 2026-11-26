@@ -4583,6 +4583,13 @@ def spell_pump(card):
 #: Guttersnipe, Firebrand Archer and Kessig Flamebreather all say cast. That is
 #: a rules fact and the two flags are separate because of it.
 _STORM_RE = re.compile(r"\bstorm\b\s*\(|has storm", re.I)
+_PER_CAST_DAMAGE_MV_RE = re.compile(
+    r"whenever you cast (an instant or sorcery|a noncreature|a spell)[^.]{0,40}?"
+    r"deals damage equal to that spell's mana value", re.I)
+_ETB_YARD_SPELL_RE = re.compile(
+    r"when [^.]{1,40} enters, exile (?:up to one )?target (?:equipment, )?instant(?:,)? or sorcery "
+    r"card from your graveyard\. until the end of your next turn, you may (?:play|cast) that card",
+    re.I)
 _PER_CAST_DAMAGE_RE = re.compile(
     r"whenever you cast (an instant or sorcery|a noncreature|a spell)[^.]{0,60}?"
     r"deals (\d+) damage to each opponent", re.I)
@@ -4618,7 +4625,10 @@ def spell_count_profile(card):
     out = {"storm": False, "storm_damage": 0, "storm_token_bodies": 0,
            "storm_token_power": 0, "per_cast_damage": 0,
            "per_cast_damage_gate": None, "magecraft_treasure": 0,
-           "magecraft": False, "magecraft_draw": 0}
+           "magecraft": False, "magecraft_draw": 0,
+           # Thor, God of Thunder (2026-11-25): per-cast damage EQUAL TO THE SPELL'S MANA VALUE,
+           # and on entry an instant or sorcery from the graveyard to play until next turn's end.
+           "per_cast_damage_mv": False, "etb_yard_spell": False}
     if _STORM_RE.search(raw) and ("Instant" in type_line or "Sorcery" in type_line):
         out["storm"] = True
         d = _STORM_DAMAGE_RE.search(text)
@@ -4631,6 +4641,12 @@ def spell_count_profile(card):
             if n:
                 out["storm_token_bodies"] = n
                 out["storm_token_power"] = int(t.group(2)) * n
+    _mv = _PER_CAST_DAMAGE_MV_RE.search(text)
+    if _mv:
+        out["per_cast_damage_gate"] = _mv.group(1).lower()
+        out["per_cast_damage_mv"] = True
+    if _ETB_YARD_SPELL_RE.search(text):
+        out["etb_yard_spell"] = True
     m = _PER_CAST_DAMAGE_RE.search(text)
     if m:
         out["per_cast_damage_gate"] = m.group(1).lower()

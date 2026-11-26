@@ -1857,8 +1857,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if gate == "a noncreature" and is_creature:
                         continue
                     _src = damage_sources.get(id(_eng))
-                    etb_by[_damage_kind(_src)] += _eng["per_cast_damage"] + bonus_for(
-                        _src, damage_bonuses)
+                    # THOR (2026-11-25): "damage equal to that spell's mana value".
+                    _amt = int(card["cmc"]) if _eng["per_cast_damage_mv"] \
+                        else _eng["per_cast_damage"]
+                    if _amt:
+                        etb_by[_damage_kind(_src)] += _amt + bonus_for(_src, damage_bonuses)
             if is_spell:
                 # ARCHMAGE OF RUNES (2026-11-06): "Whenever you cast an instant or sorcery
                 # spell, draw a card." A cast, never a copy, which is why it lives here.
@@ -2801,8 +2804,20 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # A card read perfectly and never registered is this file's
             # documented failure; both registries are populated here.
             sc_ = card["spell_count"]
-            if sc_["per_cast_damage"]:
+            if sc_["per_cast_damage"] or sc_["per_cast_damage_mv"]:
                 per_cast_engines.append(sc_)
+            # THOR'S ENTRY (2026-11-25): an instant or sorcery from the yard to play until the end
+            # of next turn. AUTHORED pick: a wheel first, then the highest mana value. It waits in
+            # hand like an impulse card and leaves after next turn if unplayed.
+            if sc_["etb_yard_spell"] and yard_spell_cards:
+                _best = max(yard_spell_cards,
+                            key=lambda c: (bool(c["draw"]["wheel_draws"]), c["cmc"]))
+                yard_spell_cards.remove(_best)
+                if _best in flashback_yard:
+                    flashback_yard.remove(_best)
+                _bc = dict(_best)
+                hand.append(_bc)
+                impulse_cards.append((_bc, turn + 1))
             if sc_["magecraft_treasure"] or sc_.get("magecraft_draw"):
                 magecraft_engines.append(sc_)
             cb_ = card["combat"]
