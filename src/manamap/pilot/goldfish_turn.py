@@ -4981,6 +4981,20 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         and _ar["counters"] >= 10:
                     _ar["tenth_fired"] = True
                     tenth_counter_fires.append(_e)
+                # IRON MAN, ARMORED AVENGER (2026-11-25): a per-draw counter on TARGET creature is
+                # aimed at the biggest commander out, so it joins that commander's damage clock.
+                # Its power still rides on the payoff's own arrival in the swing above -- the
+                # same total on the board, waiting for one body rather than the other.
+                if _e["per_draw_counter_target"] and _ctr and commander_event_objs \
+                        and not any(_e is _c for _c in commander_event_objs):
+                    _drw_ctr = apply_counter_mod(_e["per_draw_counter"], counter_plus,
+                                                 counter_times) * _drawn_t * _k2
+                    if _drw_ctr:
+                        _tc = max(commander_event_objs,
+                                  key=lambda _c: commander_counter_of.get(id(_c), 0))
+                        commander_counters += _drw_ctr
+                        commander_counter_of[id(_tc)] = commander_counter_of.get(id(_tc), 0) \
+                            + _drw_ctr
                 if any(_e is _c for _c in commander_event_objs):
                     commander_counters += _ctr
                     if _ctr and id(_e) not in commander_first_counter:

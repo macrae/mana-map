@@ -494,6 +494,7 @@ _EVENT_DAMAGE_RE = re.compile(
     r"deals (\d+) damage to (?:each opponent|any target|each opponent and each)"
     r"|each opponent loses (\d+) life", re.I)
 _EVENT_COUNTER_RE = re.compile(r"put a \+1/\+1 counter on", re.I)
+_EVENT_COUNTER_TARGET_RE = re.compile(r"put a \+1/\+1 counter on target creature", re.I)
 #: "PUT THAT MANY +1/+1 COUNTERS ON" (2026-11-04): Marauding Mako and Scrounging Skyray, the
 #: only two corpus cards. Read as `unmodelled` until now. One card, one counter; one EVENT
 #: for a replacement to add to, which is what `per_discard_counter_batch` carries.
@@ -1061,6 +1062,9 @@ def event_payoffs(card):
            "per_discard_draw": 0, "per_discard_token_power": 0,
            "first_discard_draw": bool(_FIRST_DISCARD_DRAW_RE.search(text)),
            "per_draw_damage": 0, "per_draw_counter": 0,
+           # Iron Man, Armored Avenger (2026-11-25): the per-draw counter goes on TARGET
+           # creature -- a pilot aims it at the commander, not the card that made it.
+           "per_draw_counter_target": False,
            "per_draw_token_power": 0,
            "second_draw_damage": 0, "second_draw_token_power": 0,
            # THE TAX ON THE OTHER HALF OF A WHEEL: what an OPPONENT drawing
@@ -1128,6 +1132,8 @@ def event_payoffs(card):
         if prefix != "second_draw":
             if _EVENT_COUNTER_RE.search(effect):
                 out[prefix + "_counter"] += 1
+                if prefix == "per_draw" and _EVENT_COUNTER_TARGET_RE.search(effect):
+                    out["per_draw_counter_target"] = True
             elif prefix == "per_discard" and _EVENT_THAT_MANY_COUNTERS_RE.search(effect):
                 out["per_discard_counter"] += 1
                 out["per_discard_counter_batch"] = True

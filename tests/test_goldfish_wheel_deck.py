@@ -387,3 +387,44 @@ def test_rain_of_riches_cascades_the_first_treasure_paid_spell():
                      model_treasures=True, iterations=600)
     assert sum(g["cascades"] for g in with_grant) / len(with_grant) > 0.5
     assert sum(g["cascades"] for g in without) == 0
+
+
+def test_iron_man_aims_his_draw_counters_at_the_commander():
+    """Iron Man, Armored Avenger: "Whenever you draw a card, put a +1/+1 counter on target
+    creature." The pilot aims it at Shabraz, so it joins the commander-damage clock. On sharknado's
+    branch with eight Iron Men in place of eight spells, commander lethal by turn seven rises
+    against the same card reading "on this creature" (2026-11-25). Put the bug back -- leave the
+    counters on Iron Man -- and the two arms read the same."""
+    import copy
+    from manamap.pilot import card_pool, common
+    iron = card_pool.corpus_oracle()["Iron Man, Armored Avenger"]
+    base = common.load_deck_cards("sharknado", branch="jaws-v1")
+    swap = {"Willie Lumpkin, Postman", "Brainstorm", "Shelter", "Loran's Escape",
+            "Slip Out the Back", "Get Lost", "Chaos Warp", "Mask of Memory"}
+
+    def lethal_by_7(text):
+        d = copy.deepcopy(base)
+        hit = 0
+        for c in d["cards"]:
+            if c["name"] in swap:
+                hit += 1
+                c.update({"name": f"Iron Man {hit}", "oracle_text": text, "cmc": 4.0,
+                          "type_line": "Artifact Creature — Human Hero", "mana_cost": "{3}{U}",
+                          "power": "3", "toughness": "3"})
+        assert hit == len(swap)
+        m = goldfish.run("sharknado", doc=d, iterations=1500, seed=7, quiet=True,
+                         _band=False)["metrics"]
+        found = []
+
+        def walk(x):
+            if isinstance(x, dict):
+                if "commander_lethal" in x:
+                    found.append(x["commander_lethal"]["games_by_turn"]["7"])
+                for v in x.values():
+                    walk(v)
+        walk(m)
+        assert found, "commander_lethal not reported"
+        return found[0]
+    aimed = lethal_by_7(iron)
+    selfish = lethal_by_7(iron.replace("on target creature", "on this creature"))
+    assert aimed > selfish + 0.02, (aimed, selfish)
