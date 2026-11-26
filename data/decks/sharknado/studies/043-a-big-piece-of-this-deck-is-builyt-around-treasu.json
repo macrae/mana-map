@@ -1,0 +1,217 @@
+{
+  "id": "043",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "a big piece of this deck is builyt around treasures, blood tokens, and a big piece of that is Jaws... ways to find and cast Jaws sooner!?!?!?? I need them!",
+  "opened": "2026-11-26",
+  "decided_at": null,
+  "cards": [
+    "Search for Glory"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Search for Glory"
+  },
+  "contributions": [],
+  "call": {
+    "decision": "open",
+    "decided_by": [],
+    "pilot_words": "",
+    "reading": ""
+  },
+  "slug_name": "a-big-piece-of-this-deck-is-builyt-around-treasu",
+  "facts": [
+    {
+      "id": "S-04757720-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-04757720-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-04757720-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-04757720-04",
+      "kind": "oracle",
+      "text": "Snow Sorcery · {2}{W} — Search your library for a snow permanent card, a legendary card, or a Saga card, reveal it, put it into your hand, then shuffle. You gain 1 life for each {S} spent to cast this spell. ({S} is mana from a snow source.)",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Search for Glory"
+    },
+    {
+      "id": "S-04757720-05",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Chaos Warp (0.76), Talisman of Conviction (0.74), Smothering Tithe (0.73)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Search for Glory",
+      "neighbours": [
+        {
+          "name": "Chaos Warp",
+          "score": 0.7617
+        },
+        {
+          "name": "Talisman of Conviction",
+          "score": 0.7395
+        },
+        {
+          "name": "Smothering Tithe",
+          "score": 0.7331
+        }
+      ]
+    },
+    {
+      "id": "S-04757720-06",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Search for Glory",
+      "state": "seen",
+      "channels": [
+        "tutor"
+      ]
+    },
+    {
+      "id": "S-04757720-07",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 1 named card(s) read: 6 rows better, 9 worse, 3 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-04757720-08",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 309.97 -> 209.49, a change of -100.47 (-32%) [-108.3652, -92.5826] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -100.4739,
+      "ci95": [
+        -108.3652,
+        -92.5826
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-04757720-09",
+      "kind": "goldfish_row",
+      "text": "killed by T10: no call — the gap of 0.001 is smaller than the 0.003 this run can resolve [-0.0029, 0.0007] — noise",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0011,
+      "ci95": [
+        -0.0029,
+        0.0007
+      ],
+      "measure": "killed by T10",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-04757720-10",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 17.17 -> 15.50, a change of -1.67 (-10%) [-1.9283, -1.4199] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -1.6741,
+      "ci95": [
+        -1.9283,
+        -1.4199
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-04757720-11",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 26.95 -> 20.98, a change of -5.97 (-22%) [-6.3341, -5.6009] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -5.9675,
+      "ci95": [
+        -6.3341,
+        -5.6009
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-04757720-12",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 34 in 100, a swing of 3 games per 100 [0.0197, 0.0359] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0278,
+      "ci95": [
+        0.0197,
+        0.0359
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-04757720-13",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 20 in 100, a swing of 1 games per 100 [0.0069, 0.0177] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0123,
+      "ci95": [
+        0.0069,
+        0.0177
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Search for Glory"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "8d26826040f101a2991d37a6f44ce3f09df939861a8d881903b55673eaa07716",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-26T11:16:04-08:00",
+    "facts": 13
+  }
+}
