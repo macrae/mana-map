@@ -1,0 +1,337 @@
+{
+  "id": "031",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Torbran, Thane of Red Fell back in (+2 to every red source's damage to each opponent: Brallin's pings, Jaws, Longshot, Irencrag, combat) -- the pilot: layer in red damage if it accelerates us -- and for what?",
+  "opened": "2026-11-25",
+  "decided_at": "2026-11-25",
+  "cards": [
+    "Torbran, Thane of Red Fell"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Torbran, Thane of Red Fell"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 600.0,
+      "slice": "MODE prescribe: two cards judged separately; the answer file verbatim",
+      "text": "{\n  \"reading\": \"Two cards judged separately on jaws-v1 against the pilot's bar: does it accelerate early pressure on every seat. Torbran: no change -- four screens are flat or worse on killed by T6 and damage @T10; his +2 reaches only red sources, and Shabraz (W/U) is the deck's biggest combat source. Fiery Emancipation: in for Gratuitous Violence -- its oracle text triples ANY source you control (not only red, contrary to the brief), it supersedes Gratuitous Violence's creature-only double at +1 mana, and the goldfish reads killed by T6 and damage @T10 better with no row worse.\",\n  \"log_entries_read\": [\n    \"006\"\n  ],\n  \"cut_candidates\": [\n    {\n      \"card\": \"Gratuitous Violence\",\n      \"why\": \"Fiery Emancipation does its job wider (any source, including spells) and harder (x3 vs x2) for one more mana; the RRR count stays the same.\",\n      \"cost_of_cutting\": \"One mana: the multiplier lands on T6 instead of T5, at a fast table. It also gives up the cheaper creature-only doubler. Stacks 007, 013 and 014 list it; 013 and 014 also need Razorkin Needlehead, which is not in this list.\",\n      \"difficulty\": \"contested\",\n      \"orphans_stack\": [\n        \"007\",\n        \"013\",\n        \"014\"\n      ]\n    }\n  ],\n  \"add_candidates\": [\n    {\n      \"card\": \"Fiery Emancipation\",\n      \"closes\": \"threat-density\",\n      \"source\": \"prompt\",\n      \"why\": \"goldfish vs Gratuitous Violence: killed by T6 17.3% -> 18.8% [+1.2, +1.8], damage @T10 172.4 -> 211.5 [+36.1, +42.1], no row worse; it triples Shabraz's commander damage and every red ping.\",\n      \"natural_cut\": \"Gratuitous Violence\"\n    }\n  ],\n  \"open_questions\": [\n    {\n      \"question\": \"Do stacks 007/013 still hold with Gratuitous Violence gone (007 orders three replacements)?\",\n      \"settled_by\": \"resolve-stack\",\n      \"why_it_matters\": \"A verified line may lose a piece.\"\n    },\n    {\n      \"question\": \"What is RRR on curve by T4-T6? The audit's 0.839 lands-only figure uses 2 effective pips, not 3.\",\n      \"settled_by\": \"goldfish\",\n      \"why_it_matters\": \"Torbran and Fiery Emancipation are both RRR.\"\n    }\n  ],\n  \"gaps\": [\n    \"try prints no damage @T6/@T8 rows, only killed by T6 and damage @T10.\",\n    \"Damage is measured against one seat; Torbran's +2 on each-opponent pings is undercounted for table-wide life loss.\",\n    \"No blockers and no removal: tripled combat assumes Shabraz connects, and the 6-mana enchantment is never answered.\"\n  ]\n}",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "172.4",
+          "211.5"
+        ]
+      },
+      "added_at": "2026-11-25T22:02:47-08:00",
+      "from": "data/decks/sharknado/.agent-out/deck-doctor-prescribe-031-032.json"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "no change on Torbran, then swap Gratuitoous Violence for Fiery Emancipation! seems like a no-brainer!!!",
+    "reading": "",
+    "at": "2026-11-25"
+  },
+  "slug_name": "torbran-thane-of-red-fell-back-in-2-to-every-red",
+  "facts": [
+    {
+      "id": "S-c970eb02-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-c970eb02-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-c970eb02-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-c970eb02-04",
+      "kind": "oracle",
+      "text": "Legendary Creature — Dwarf Noble · {1}{R}{R}{R} — If a red source you control would deal damage to an opponent or a permanent an opponent controls, it deals that much damage plus 2 instead.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Torbran, Thane of Red Fell"
+    },
+    {
+      "id": "S-c970eb02-05",
+      "kind": "stack",
+      "text": "stack 005 — Windfall for seven with Torbran out: plus 2 on each of Brallin's seven pings, plus 2 once on Spider-Man's single blast — 21 to each opponent and 30 to one, NOT a kill from 40 (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/005",
+      "card": "Torbran, Thane of Red Fell",
+      "stack": "005"
+    },
+    {
+      "id": "S-c970eb02-06",
+      "kind": "stack",
+      "text": "stack 007 — One Brallin ping under Torbran, Gratuitous Violence and Fiery Emancipation: the opponent orders the replacements (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/007",
+      "card": "Torbran, Thane of Red Fell",
+      "stack": "007"
+    },
+    {
+      "id": "S-c970eb02-07",
+      "kind": "stack",
+      "text": "stack 011 — Wheel of Fortune under Razorkin Needlehead and Torbran: 21 to each opponent from Needlehead alone (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/011",
+      "card": "Torbran, Thane of Red Fell",
+      "stack": "011"
+    },
+    {
+      "id": "S-c970eb02-08",
+      "kind": "engine_stage",
+      "text": "engine stage output: Output",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Torbran, Thane of Red Fell",
+      "stage": "output",
+      "as_of": "55ebf09cf33f"
+    },
+    {
+      "id": "S-c970eb02-09",
+      "kind": "engine_events",
+      "text": "consumes nothing; produces nothing the registry names (read by forge)",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Torbran, Thane of Red Fell",
+      "consumes": [],
+      "produces": [],
+      "reader": "forge",
+      "as_of": "55ebf09cf33f"
+    },
+    {
+      "id": "S-c970eb02-10",
+      "kind": "engine_feeds",
+      "text": "feeds on COMBAT_DAMAGE: Enduring Curiosity, Mask of Memory (unproven)",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Torbran, Thane of Red Fell",
+      "event": "COMBAT_DAMAGE",
+      "cards": [
+        "Enduring Curiosity",
+        "Mask of Memory (unproven)"
+      ]
+    },
+    {
+      "id": "S-c970eb02-11",
+      "kind": "context",
+      "text": "CONTEXT plays: Torbran, Thane of Red Fell, Gratuitous Violence and Fiery Emancipation are the red damage multipliers from that plan.",
+      "tier": "coach",
+      "source": "CONTEXT.md#plays",
+      "card": "Torbran, Thane of Red Fell"
+    },
+    {
+      "id": "S-c970eb02-12",
+      "kind": "context",
+      "text": "CONTEXT cards: - Torbran, Thane of Red Fell",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Torbran, Thane of Red Fell"
+    },
+    {
+      "id": "S-c970eb02-13",
+      "kind": "recon",
+      "text": "recon (2026-11-20): GHYRSON STARN IS A BRALLIN-SIDE CARD WITH AN ORACLE-TEXT CONFLICT AGAINST A KEEP. Ghyrson: 'Whenever another source you control deals exactly 1 damage to a permanent or player, Ghyrson Starn deals 2 damage to that permanent or player.' Bral",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Torbran, Thane of Red Fell",
+      "as_of": "2026-11-20",
+      "confidence": "one source"
+    },
+    {
+      "id": "S-c970eb02-14",
+      "kind": "staged",
+      "text": "staged 2026-11-25: Torbran, Thane of Red Fell → Big Score — pilot 2026-11-25 (study 007): 'approve, Big Score for Torbran' -- draw two and two Treasure at instant speed for the artifact-token pillar; Torbran adds nothing to Shabraz",
+      "tier": "coach",
+      "source": "branches/jaws-v1/branch.json",
+      "card": "Torbran, Thane of Red Fell",
+      "as_of": "2026-11-25"
+    },
+    {
+      "id": "S-c970eb02-15",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Deflecting Swat (0.90), Chaos Warp (0.88), Fiery Emancipation (0.88)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Torbran, Thane of Red Fell",
+      "neighbours": [
+        {
+          "name": "Deflecting Swat",
+          "score": 0.9037
+        },
+        {
+          "name": "Chaos Warp",
+          "score": 0.8837
+        },
+        {
+          "name": "Fiery Emancipation",
+          "score": 0.8754
+        }
+      ]
+    },
+    {
+      "id": "S-c970eb02-16",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Torbran, Thane of Red Fell",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat",
+        "target"
+      ]
+    },
+    {
+      "id": "S-c970eb02-17",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 1 named card(s) read: 6 rows better, 10 worse, 2 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-c970eb02-18",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 309.97 -> 171.30, a change of -138.67 (-45%) [-145.8507, -131.4901] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -138.6704,
+      "ci95": [
+        -145.8507,
+        -131.4901
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-c970eb02-19",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0045, -0.0009] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0027,
+      "ci95": [
+        -0.0045,
+        -0.0009
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-c970eb02-20",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 17.17 -> 15.18, a change of -1.99 (-12%) [-2.2076, -1.773] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -1.9903,
+      "ci95": [
+        -2.2076,
+        -1.773
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-c970eb02-21",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 26.95 -> 20.30, a change of -6.65 (-25%) [-7.0197, -6.2777] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -6.6487,
+      "ci95": [
+        -7.0197,
+        -6.2777
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-c970eb02-22",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 34 in 100, a swing of 3 games per 100 [0.022, 0.0362] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0291,
+      "ci95": [
+        0.022,
+        0.0362
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-c970eb02-23",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0071, 0.0155] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0113,
+      "ci95": [
+        0.0071,
+        0.0155
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Torbran, Thane of Red Fell"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "e1f43629cdb68b8c7cf9aba6542f7655f23236e875bd54e32fda1f33422f8486",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T22:05:39-08:00",
+    "facts": 23
+  }
+}

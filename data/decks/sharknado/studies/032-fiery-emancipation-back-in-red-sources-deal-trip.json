@@ -1,0 +1,358 @@
+{
+  "id": "032",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Fiery Emancipation back in (red sources deal triple damage) -- the pilot: layer in red damage if it accelerates us -- and for what?",
+  "opened": "2026-11-25",
+  "decided_at": "2026-11-25",
+  "cards": [
+    "Fiery Emancipation"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Fiery Emancipation"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 600.0,
+      "slice": "MODE prescribe: two cards judged separately; the answer file verbatim",
+      "text": "{\n  \"reading\": \"Two cards judged separately on jaws-v1 against the pilot's bar: does it accelerate early pressure on every seat. Torbran: no change -- four screens are flat or worse on killed by T6 and damage @T10; his +2 reaches only red sources, and Shabraz (W/U) is the deck's biggest combat source. Fiery Emancipation: in for Gratuitous Violence -- its oracle text triples ANY source you control (not only red, contrary to the brief), it supersedes Gratuitous Violence's creature-only double at +1 mana, and the goldfish reads killed by T6 and damage @T10 better with no row worse.\",\n  \"log_entries_read\": [\n    \"006\"\n  ],\n  \"cut_candidates\": [\n    {\n      \"card\": \"Gratuitous Violence\",\n      \"why\": \"Fiery Emancipation does its job wider (any source, including spells) and harder (x3 vs x2) for one more mana; the RRR count stays the same.\",\n      \"cost_of_cutting\": \"One mana: the multiplier lands on T6 instead of T5, at a fast table. It also gives up the cheaper creature-only doubler. Stacks 007, 013 and 014 list it; 013 and 014 also need Razorkin Needlehead, which is not in this list.\",\n      \"difficulty\": \"contested\",\n      \"orphans_stack\": [\n        \"007\",\n        \"013\",\n        \"014\"\n      ]\n    }\n  ],\n  \"add_candidates\": [\n    {\n      \"card\": \"Fiery Emancipation\",\n      \"closes\": \"threat-density\",\n      \"source\": \"prompt\",\n      \"why\": \"goldfish vs Gratuitous Violence: killed by T6 17.3% -> 18.8% [+1.2, +1.8], damage @T10 172.4 -> 211.5 [+36.1, +42.1], no row worse; it triples Shabraz's commander damage and every red ping.\",\n      \"natural_cut\": \"Gratuitous Violence\"\n    }\n  ],\n  \"open_questions\": [\n    {\n      \"question\": \"Do stacks 007/013 still hold with Gratuitous Violence gone (007 orders three replacements)?\",\n      \"settled_by\": \"resolve-stack\",\n      \"why_it_matters\": \"A verified line may lose a piece.\"\n    },\n    {\n      \"question\": \"What is RRR on curve by T4-T6? The audit's 0.839 lands-only figure uses 2 effective pips, not 3.\",\n      \"settled_by\": \"goldfish\",\n      \"why_it_matters\": \"Torbran and Fiery Emancipation are both RRR.\"\n    }\n  ],\n  \"gaps\": [\n    \"try prints no damage @T6/@T8 rows, only killed by T6 and damage @T10.\",\n    \"Damage is measured against one seat; Torbran's +2 on each-opponent pings is undercounted for table-wide life loss.\",\n    \"No blockers and no removal: tripled combat assumes Shabraz connects, and the 6-mana enchantment is never answered.\"\n  ]\n}",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "172.4",
+          "211.5"
+        ]
+      },
+      "added_at": "2026-11-25T22:02:48-08:00",
+      "from": "data/decks/sharknado/.agent-out/deck-doctor-prescribe-031-032.json"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "no change on Torbran, then swap Gratuitoous Violence for Fiery Emancipation! seems like a no-brainer!!!",
+    "reading": "",
+    "at": "2026-11-25"
+  },
+  "slug_name": "fiery-emancipation-back-in-red-sources-deal-trip",
+  "facts": [
+    {
+      "id": "S-6be70224-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-6be70224-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-6be70224-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-6be70224-04",
+      "kind": "oracle",
+      "text": "Enchantment · {3}{R}{R}{R} — If a source you control would deal damage to a permanent or player, it deals triple that damage to that permanent or player instead.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Fiery Emancipation"
+    },
+    {
+      "id": "S-6be70224-05",
+      "kind": "log",
+      "text": "log 006 (2026-11-03, loss): “Fiery Emancipation — On board (triple damage)”",
+      "tier": "coach",
+      "source": "log.jsonl#006",
+      "card": "Fiery Emancipation",
+      "as_of": "2026-11-03",
+      "game": "006"
+    },
+    {
+      "id": "S-6be70224-06",
+      "kind": "stack",
+      "text": "stack 007 — One Brallin ping under Torbran, Gratuitous Violence and Fiery Emancipation: the opponent orders the replacements (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/007",
+      "card": "Fiery Emancipation",
+      "stack": "007"
+    },
+    {
+      "id": "S-6be70224-07",
+      "kind": "engine_stage",
+      "text": "engine stage output: Output",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Fiery Emancipation",
+      "stage": "output",
+      "as_of": "55ebf09cf33f"
+    },
+    {
+      "id": "S-6be70224-08",
+      "kind": "engine_events",
+      "text": "consumes nothing; produces nothing the registry names (read by forge)",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Fiery Emancipation",
+      "consumes": [],
+      "produces": [],
+      "reader": "forge",
+      "as_of": "55ebf09cf33f"
+    },
+    {
+      "id": "S-6be70224-09",
+      "kind": "engine_feeds",
+      "text": "feeds on CAST: Shark Typhoon, Valeria Richards, Precocious",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Fiery Emancipation",
+      "event": "CAST",
+      "cards": [
+        "Shark Typhoon",
+        "Valeria Richards, Precocious"
+      ]
+    },
+    {
+      "id": "S-6be70224-10",
+      "kind": "context",
+      "text": "CONTEXT plays: Torbran, Thane of Red Fell, Gratuitous Violence and Fiery Emancipation are the red damage multipliers from that plan.",
+      "tier": "coach",
+      "source": "CONTEXT.md#plays",
+      "card": "Fiery Emancipation"
+    },
+    {
+      "id": "S-6be70224-11",
+      "kind": "context",
+      "text": "CONTEXT cards: - Fiery Emancipation",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Fiery Emancipation"
+    },
+    {
+      "id": "S-6be70224-12",
+      "kind": "recon",
+      "text": "recon (2026-11-20): FINISHERS: THE CROWD CLOSES WITH THE PING LOOP OR A DRAW-OUT, ALMOST NEVER WITH DOUBLE STRIKE AND NEVER WITH EXTRA COMBAT. On the pair page the finisher is the Brallin + Curiosity-class loop (Curiosity 2329/3974 = 59%; combo-tagged page 82/",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Fiery Emancipation",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-6be70224-13",
+      "kind": "queue",
+      "text": "Q020 DROPPED: In the games Sean loses, the opening seven he kept splits into enablers (rocks, lands, commanders), payoffs (discard payoffs, Fiery Emancipation, Embercleave, T",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Fiery Emancipation",
+      "as_of": "2026-11-04",
+      "queue_id": "Q020"
+    },
+    {
+      "id": "S-6be70224-14",
+      "kind": "queue",
+      "text": "Q024 KILLED: Sean's claim stands as a question the oracle text can answer: a red deck wants sweepers and face burn, and the deck has one sweeper (Incendiary Command, 2 to ea",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Fiery Emancipation",
+      "as_of": "2026-11-12",
+      "queue_id": "Q024"
+    },
+    {
+      "id": "S-6be70224-15",
+      "kind": "queue",
+      "text": "Q048 EXPIRED: The red-on-curve drop (lands-only 0.839 to 0.579 on the branch) is a mana-base problem, red sources, before it is an RRR-card problem. Fiery Emancipation (-89 d → refuted: Not a mana-base problem: v2.3.0 and shabraz-v1 run the same 31 red-producing lands (the branch added only Islands). The drop is the sizing rule: PIP_WEIGHT_QUOR",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Fiery Emancipation",
+      "as_of": "2026-11-06",
+      "queue_id": "Q048"
+    },
+    {
+      "id": "S-6be70224-16",
+      "kind": "staged",
+      "text": "staged 2026-11-14: Fiery Emancipation → Jaws, Relentless Predator — pilot 2026-11-14: the Shark that makes Blood on every hit and pings on every Blood or Treasure sacrificed; Fiery Emancipation's RRR was why red ran eleven sources short",
+      "tier": "coach",
+      "source": "branches/jaws-v1/branch.json",
+      "card": "Fiery Emancipation",
+      "as_of": "2026-11-14"
+    },
+    {
+      "id": "S-6be70224-17",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Gratuitous Violence (0.95), Blade Historian (0.91), Lizard Blades (0.91)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Fiery Emancipation",
+      "neighbours": [
+        {
+          "name": "Gratuitous Violence",
+          "score": 0.9495
+        },
+        {
+          "name": "Blade Historian",
+          "score": 0.9127
+        },
+        {
+          "name": "Lizard Blades",
+          "score": 0.9054
+        }
+      ]
+    },
+    {
+      "id": "S-6be70224-18",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Fiery Emancipation",
+      "state": "seen",
+      "channels": [
+        "combat",
+        "target"
+      ]
+    },
+    {
+      "id": "S-6be70224-19",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 1 named card(s) read: 6 rows better, 10 worse, 2 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-6be70224-20",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 309.97 -> 171.30, a change of -138.67 (-45%) [-145.8507, -131.4901] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -138.6704,
+      "ci95": [
+        -145.8507,
+        -131.4901
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-6be70224-21",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0045, -0.0009] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0027,
+      "ci95": [
+        -0.0045,
+        -0.0009
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-6be70224-22",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 17.17 -> 15.18, a change of -1.99 (-12%) [-2.2076, -1.773] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -1.9903,
+      "ci95": [
+        -2.2076,
+        -1.773
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-6be70224-23",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 26.95 -> 20.30, a change of -6.65 (-25%) [-7.0197, -6.2777] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -6.6487,
+      "ci95": [
+        -7.0197,
+        -6.2777
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-6be70224-24",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 34 in 100, a swing of 3 games per 100 [0.022, 0.0362] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0291,
+      "ci95": [
+        0.022,
+        0.0362
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-6be70224-25",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0071, 0.0155] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0113,
+      "ci95": [
+        0.0071,
+        0.0155
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Fiery Emancipation"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "e1f43629cdb68b8c7cf9aba6542f7655f23236e875bd54e32fda1f33422f8486",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T22:05:53-08:00",
+    "facts": 25
+  }
+}
