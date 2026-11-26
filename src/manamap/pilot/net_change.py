@@ -119,6 +119,8 @@ ROWS = (
     ("dead wheels in hand @T5", "wheels", "dead_in_hand_by_turn", "5", -1),
     # THE WHEELS' COST (2026-11-25, sharknado): what a symmetric wheel hands the table.
     ("cards handed to each opponent by T8", "wheels", "opponent_cards_given_by_turn", "8", -1),
+    # HOW DEEP THE DECK DIGS (2026-11-25, sharknado: wheel through enough cards to find Krang).
+    ("cards seen by T5", "wheels", "cards_seen_by_turn", "5", +1),
     # MEREN'S CLOCK (2026-11-07). Absent on every deck that does not declare
     # `model_commander_recursion`, so no other deck's family changes.
     ("experience @T7", "recursion", "experience_by_turn", "7", +1),
@@ -207,6 +209,15 @@ METRICS = {
                 "the damage dealt, death and arrival triggers, attack triggers.",
         "why": "Half of the pilot's four words (2026-11-11): life gain, life drain. Gained life "
                "is what the gain-to-loss converters turn into the table's life loss.",
+    },
+    "cards seen by T5": {
+        "unit": "mean",
+        "scale": "distinct cards, cumulative",
+        "what": "Cards that reached our hand by the end of turn 5, counted as cards (copies "
+                "included): the kept hand, every draw, impulse and discover. A floor -- what "
+                "opponents' effects hand us beyond the modelled rates is not counted.",
+        "why": "How fast the deck digs to its key pieces (Krang, a wheel, an answer). Extra cards "
+               "says how many came in; this says how much of the library the deck has looked at.",
     },
     "cards handed to each opponent by T8": {
         "unit": "mean",
@@ -2279,7 +2290,7 @@ ROW_GROUPS = (
     ("Cards and answers", ("extra cards by T8", "interaction affordable @T6",
                            "finisher wheel by T8", "wheels cast by T10",
                            "dead wheels in hand @T5", "cards in hand @T8",
-                           "cards handed to each opponent by T8")),
+                           "cards handed to each opponent by T8", "cards seen by T5")),
     ("Big bodies", ("a 6+ drop out by T6", "turns saved on big bodies", "experience @T7",
                     "experience 5+ by T6", "a 5+ drop via Meren by T6")),
     ("Fodder into value", ("tokens converted by T8", "life lost outside combat @T10",

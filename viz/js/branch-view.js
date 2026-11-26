@@ -250,7 +250,7 @@
     ['Cards and answers', ['extra cards by T8', 'interaction affordable @T6',
                            'finisher wheel by T8', 'wheels cast by T10',
                            'dead wheels in hand @T5', 'cards in hand @T8',
-                           'cards handed to each opponent by T8']],
+                           'cards handed to each opponent by T8', 'cards seen by T5']],
     ['Big bodies', ['a 6+ drop out by T6', 'turns saved on big bodies', 'experience @T7',
                    'experience 5+ by T6', 'a 5+ drop via Meren by T6']],
     ['Fodder into value', ['tokens converted by T8', 'life lost outside combat @T10',

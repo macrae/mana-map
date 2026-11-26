@@ -279,15 +279,15 @@ Standing rules from Sean for this deck: never cut a draw-seven, keep Kitsa and T
 ## Studies
 
 <!-- ctx:gen studies -->
-- **022 open** (—) — Killmonger, Ruthless Usurper (a 3-mana Human with trample; on each hit the player sacrifices an artifact -- a Jaws ping -- and we make a Tre · on `jaws-v1` · open · goldfish saw 1/1 named cards
+- **023 open** (—) — Krang, the All-Powerful (a draw-caused trigger of ours triggers an additional time: Shabraz two counters and two life per card, Smothering T · on `jaws-v1` · open · goldfish saw 1/1 named cards
+- **022 no-change** (pilot, deck-doctor) — Killmonger, Ruthless Usurper (a 3-mana Human with trample; on each hit the player sacrifices an artifact -- a Jaws ping -- and we make a Tre · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “you are right.. sokka is probably better than killmonger lolol”
 - **021 no-change** (pilot, deck-doctor) — Violent Eruption in for Windfall -- from the ranked list of the weakest cards left? · on `jaws-v1` · 2026-11-25 · goldfish saw 1/2 named cards · “no, no windfall is an amazing card in this deck jfc”
 - **020 no-change** (pilot, deck-doctor) — Council's Judgment in for Teferi's Ageless Insight -- from the ranked list of the weakest cards left? · on `jaws-v1` · 2026-11-25 · goldfish saw 1/2 named cards · “no--as fun as Council's Judgement is, Teferi's Ageless Insight is doing WORK!!!! for shabraz!!!”
 - **019 approve** (pilot, deck-doctor) — Ragavan, Nimble Pilferer (a 1-drop: Treasure and an impulse card on combat damage; dash) in for Magus of the Wheel (a 3-drop creature wheel) · on `jaws-v1` · 2026-11-25 · goldfish saw 2/2 named cards · “approve Ragavan for Magus”
 - **018 no-change** (pilot, deck-doctor) — Thraben Inspector (a W 1/1 Human; investigate on entry -- the Clue is a draw for Shabraz and a sacrificed artifact for Jaws) in -- the deck' · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “no change, keep Bard; keep exploring”
 - **017 approve** (pilot, deck-doctor, strategist, data-analyst) — The A-table pool (beyond single swaps): fill the interaction gaps the audit found -- a counter that hits creature spells, exile for any nonl · on `jaws-v1` · 2026-11-25 · “approve the smaller five, then work card by card after that”
 - **016 approve** (pilot, deck-doctor) — Longshot, Rebel Bowman (Human; noncreature spells cost one less; two damage to each opponent on every noncreature spell) in -- to cast Shark · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “I agree, it's an expensive wheel, I'm ok to cut it”
-- **015 approve** (pilot, deck-doctor) — Irencrag Pyromancer back in on jaws-v1 -- the pilot: 'consider something else for Irencrag' -- for what? (Not Shark Typhoon, the deck's name · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “approve Pyromancer for Time Reversal”
-- … 14 earlier: `manamap pilot study sharknado list`
+- … 15 earlier: `manamap pilot study sharknado list`
 <!-- /ctx:gen studies -->
 
 ## Change history

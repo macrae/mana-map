@@ -267,3 +267,56 @@ def test_a_class_level_reduction_is_not_the_card_s_until_paid():
               "noncreature spell, you may discard a card. If you do, draw a card. {2}{R}: Level 2 "
               "Noncreature spells you cast cost {1} less to cast.")
     assert cost_reduction({"oracle_text": talent}) is None
+
+
+# ── Krang, the All-Powerful (2026-11-25) ────────────────────────────────────
+
+KRANG = ("If a player drawing a card causes a triggered ability of a permanent you control to "
+         "trigger, that ability triggers an additional time.")
+GROWER = "Flying. Whenever you draw a card, put a +1/+1 counter on this creature and you gain 1 life."
+TITHE = ("Whenever an opponent draws a card, that player may pay {2}. If the player doesn't, you "
+         "create a Treasure token.")
+
+
+def _krang_deck(text):
+    return _doc(_c("Krang", text, 3, "Artifact Creature — Robot", quantity=8, power="3",
+                   toughness="3"),
+                _c("Grower", GROWER, 2, "Creature — Shark", quantity=8, power="1", toughness="1"),
+                _c("Tithe", TITHE, 2, "Enchantment", quantity=4),
+                _c("Wheel", WHEEL, 3, "Sorcery", quantity=10),
+                _c("Cantrip", "Draw a card.", 1, "Sorcery", quantity=10))
+
+
+def test_krang_doubles_the_per_draw_counter():
+    """Shabraz's "whenever you draw a card, put a +1/+1 counter" is a draw-caused trigger of ours:
+    under Krang it fires twice. Board power at turn six read 27.4 against 20.2. Put the bug back
+    -- `_kt()` always 1 -- and the arms match."""
+    a = _games(_krang_deck(KRANG), model_treasures=True)
+    b = _games(_krang_deck("Vigilance"), model_treasures=True)
+    assert _mean(a, "board_power_by_turn", 5) > _mean(b, "board_power_by_turn", 5) + 3
+
+
+def test_krang_doubles_a_tax_on_opponent_draws_each_trigger_paid_or_not():
+    """Smothering Tithe's trigger is caused by an opponent drawing: two triggers, each its own
+    pay-or-not decision. Treasure at turn ten read 59 against 30 -- about double."""
+    a = _games(_krang_deck(KRANG), model_treasures=True)
+    b = _games(_krang_deck("Vigilance"), model_treasures=True)
+    assert _mean(a, "treasures_by_turn") > 1.6 * _mean(b, "treasures_by_turn")
+
+
+def test_the_draw_trigger_doubler_is_read_from_the_text():
+    from manamap.pilot.goldfish_profiles import draw_trigger_doubler
+    assert draw_trigger_doubler({"oracle_text": KRANG})
+    assert not draw_trigger_doubler({"oracle_text": GROWER})
+
+
+def test_cards_seen_counts_how_deep_the_deck_digs():
+    """The row the pilot asked for ("cards drawn through turn X"): distinct cards that reached the
+    hand by each turn, never fewer than the opening seven, and more in a deck that draws. Put the
+    bug back -- append a constant -- and the draw deck reads no deeper than the vanilla one."""
+    def deck(text):
+        return _doc(_c("Spell", text, 1, "Sorcery", quantity=30))
+    digs = _games(deck("Draw two cards."), iterations=200)
+    flat = _games(deck("Vigilance"), iterations=200)
+    assert all(g["cards_seen_by_turn"][4] >= 7 for g in digs + flat)
+    assert _mean(digs, "cards_seen_by_turn", 4) > _mean(flat, "cards_seen_by_turn", 4) + 3

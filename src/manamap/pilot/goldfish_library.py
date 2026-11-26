@@ -35,6 +35,7 @@ from manamap.pilot.common import (
 from manamap.pilot.goldfish_profiles import (
     no_max_hand,
     discard_to_top,
+    draw_trigger_doubler,
     land_gate,
     engine_profile,
     tutor_filter,
@@ -218,6 +219,8 @@ def classify(card, pool=None):
         "no_max_hand": no_max_hand(card),
         # Library of Leng (2026-11-25): a discard may go to the top of the library instead.
         "discard_to_top": discard_to_top(card),
+        # Krang (2026-11-25): our draw-caused triggers fire an additional time.
+        "draw_trigger_doubler": draw_trigger_doubler(card),
         # What it does on a cast, an equip, an upkeep or an activation (2026-11-04).
         "engine": engine_profile(card),
         # Discard- and draw-triggered payoffs, read on every card and acted on

@@ -569,6 +569,9 @@ def wheels(rows, got):
         # The cost beside the count (2026-11-25): cards each opponent drew off our effects.
         "opponent_cards_given_by_turn": {str(t + 1): _mean_cell(
             [r["opponent_cards_given_by_turn"][t] for r in rows]) for t in T},
+        # How deep the deck digs (2026-11-25): distinct cards seen by each turn.
+        "cards_seen_by_turn": {str(t + 1): _mean_cell(
+            [r["cards_seen_by_turn"][t] for r in rows]) for t in T},
         "basis": (
             "a wheel is a card the model reads as one (spell or activated "
             "engine); the discard wheels it cannot parse are named in the "
@@ -841,6 +844,7 @@ PER_GAME = {
                    else 0),
     ("wheels", "dead_in_hand_by_turn", "5"): _at("dead_wheels_in_hand_by_turn", 4),
     ("wheels", "opponent_cards_given_by_turn", "8"): _at("opponent_cards_given_by_turn", 7),
+    ("wheels", "cards_seen_by_turn", "5"): _at("cards_seen_by_turn", 4),
     # Meren's clock (2026-11-07). Absent on a deck with no graveyard tracked.
     ("recursion", "experience_by_turn", "7"): _at("experience_by_turn", 6),
     ("recursion", "first_fatty_by_turn", "6"):

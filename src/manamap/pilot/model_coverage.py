@@ -273,7 +273,8 @@ def channels_for(profile):
             # deck-engineer, which read both figures in one sitting and said
             # they could not both be true.
             "activated_draw")) or (profile.get("draw") or {}).get("draw_multiplier", 1) > 1 \
-            or _nonzero(profile.get("engine"), ("activation_discount", "copy_entry")):
+            or _nonzero(profile.get("engine"), ("activation_discount", "copy_entry")) \
+            or profile.get("draw_trigger_doubler"):     # Krang (2026-11-25), with the reading
         found.add("draw")
     # THE DISCARD CHANNEL: a wheel, a loot's rider, or a payoff on a discard
     # or a draw. Named keys, never the dict's truthiness.

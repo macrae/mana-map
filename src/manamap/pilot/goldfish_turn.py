@@ -196,6 +196,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # figure is absent rather than a pass rate nobody wrote.
     keep_rule_pass = keep_rule_passes(hand, keep_rule) if keep_rule else None
     seen = {c["name"] for c in hand}
+    # CARDS TO HAND, COUNTED (2026-11-25): `seen` is a set of NAMES, so a second Island or any copy
+    # counts once -- the row "cards seen" counts the cards themselves: the kept hand, every draw,
+    # an impulse card, a discovered card put into hand.
+    cards_to_hand = len(hand)
 
     lands_in_play = 0
     rock_production = 0
@@ -624,6 +628,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # draw step, cumulative -- a symmetric wheel's seven, an each-player draw, Faerie Mastermind's
     # activation. `opponent_draws_this_turn` is per seat and resets to that one draw each turn.
     opponent_cards_given = 0
+    # CARDS SEEN (2026-11-25, the pilot: "cards drawn through turn X"): every distinct card that
+    # reached the hand -- the opening seven, draws, impulse, discover -- by the end of each turn.
+    seen_by_turn = []
+    # KRANG (2026-11-25): the turn the draw-trigger doubler landed. Live from the turn AFTER -- a
+    # floor, so a mid-turn Krang does not double the draws it was not there for.
+    krang_turn = None
+
+    def _kt():
+        """How many times a draw-caused trigger of ours fires: 2 under Krang, else 1."""
+        return 2 if krang_turn is not None and krang_turn < turn else 1
     opponent_cards_given_by_turn = []
     # LIBRARY OF LENG (2026-11-25): with it out, a discard may go to the top of the library.
     discard_to_top = False
@@ -777,11 +791,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     + (GOLDFISH_OPPONENTS if natural else 0)
                 rec["seen"] = _opp_extras()
                 rec["one_seen"] = opponent_one_seat_draws
-                made = sum(1 for _ in range(new) if rng.random() >= TITHE_PAY_RATE)
+                # Each doubled trigger is its own tax, paid or not (Krang).
+                made = sum(1 for _ in range(new * _kt()) if rng.random() >= TITHE_PAY_RATE)
             elif rec["trigger"] == "opponent_second_draw":
                 seats = _second_draw_seats(rec["seen"] if rec["turn"] == turn else 0,
                                            rec["act"], rec["one"], rec["turn"] == turn)
-                made = max(0, seats - rec["seats"])
+                made = max(0, seats - rec["seats"]) * _kt()
                 rec["seats"] = max(rec["seats"], seats)
             else:
                 continue
@@ -1074,6 +1089,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             drawn = deck.pop(0)
             hand.append(drawn)
             seen.add(drawn["name"])
+            cards_to_hand += 1
             drawn_this_turn = 1
 
         land_index = next((i for i, c in enumerate(hand) if c["is_land"]), None)
@@ -1224,12 +1240,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             lines up and never calls this, so the one draw the card does not
             double is the one draw that cannot reach this multiplication.
             """
-            nonlocal drawn_extra, drawn_this_turn
+            nonlocal drawn_extra, drawn_this_turn, cards_to_hand
             for _ in range(int(n) * draw_multiplier):
                 if not deck:
                     return
                 got = deck.pop(0)
                 hand.append(got)
+                cards_to_hand += 1
                 seen.add(got["name"])
                 drawn_extra += 1
                 drawn_this_turn += 1
@@ -1251,7 +1268,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             follows the declared reveal's, and is the only place this reading
             touches the rng: a deck without Discover never gets here.
             """
-            nonlocal discover_to_hand
+            nonlocal discover_to_hand, cards_to_hand
             skipped = []
             hit = None
             while deck:
@@ -1265,6 +1282,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 hand.append(hit)
                 seen.add(hit["name"])
                 discover_to_hand += 1
+                cards_to_hand += 1
             rng.shuffle(skipped)
             deck.extend(skipped)
             if route is not None:
@@ -1359,6 +1377,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             top card of your library. You may play that card until your next end step." Once per
             discard batch, per such permanent. NOT a draw: no doubler, no per-draw payoff, not
             `drawn_extra`. It waits in hand, marked, and leaves at the end step after next."""
+            nonlocal cards_to_hand
             for _ in range(sum(_e.get("per_discard_impulse", 0)
                                for _e in event_payoff_permanents)):
                 if not deck:
@@ -1368,6 +1387,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 _c = dict(deck.pop(0))
                 hand.append(_c)
                 seen.add(_c["name"])
+                cards_to_hand += 1
                 impulse_cards.append((_c, turn + 1))
 
         def _put_back(n):
@@ -1790,12 +1810,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             that is the only thing that keeps it correct as the file grows.
             """
             nonlocal spells_cast_this_turn, spells_cast_total, hand_limit_off
-            nonlocal noncreature_casts_this_turn, yard_spells, discard_to_top
+            nonlocal noncreature_casts_this_turn, yard_spells, discard_to_top, krang_turn
             hand.remove(card)
             if card.get("no_max_hand"):
                 hand_limit_off = True
             if card["discard_to_top"] and model_discard:
                 discard_to_top = True
+            if card["draw_trigger_doubler"] and krang_turn is None:
+                krang_turn = turn
             spells_cast_this_turn += 1
             spells_cast_total += 1
             tl = card.get("type_line") or ""
@@ -4832,10 +4854,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # draws do not cause theirs, and nothing here discards.
                 if _e["per_opponent_draw_our_draw"] and (_opp_t or _one_t):
                     draw_n(_e["per_opponent_draw_our_draw"]
-                           * (_opp_t * GOLDFISH_OPPONENTS + _one_t))
+                           * (_opp_t * GOLDFISH_OPPONENTS + _one_t) * _kt())
                 _seats = _second_draw_seats(_ar["opp"], _ar["act"], _ar["one"], _same)
                 if _e["opponent_second_draw_our_draw"] and _seats:
-                    draw_n(_e["opponent_second_draw_our_draw"] * _seats)
+                    draw_n(_e["opponent_second_draw_our_draw"] * _seats * _kt())
         if model_discard and event_payoff_permanents:
             _t0_disc = discarded_by_turn[-1] if discarded_by_turn else 0
             # Before the loop, so Shabraz is paid for them. The first BATCH of the turn, read
@@ -4875,9 +4897,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 _src = damage_sources.get(id(_e))
                 _b = bonus_for(_src, damage_bonuses)
                 _k = _damage_kind(_src)
+                # KRANG: every draw-caused trigger below fires `_kt()` times.
+                _k2 = _kt()
                 if _e["per_draw_gain"] and _drawn_t:
-                    event_gain_events += _drawn_t
-                    event_gain_total += _e["per_draw_gain"] * _drawn_t
+                    event_gain_events += _drawn_t * _k2
+                    event_gain_total += _e["per_draw_gain"] * _drawn_t * _k2
                 if _e["per_discard_gain"] and _disc_t:
                     event_gain_events += _disc_t
                     event_gain_total += _e["per_discard_gain"] * _disc_t
@@ -4892,13 +4916,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if _opp_hand_now() >= _e["per_opponent_turn_damage_hand_min"]:
                         _evt_by[_k] += _e["per_opponent_turn_damage"] + _b
                 if _e["per_draw_damage"]:
-                    _evt_by[_k] += (_e["per_draw_damage"] + _b) * _drawn_t
+                    _evt_by[_k] += (_e["per_draw_damage"] + _b) * _drawn_t * _k2
                 # THE TAX ON THEIR HALF. DAMAGE stays one seat (the clock is per seat).
                 if _e["per_opponent_draw_damage"]:
-                    _evt_by[_k] += (_e["per_opponent_draw_damage"] + _b) * (_opp_t + _one_t)
+                    _evt_by[_k] += (_e["per_opponent_draw_damage"] + _b) * (_opp_t + _one_t) * _k2
                 if _second_draw_seats(_ar["opp"], _ar["act"], _ar["one"], _same) \
                         and _e["opponent_second_draw_damage"]:
-                    _evt_by[_k] += _e["opponent_second_draw_damage"] + _b
+                    _evt_by[_k] += (_e["opponent_second_draw_damage"] + _b) * _k2
                 # EACH TRIGGER IS ITS OWN COUNTER EVENT — Shabraz is paid once
                 # per card drawn — so a +1 replacement adds per card, not once.
                 # A "THAT MANY" TRIGGER IS ONE EVENT (Marauding Mako): that many, then the +1.
@@ -4907,7 +4931,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                              else apply_counter_mod(_e["per_discard_counter"], counter_plus,
                                                     counter_times) * _disc_t)
                 _ctr = _ctr_disc + apply_counter_mod(_e["per_draw_counter"], counter_plus,
-                                                     counter_times) * _drawn_t
+                                                     counter_times) * _drawn_t * _k2
                 counter_power += _ctr
                 _ar["counters"] += _ctr
                 # SHANG-CHI'S TENTH COUNTER (2026-11-06): once, on the payoff's own counters.
@@ -4923,13 +4947,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     commander_counter_of[id(_e)] = commander_counter_of.get(id(_e), 0) + _ctr
                 if drawn_this_turn >= 2 and (not _same or _ar["drawn"] < 2):
                     if _e["second_draw_damage"]:
-                        _evt_by[_k] += _e["second_draw_damage"] + _b
-                    if _e["second_draw_token_power"]:
+                        _evt_by[_k] += (_e["second_draw_damage"] + _b) * _k2
+                    for _ in range(_k2 if _e["second_draw_token_power"] else 0):
                         creature_entered(_e["second_draw_token_power"], turn, False, 1,
                                          is_token=True, colors=_e["token_colors"])
                         bodies_cum += 1
                 for _pw, _n in ((_e["per_discard_token_power"], _disc_t),
-                                (_e["per_draw_token_power"], _drawn_t)):
+                                (_e["per_draw_token_power"], _drawn_t * _k2)):
                     for _ in range(_n if _pw else 0):
                         creature_entered(_pw, turn, False, 1, is_token=True,
                                          colors=_e["token_colors"])
@@ -6268,6 +6292,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         hand_size_by_turn.append(len(hand))
         opponent_cards_given += max(0, opponent_draws_this_turn - 1)
         opponent_cards_given_by_turn.append(opponent_cards_given)
+        seen_by_turn.append(cards_to_hand)
         dead_wheels_in_hand_by_turn.append(_dead_wheels())
         # AT THE END OF THE TURN, which is what the row has always said (2026-11-04). This was
         # recorded before the turn spent anything, so "hoard @T10" counted Treasure the same
@@ -6709,6 +6734,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "wheels_cast_by_turn": wheels_cast_by_turn if model_discard else None,
         # The wheels' cost to us, beside their count: absent where no wheel is modelled.
         "opponent_cards_given_by_turn": opponent_cards_given_by_turn if model_discard else None,
+        # How deep the deck digs: distinct cards seen, beside the wheels that dig.
+        "cards_seen_by_turn": seen_by_turn if model_discard else None,
         "wheels_with_payoff": wheels_with_payoff if model_discard else None,
         "first_wheel_turn": first_wheel_turn if model_discard else None,
         "finisher_wheel_turn": finisher_wheel_turn if model_discard else None,

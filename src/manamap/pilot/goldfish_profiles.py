@@ -195,6 +195,19 @@ def discard_to_top(card):
     return bool(_DISCARD_TO_TOP_RE.search(_REMINDER_RE.sub(" ", card.get("oracle_text") or "")))
 
 
+#: KRANG, THE ALL-POWERFUL (2026-11-25): "If a player drawing a card causes a triggered ability of a
+#: permanent you control to trigger, that ability triggers an additional time." Every draw-caused
+#: payoff of ours fires twice: Shabraz's counter and life, Tithe, Sphinx, the second-draw triggers.
+_DRAW_TRIGGER_DOUBLER_RE = re.compile(
+    r"if a player drawing a card causes a triggered ability of a permanent you control to trigger, "
+    r"that ability triggers an additional time", re.I)
+
+
+def draw_trigger_doubler(card):
+    """Does this permanent make our draw-caused triggers fire an additional time?"""
+    return bool(_DRAW_TRIGGER_DOUBLER_RE.search(card.get("oracle_text") or ""))
+
+
 def no_max_hand(card):
     """Does having this card out switch the cleanup discard off for good? (CR 514.1)"""
     text = _REMINDER_RE.sub(" ", card.get("oracle_text") or "")
