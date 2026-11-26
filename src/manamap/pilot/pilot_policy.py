@@ -59,7 +59,7 @@ CHANNELS = ("spell_token_copy", "wheel", "partner")
 #: `forge`: the rule EXPLAINS AiProps keys the document's `forge` section sets — each
 #: key it names must be there with the same value, so the reason and the knob cannot
 #: drift apart. Such a rule needs no goldfish channel: the goldfish never reads it.
-VERBS = ("hold_until", "forge", "keep")
+VERBS = ("hold_until", "forge", "keep", "tutor_first")
 
 #: What a `keep` rule may count in an opening seven. REPORTED, NEVER ENFORCED:
 #: the simulator mulligans by `goldfish_library.keepable` (2–5 lands) whatever
@@ -166,6 +166,14 @@ def validate(doc):
                 raise PolicyError(f"{rid}: a keep rule with neither `max` nor "
                                   f"`needs_any` passes every hand")
             continue
+        if "tutor_first" in r:
+            # THE THIRD VERB (2026-11-26, sharknado: "ways to find and cast Jaws sooner"): the
+            # cards a tutor takes first, in order, whenever it can reach one still in the library.
+            names = r["tutor_first"]
+            if not isinstance(names, list) or not names \
+                    or not all(isinstance(n, str) and n.strip() for n in names):
+                raise PolicyError(f"{rid}: `tutor_first` is a non-empty list of card names")
+            continue
         if "forge" in r:
             knobs = r["forge"]
             if not isinstance(knobs, dict) or not knobs:
@@ -219,6 +227,16 @@ def hold_thresholds(doc):
     return out
 
 
+def tutor_first(doc):
+    """The cards a tutor takes first, in the order the rules name them; () with none."""
+    out = []
+    for r in (doc.get("rules") or []):
+        for n in r.get("tutor_first") or []:
+            if n not in out:
+                out.append(n)
+    return tuple(out)
+
+
 def keep_rule(doc):
     """The pilot's keep rule as one mapping, or None when the policy has none.
 
@@ -250,6 +268,8 @@ def render(doc):
         if "forge" in r:
             what = ", ".join(f"{k}={v}" for k, v in sorted(r["forge"].items()))
             lines.append(f"{r['id']}: Forge AI knobs {what}")
+        elif "tutor_first" in r:
+            lines.append(f"{r['id']}: a tutor takes {', then '.join(r['tutor_first'])} first")
         elif "keep" in r:
             k = r["keep"]
             parts = [f"at most {v} {c}" for c, v in sorted((k.get("max") or {}).items())]

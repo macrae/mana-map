@@ -3240,6 +3240,12 @@ _TUTOR_RE = re.compile(r"search your library for a card", re.IGNORECASE)
 _TYPED_TUTOR_RE = re.compile(
     r"\Asearch your library for (?:a|an|up to \w+) [\w' -]{0,30}?card",
     re.IGNORECASE)
+#: A PERMANENT'S OWN TUTOR, to hand, on entry or on a Saga's first chapter (2026-11-26). Group 1 is
+#: what it searches for, which must not be a land.
+_PERMANENT_TUTOR_RE = re.compile(
+    r"(?:\bwhen [^.]{0,60}? enters, |(?:^|[\n.)]\s*)I(?:, II)?(?:, III)? \u2014 )search your library for "
+    r"(?:a|an) ([\w' ,-]{0,60}?card)[^.]{0,60}?(?:put it into your hand|put that card into your hand)",
+    re.I)
 _TUTOR_LAND_RE = re.compile(
     r"\b(land|Plains|Island|Swamp|Mountain|Forest|basic)\b", re.IGNORECASE)
 
@@ -3251,7 +3257,18 @@ def is_tutor(card):
         return True
     type_line = card.get("type_line") or ""
     if not ("Instant" in type_line or "Sorcery" in type_line):
-        return False
+        # A PERMANENT THAT TUTORS AS IT ARRIVES (2026-11-26): The Seriema's "When The Seriema
+        # enters, search your library for a legendary creature card", War of the Last Alliance's
+        # chapter I. Read as one fetch when it is cast -- a Saga's second chapter is not modelled.
+        # NOT a tutor when the search is narrowed by something the filter cannot hold (Imperial
+        # Recruiter's "power 3 or less", Frostpyre Arcanist's "the same name"), or when the list
+        # of what it finds did not parse (Invasion of Theros): read as a tutor, each reached
+        # everything.
+        got = _PERMANENT_TUTOR_RE.search(text)
+        return (bool(got) and not _TUTOR_LAND_RE.search(got.group(1))
+                and tutor_filter(card) is not None
+                and not re.search(r"\bwith (?:power|toughness|the same name|mana value)",
+                                  got.group(0), re.I))
     # A creature searched ONTO THE BATTLEFIELD is a tutor (Savage Order,
     # Natural Order); the typed pattern wants the search at the start of the
     # text and Savage Order opens with its additional cost.
@@ -5048,8 +5065,20 @@ def tutor_filter(card):
     if not m or not m.group(1).strip():
         return None
     words = m.group(1).strip()
-    return tuple(tuple(w.capitalize() for w in alt.split())
-                 for alt in re.split(r"\s+or\s+", words))
+    alts = [tuple(w.capitalize() for w in alt.split())
+            for alt in re.split(r"\s+or\s+", words)]
+    # A LIST OF ALTERNATIVES, EACH ITS OWN "card" (2026-11-26): Search for Glory's "a snow
+    # permanent card, a legendary card, or a Saga card" read as the first item alone, so it never
+    # reached Jaws. Every ", (or) a/an X card" that follows the first is another alternative.
+    _rest = (card.get("oracle_text") or "")[m.end():]
+    while True:
+        _more = re.match(r",\s*(?:or\s+)?(?:a|an)\s+([\w' -]{0,40}?)cards?\b", _rest, re.I)
+        if not _more:
+            break
+        alts.append(tuple(w.capitalize() for w in _more.group(1).split()))
+        _rest = _rest[_more.end():]
+    # "permanent" is not a word on any type line: a snow permanent card is a Snow card.
+    return tuple(tuple(w for w in alt if w != "Permanent") or alt for alt in alts)
 
 
 def tutor_reaches(filt, type_line):

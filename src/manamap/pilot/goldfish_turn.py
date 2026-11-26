@@ -117,6 +117,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   commander_event=None, commander_reveal=None,
                   commander_damage=None, model_hand_limit=False,
                   commander_copy=False, hold_until=None, keep_rule=None,
+                  tutor_first=(),
                   commander_recursion=None, combo_lines=None, model_approach=False,
                   commander_flash_discount=None):
     """One goldfish iteration. Returns a per-iteration result dict.
@@ -3397,6 +3398,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 _ap = [c for c in hits if c.get("approach")]
                 if _ap:
                     return _ap[0]
+            # THE PILOT'S OWN TARGETS (`pilot_policy` verb `tutor_first`, 2026-11-26): the first
+            # card he names that this tutor reaches and the library still holds.
+            for _n in tutor_first:
+                _tf = next((c for c in hits if c["name"] == _n), None)
+                if _tf is not None:
+                    return _tf
             _cw = _combo_wanted()
             _pieces = [c for c in hits if c["name"] in _cw]
             if _pieces:

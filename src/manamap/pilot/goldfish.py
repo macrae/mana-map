@@ -1620,6 +1620,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     _policy = _pp.load(slug, branch)
     _hold_until = _pp.hold_thresholds(_policy)
     _keep_rule = _pp.keep_rule(_policy)        # reported per game, never enforced
+    _tutor_first = _pp.tutor_first(_policy)
     if _policy and not quiet:
         for _ln in _pp.render(_policy):
             print("  POLICY " + _ln if not _ln.startswith("    ") else "  " + _ln)
@@ -1931,6 +1932,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                               model_hand_limit=declared_hand_limit,
                               commander_copy=commander_copy,
                               hold_until=_hold_until, keep_rule=_keep_rule,
+                              tutor_first=_tutor_first,
                               interaction_names=interaction_names,
                               model_colors=model_colors,
                               commander_pips=commander_pips,

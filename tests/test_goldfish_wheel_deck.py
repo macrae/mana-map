@@ -606,3 +606,59 @@ def test_professor_zei_sacrifices_to_bring_back_a_wheel():
         assert found, "wheels cast not reported"
         return found[0]
     assert wheels_by_10(zei) > wheels_by_10(loot_only) + 0.05
+
+
+def test_search_for_glory_reads_its_whole_list_and_the_seriema_is_a_tutor():
+    """The tutor reader (2026-11-26). Search for Glory's "a snow permanent card, a legendary card,
+    or a Saga card" read as snow alone and never reached Jaws; The Seriema's entry and a Saga's
+    first chapter were not tutors at all. Imperial Recruiter's power cap is not a filter this
+    model holds, so it stays out rather than reaching everything."""
+    from manamap.pilot import card_pool
+    from manamap.pilot.goldfish_profiles import is_tutor, tutor_filter, tutor_reaches
+    o = card_pool.corpus_oracle()
+
+    def card(n, tl):
+        return {"name": n, "oracle_text": o[n], "type_line": tl}
+    sfg = card("Search for Glory", "Snow Sorcery")
+    assert is_tutor(sfg)
+    assert tutor_reaches(tutor_filter(sfg), "Legendary Creature — Shark")
+    assert not tutor_reaches(tutor_filter(sfg), "Creature — Human Wizard")
+    ser = card("The Seriema", "Legendary Artifact — Spacecraft")
+    assert is_tutor(ser) and tutor_reaches(tutor_filter(ser), "Legendary Creature — Shark")
+    assert is_tutor(card("War of the Last Alliance", "Enchantment — Saga"))
+    assert not is_tutor(card("Imperial Recruiter", "Creature — Human Advisor"))
+
+
+def test_a_tutor_first_rule_changes_what_the_tutor_takes(monkeypatch):
+    """`pilot_policy` verb `tutor_first` (2026-11-26, sharknado's "jaws-first"): six Search for
+    Glory on jaws-v1 play differently when the policy names Jaws than under the built-in pick
+    (the biggest card next turn can pay). Put the bug back -- skip the rule in `_tutor_fetch` --
+    and the two arms read identically."""
+    import copy
+    from manamap.pilot import card_pool, common, pilot_policy
+    sfg = card_pool.corpus_oracle()["Search for Glory"]
+    base = common.load_deck_cards("sharknado", branch="jaws-v1")
+    swap = {"Willie Lumpkin, Postman", "Brainstorm", "Shelter", "Loran's Escape",
+            "Slip Out the Back", "Get Lost"}
+    d = copy.deepcopy(base)
+    hit = 0
+    for c in d["cards"]:
+        if c["name"] in swap:
+            hit += 1
+            c.update({"name": f"Search {hit}", "oracle_text": sfg, "cmc": 3.0,
+                      "type_line": "Snow Sorcery", "mana_cost": "{2}{W}",
+                      "power": None, "toughness": None})
+    assert hit == 6
+    real = pilot_policy.load
+
+    def damage_by_10(first):
+        def fake(slug, branch=None):
+            doc = real(slug, branch)
+            rules = [r for r in doc["rules"] if "tutor_first" not in r]
+            if first:
+                rules.append({"id": "t", "why": "test", "tutor_first": list(first)})
+            return {**doc, "rules": rules}
+        monkeypatch.setattr(pilot_policy, "load", fake)
+        return goldfish.run("sharknado", doc=d, iterations=1500, seed=7, quiet=True,
+                            _band=False)["metrics"]["combat"]["mean_damage_by_turn"]["10"]
+    assert abs(damage_by_10(("Jaws, Relentless Predator",)) - damage_by_10(())) > 3
