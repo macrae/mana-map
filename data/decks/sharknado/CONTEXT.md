@@ -282,15 +282,15 @@ One line each for the older games: 001 (2026-10-06, no result): Sol Ring fast st
 ## Studies
 
 <!-- ctx:gen studies -->
+- **042 no-change** (pilot, deck-doctor) — and this 2 drop human is dope!!! · on `jaws-v1` · 2026-11-26 · goldfish saw 1/1 named cards · “hold these cards for later consideration.”
+- **041 no-change** (pilot, deck-doctor) — jfc.. this mfer too · on `jaws-v1` · 2026-11-26 · goldfish saw 1/1 named cards · “hold these cards for later consideration.”
+- **040 no-change** (pilot, deck-doctor) — this one looks good... 2/2 human with card draw on it.. but copying an instant or sorcery for the cost of it plus one red is :chefs kiss:!!! · on `jaws-v1` · 2026-11-26 · goldfish saw 1/1 named cards · “hold these cards for later consideration.”
 - **039 approve** (pilot, deck-doctor) — magus is a goated wheel on legs... probably should make room for that one in here, yeah!? · on `jaws-v1` · 2026-11-26 · goldfish saw 1/1 named cards · “yes, swap Valeria for Magus and push it”
 - **038 no-change** (pilot, deck-doctor) — Scarlet Witch, Chaotic Avenger ({2}{U}{R} legendary 3/3 flier: on combat damage to a player, exile the top two and cast a Hero or noncreatur · on `jaws-v1` · 2026-11-26 · goldfish saw 1/1 named cards · “no change on both, push it; update the reports, etc...”
 - **037 no-change** (pilot, deck-doctor) — Thor, God of Thunder ({3}{R}{R} legendary 5/5 flier: on entry, play an instant or sorcery from the graveyard until next turn's end -- a whee · on `jaws-v1` · 2026-11-26 · goldfish saw 1/1 named cards · “no change on both, push it; update the reports, etc...”
 - **036 no-change** (pilot, deck-doctor) — Living Laser ({4}{R} legendary 4/4 haste: on attack, a hasty token copy per card discarded this turn, tapped and attacking, exiled at end st · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “no change... makes sense”
 - **035 no-change** (pilot, deck-doctor) — Seize the Spoils ({2}{R} sorcery: discard a card as a cost, draw two, make a Treasure -- Big Score's three-mana sorcery twin) in -- and for  · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “makes sense. no on seize the spoils”
-- **034 no-change** (pilot, deck-doctor) — Iron Man, Armored Avenger ({3}{U} flying Human: whenever you draw a card, a +1/+1 counter on target creature -- aimed at Shabraz, every draw · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “damn ok... no Iron Man.. looks much better than it is, that's why we have a framework for evals.”
-- **033 no-change** (pilot, deck-doctor) — Rain of Riches (two Treasure on entry; the first spell each turn paid with Treasure mana has cascade) in -- a free spell every turn off the  · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “that makes sense, free spell is often a dud is right!”
-- **032 approve** (pilot, deck-doctor) — Fiery Emancipation back in (red sources deal triple damage) -- the pilot: layer in red damage if it accelerates us -- and for what? · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “no change on Torbran, then swap Gratuitoous Violence for Fiery Emancipation! seems like a no-brainer!!!”
-- … 31 earlier: `manamap pilot study sharknado list`
+- … 34 earlier: `manamap pilot study sharknado list`
 <!-- /ctx:gen studies -->
 
 ## Change history
