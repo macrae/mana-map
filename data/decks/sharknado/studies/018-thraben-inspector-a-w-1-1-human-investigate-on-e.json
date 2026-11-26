@@ -1,0 +1,238 @@
+{
+  "id": "018",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Thraben Inspector (a W 1/1 Human; investigate on entry -- the Clue is a draw for Shabraz and a sacrificed artifact for Jaws) in -- the deck's first 1-drop creature -- for what, other than Gratuitous Violence?",
+  "opened": "2026-11-25",
+  "decided_at": "2026-11-25",
+  "cards": [
+    "Thraben Inspector"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Thraben Inspector"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 300.0,
+      "slice": "MODE prescribe: Thraben's cut; the doctor's write-up as saved",
+      "text": "{\n  \"reading\": \"Thraben Inspector fills the zero-one-drop hole and its Clue is both a draw (Shabraz counter) and a sacrificed noncreature artifact. The cleanest slot is Bard, King of Dale: a 6-drop whose draw text is the same as Teferi's Ageless Insight (kept in study 017), with card-advantage already at 26 copies against a target of >= 10. A land cut is refused: Temple of Epiphany out leaves U and R one source short, and it costs +2.4 pts missed drop by T5.\",\n  \"log_entries_read\": [\"006\", \"009\"],\n  \"axes_engaged\": [\n    {\"axis\": \"card-advantage\", \"verdict\": \"strength\", \"measured\": {\"value\": \"26 copies\"}, \"reading\": \"Far over target. Losing one draw doubler takes nothing the deck is short of.\"},\n    {\"axis\": \"mana-base\", \"verdict\": \"adequate\", \"measured\": {\"value\": \"37 copies\"}, \"reading\": \"Inside 36-38, but a cut to 36 that removes a UR land makes U and R short.\"}\n  ],\n  \"cut_candidates\": [\n    {\"card\": \"Bard, King of Dale\", \"why\": \"A 6-drop that does nothing on the board early. Its draw doubling repeats Teferi's Ageless Insight, which costs 4.\", \"cost_of_cutting\": \"Goldfish, one instrument, 10,000 paired games: damage @T10 145.2 -> 135.3 [-11.5, -8.2]; hoard @T10 2.06 -> 1.64 [-0.55, -0.29], from its token doubling; extra cards by T8 19.4 -> 18.9. Also lost: a Human body with reach and vigilance, and any stacking with Ageless Insight (needs a stack scenario). The goldfish cannot price its defence.\", \"orphans_stack\": [], \"difficulty\": \"contested\"},\n    {\"card\": \"Consecrated Sphinx\", \"why\": \"The other 6-drop. Ranked second only. Cutting it frees a Game Changer slot.\", \"cost_of_cutting\": \"Stack 009, a checker-passed kill under Wheel of Fortune, stops having a host card. Goldfish: damage @T10 -12.4 [-14.1, -10.8], extra cards by T8 -1.3, finisher wheel by T8 -0.6 pts. Not recommended.\", \"orphans_stack\": [], \"difficulty\": \"painful\"}\n  ],\n  \"add_candidates\": [\n    {\"card\": \"Thraben Inspector\", \"closes\": \"curve\", \"source\": \"prompt\", \"why\": \"The deck's only one-drop creature. Its Clue is a draw for Shabraz and fodder for Jaws.\", \"natural_cut\": \"Bard, King of Dale\"}\n  ],\n  \"open_questions\": [\n    {\"question\": \"Do Teferi's Ageless Insight and Bard, King of Dale stack, so one extra draw becomes four?\", \"settled_by\": \"resolve-stack\", \"why_it_matters\": \"If they stack, Bard is a multiplier and not a redundant copy, and the cut gets harder.\"}\n  ],\n  \"gaps\": [\"The goldfish has no opponents, so it cannot price Bard's reach/vigilance body or Thraben's chump blocks.\", \"White is 19 sources against a target of 22. Thraben on turn 1 is 0.790 from lands, and cutting Bard does not change that.\", \"Rows came from the branch champion; goldfish_metrics/mana_analysis are stale against cards.json (audit note).\"]\n}",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "135.3",
+          "145.2"
+        ]
+      },
+      "added_at": "2026-11-25T17:36:32-08:00",
+      "from": "data/decks/sharknado/.agent-out/deck-doctor-prescribe-018-thraben.json"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "no change, keep Bard; keep exploring",
+    "reading": "",
+    "at": "2026-11-25"
+  },
+  "slug_name": "thraben-inspector-a-w-1-1-human-investigate-on-e",
+  "facts": [
+    {
+      "id": "S-30627231-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-30627231-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-30627231-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-30627231-04",
+      "kind": "oracle",
+      "text": "Creature — Human Soldier · {W} — When this creature enters, investigate. (Create a Clue token. It's an artifact with \"{2}, Sacrifice this token: Draw a card.\")",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Thraben Inspector"
+    },
+    {
+      "id": "S-30627231-05",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Arcane Signet (0.86), Mind Stone (0.85), Smothering Tithe (0.84)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Thraben Inspector",
+      "neighbours": [
+        {
+          "name": "Arcane Signet",
+          "score": 0.8557
+        },
+        {
+          "name": "Mind Stone",
+          "score": 0.8515
+        },
+        {
+          "name": "Smothering Tithe",
+          "score": 0.8441
+        }
+      ]
+    },
+    {
+      "id": "S-30627231-06",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Thraben Inspector",
+      "state": "seen",
+      "channels": [
+        "bodies"
+      ]
+    },
+    {
+      "id": "S-30627231-07",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 1 named card(s) read; an OLDER list of this branch: 4 rows better, 9 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": false,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-30627231-08",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 291.78 -> 169.30, a change of -122.48 (-42%) [-128.677, -116.2866] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -122.4818,
+      "ci95": [
+        -128.677,
+        -116.2866
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-30627231-09",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0045, -0.0011] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0028,
+      "ci95": [
+        -0.0045,
+        -0.0011
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-30627231-10",
+      "kind": "goldfish_row",
+      "text": "board power @T6: no call — the gap of 0.043 is smaller than the 0.250 this run can resolve [-0.1318, 0.2186] — noise",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": 0.0434,
+      "ci95": [
+        -0.1318,
+        0.2186
+      ],
+      "measure": "board power @T6",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-30627231-11",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 25.42 -> 24.92, a change of -0.50 (-2%) [-0.8104, -0.1948] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.5026,
+      "ci95": [
+        -0.8104,
+        -0.1948
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-30627231-12",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 33 in 100, a swing of 2 games per 100 [0.0152, 0.0308] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.023,
+      "ci95": [
+        0.0152,
+        0.0308
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-30627231-13",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0065, 0.0173] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0119,
+      "ci95": [
+        0.0065,
+        0.0173
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Thraben Inspector"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "db5bbd4895ad051eda240ea9e725bf36ada91ee9d0b4da1c41d3e8140e6443ed",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T17:37:38-08:00",
+    "facts": 13
+  }
+}
