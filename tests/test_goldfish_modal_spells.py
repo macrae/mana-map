@@ -65,7 +65,10 @@ def test_collective_defiance_deals_and_wheels_in_a_game():
     from manamap.pilot.common import load_deck_cards
 
     doc = load_deck_cards("sharknado")
-    target = next(c for c in doc["cards"] if c.get("type_line") == "Sorcery"
+    # ANY NON-WHEEL INSTANT OR SORCERY, set to a Sorcery below (2026-11-25): Will of the Jeskai was
+    # the one non-wheel Sorcery on the list and reads as a wheel now, so none is left to borrow.
+    target = next(c for c in doc["cards"]
+                  if (c.get("type_line") or "") in ("Sorcery", "Instant")
                   and goldfish.draw_profile(c)["wheel_draws"] == 0)
     text = card_pool.corpus_oracle()["Collective Defiance"]
 
@@ -74,6 +77,7 @@ def test_collective_defiance_deals_and_wheels_in_a_game():
         for c in d["cards"]:
             if c["name"] == target["name"]:
                 c["oracle_text"] = t
+                c["type_line"] = "Sorcery"
                 c["mana_cost"] = "{1}{R}{R}"
                 c["cmc"] = 3
         m = goldfish.run("sharknado", doc=d, iterations=1500, seed=7, quiet=True,

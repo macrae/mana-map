@@ -122,7 +122,11 @@ def test_the_corpus_sweep_is_locked():
 # LOOTS 63 -> 68 on 2026-11-06, on purpose: "draw four" joined `_SPELL_DRAW_RE`, and five
 # draw-four-then-discard spells now read as loots -- Control of the Court, Goblin Lore,
 # Practical Research, Prying Eyes, Thoughtflare. Breakthrough and Meditate stay unread.
-WHEELS, LOOTS, DISC, DRAW, SECOND = (30, 68, 16, 28, 20)
+# WHEELS 30 -> 35 on 2026-11-25, on purpose: the wheel reader takes "each player may discard their
+# hand and draw" -- Will of the Jeskai, Snort, Raphael's Technique, Arc of Fortune -- and a die
+# roll, an energy-sized draw and a vote are excluded (Strategy, Schmategy; Wheel of Potential;
+# Sail into the West). Read card by card in the same commit (tests/test_goldfish_wheel_deck.py).
+WHEELS, LOOTS, DISC, DRAW, SECOND = (35, 68, 16, 28, 20)
 
 
 @requires_data
