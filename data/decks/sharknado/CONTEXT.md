@@ -221,9 +221,9 @@ Goldfish, 10,000 seeded games, measured on v3.0.0 (V14), 2026-11-10. Each group 
 - An artifact token maker drawn — the Treasure and Blood Jaws sacrifices into the table: **39%**
 - Jaws drawn — every noncreature artifact sacrificed pings each opponent: **0%**
 - A Human on curve drawn (three mana or less) — the flying attackers and blockers Shabraz makes: **76%**
-- A commander-damage enabler drawn — double strike or evasion on Shabraz, 21 to take a player out: **72%**
+- A commander-damage enabler drawn — double strike or evasion on Shabraz, 21 to take a player out: **73%**
 - Ramp drawn — Shabraz on turn four or five: **91%**
-- A real answer drawn — a counter, a removal spell or a sweeper: **76%**
+- A real answer drawn — a counter, a removal spell or a sweeper: **77%**
 - Brallin's late road — a red amplifier drawn (the old ping plan, on the cut list; kept measured while proven stacks name it): **54%**
 - share of opening sevens the model would keep: **82%**
 - Engine online by turn 5: **80%** (95% CI 79%–80%) — exceptional
