@@ -282,15 +282,15 @@ One line each for the older games: 001 (2026-10-06, no result): Sol Ring fast st
 ## Studies
 
 <!-- ctx:gen studies -->
+- **028 open** (—) — Smuggler's Share (each end step: draw a card for each opponent who drew two or more cards this turn; a Treasure for each who had two or more · on `jaws-v1` · open · goldfish saw 1/1 named cards
+- **027 no-change** (pilot, deck-doctor) — Violent Eruption (instant, 4 damage divided; madness {1}{R}{R} off the deck's discards) in -- and for what? · on `jaws-v1` · 2026-11-25 · goldfish saw 0/1 named cards · “ok... pass on these three cards :)”
+- **026 no-change** (pilot, deck-doctor) — Fiery Confluence (choose three, repeats allowed: 1 to each creature, 2 to each opponent, or destroy an artifact) in -- goblin and zombie tok · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “ok... pass on these three cards :)”
+- **025 no-change** (pilot, deck-doctor) — Zndrsplt, Eye of Wisdom (flip coins at combat until you lose; any player's won flip draws us a card -- each a Shabraz counter, doubled by Kr · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “ok... pass on these three cards :)”
 - **024 no-change** (pilot, deck-doctor) — A tutor that finds Krang (an artifact creature) or Smothering Tithe (an enchantment) inside bracket 3 -- Enlightened Tutor is a Game Changer · on `jaws-v1` · 2026-11-25 · goldfish saw 4/4 named cards · “yeah I'm not sure long term plans for enduring curiosity is worth it”
 - **023 approve** (pilot, deck-doctor) — Krang, the All-Powerful (a draw-caused trigger of ours triggers an additional time: Shabraz two counters and two life per card, Smothering T · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “approve Krang for Archmage Emeritus”
 - **022 no-change** (pilot, deck-doctor) — Killmonger, Ruthless Usurper (a 3-mana Human with trample; on each hit the player sacrifices an artifact -- a Jaws ping -- and we make a Tre · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “you are right.. sokka is probably better than killmonger lolol”
 - **021 no-change** (pilot, deck-doctor) — Violent Eruption in for Windfall -- from the ranked list of the weakest cards left? · on `jaws-v1` · 2026-11-25 · goldfish saw 1/2 named cards · “no, no windfall is an amazing card in this deck jfc”
-- **020 no-change** (pilot, deck-doctor) — Council's Judgment in for Teferi's Ageless Insight -- from the ranked list of the weakest cards left? · on `jaws-v1` · 2026-11-25 · goldfish saw 1/2 named cards · “no--as fun as Council's Judgement is, Teferi's Ageless Insight is doing WORK!!!! for shabraz!!!”
-- **019 approve** (pilot, deck-doctor) — Ragavan, Nimble Pilferer (a 1-drop: Treasure and an impulse card on combat damage; dash) in for Magus of the Wheel (a 3-drop creature wheel) · on `jaws-v1` · 2026-11-25 · goldfish saw 2/2 named cards · “approve Ragavan for Magus”
-- **018 no-change** (pilot, deck-doctor) — Thraben Inspector (a W 1/1 Human; investigate on entry -- the Clue is a draw for Shabraz and a sacrificed artifact for Jaws) in -- the deck' · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “no change, keep Bard; keep exploring”
-- **017 approve** (pilot, deck-doctor, strategist, data-analyst) — The A-table pool (beyond single swaps): fill the interaction gaps the audit found -- a counter that hits creature spells, exile for any nonl · on `jaws-v1` · 2026-11-25 · “approve the smaller five, then work card by card after that”
-- … 16 earlier: `manamap pilot study sharknado list`
+- … 20 earlier: `manamap pilot study sharknado list`
 <!-- /ctx:gen studies -->
 
 ## Change history

@@ -409,6 +409,11 @@ _WHEEL_RE = re.compile(
 #: A ONE-SIDED WHEEL THAT COUNTS AN OPPONENT'S HAND (2026-11-04): Borrowed Knowledge, whose other mode
 #: counts your own. "Cards equal to" never matched `_WHEEL_RE`, so it read as nothing at all. The
 #: pilot takes the bigger of the two, which `wheel_greatest` already says; only the caster draws.
+#: SMUGGLER'S SHARE (2026-11-25): "At the beginning of each end step, draw a card for each opponent
+#: who drew two or more cards this turn". Our wheels make every opponent draw seven.
+_END_STEP_OPP_TWO_DRAWS_RE = re.compile(
+    r"at the beginning of each end step, draw a card for each opponent who drew two or more cards "
+    r"this turn", re.I)
 #: A WHEEL'S FLASHBACK GRANT (2026-11-25, Will of the Jeskai): "Each instant and sorcery card in
 #: your graveyard gains flashback until end of turn", with both modes only "if you control a
 #: commander as you cast this spell".
@@ -2883,7 +2888,11 @@ def draw_profile(card):
            # Will of the Jeskai: the wheel also grants flashback -- "commander" when both modes
            # need a commander out, "always" when the grant rides on the wheel unconditionally.
            "grant_flashback": None,
+           # Smuggler's Share: a card at an end step per opponent who drew two or more that turn.
+           "end_step_opp_two_draws": 0,
            "unmodelled": None}
+    if _END_STEP_OPP_TWO_DRAWS_RE.search(text):
+        out["end_step_opp_two_draws"] = 1
     _dd = _DRAW_DOUBLER_RE.search(text)
     if _dd:
         out["draw_multiplier"] = 3 if _dd.group(1).lower() == "three" else 2

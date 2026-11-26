@@ -2067,7 +2067,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                                          or combat["equip_double_strike"]):
                     equipment_out.append(combat)
             if model_draw and any(card["draw"][k] for k in
-                                  ("recurring_draw", "arrival_draw", "cast_draw")):
+                                  ("recurring_draw", "arrival_draw", "cast_draw",
+                                   "end_step_opp_two_draws")):
                 draw_engines.append(card["draw"])
             _register_wheel(card)
             _register_statics(card)
@@ -2214,7 +2215,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 treasures += ((card["combat"]["spell_treasure"] + treasure_bonus)
                               * treasure_multiplier)
             if (card["draw"]["recurring_draw"] or card["draw"]["arrival_draw"]
-                    or card["draw"]["cast_draw"] or card["draw"]["recurring_each_player_draw"]):
+                    or card["draw"]["cast_draw"] or card["draw"]["recurring_each_player_draw"]
+                    or card["draw"]["end_step_opp_two_draws"]):
                 draw_engines.append(card["draw"])
             _register_wheel(card)
             _register_statics(card)
@@ -2535,7 +2537,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if (card["draw"]["recurring_draw"]
                         or card["draw"]["arrival_draw"]
                         or card["draw"]["cast_draw"]
-                        or card["draw"]["recurring_each_player_draw"]):
+                        or card["draw"]["recurring_each_player_draw"]
+                        or card["draw"]["end_step_opp_two_draws"]):
                     pending_draw_engine = card["draw"]
             # Dragonlord's Servant and Dragonspeaker Shaman are bodies that
             # also reduce; from here on they pay for every Dragon behind them.
@@ -3756,6 +3759,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                              c["draw"]["spell_draw_greatest_power"],
                                              c["draw"]["spell_draw_greatest_mv"],
                                              c["draw"]["life_gain_paid_draw"],
+                                             c["draw"]["end_step_opp_two_draws"],
                                              # Cast, or the limit it lifts is never lifted.
                                              model_hand_limit and c["no_max_hand"],
                                              # Library of Leng's other half (2026-11-25).
@@ -6273,6 +6277,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # THE HAND LIMIT. After `discarded_by_turn` is taken, so these discards pay Brallin
         # and friends NEXT turn: a turn late against a table, a floor. `discard_n`'s stated
         # policy picks them, spare lands first and then the most expensive.
+        # SMUGGLER'S SHARE (2026-11-25): at OUR end step, a card for each opponent who drew two or
+        # more this turn -- `opponent_draws_this_turn` is per seat and includes their draw step, so
+        # one extra draw of ours (a wheel, an each-player draw) qualifies every seat. CARRIED, like a
+        # combat draw: the payoffs settled this turn, so Shabraz is paid at the next settlement. A
+        # floor: their own turns (their own extra draws) and the Treasure clause are not read.
+        if model_draw and opponent_draws_this_turn >= 2:
+            _ssh = sum(e["end_step_opp_two_draws"] for e in draw_engines)
+            if _ssh:
+                _b4 = drawn_this_turn
+                draw_n(_ssh * GOLDFISH_OPPONENTS)
+                carried_draws += drawn_this_turn - _b4
         # AN IMPULSE CARD NOT PLAYED BY THE END STEP AFTER NEXT LEAVES (2026-11-25, Inti); a
         # played one already left the hand through `_note_cast`.
         # A FLASHBACK GRANT LASTS UNTIL END OF TURN (Will of the Jeskai): an uncast copy leaves.

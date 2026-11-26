@@ -1,0 +1,217 @@
+{
+  "id": "028",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Smuggler's Share (each end step: draw a card for each opponent who drew two or more cards this turn; a Treasure for each who had two or more lands enter) in -- every symmetric wheel becomes three cards for us -- and for what?",
+  "opened": "2026-11-25",
+  "decided_at": null,
+  "cards": [
+    "Smuggler's Share"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Smuggler's Share"
+  },
+  "contributions": [],
+  "call": {
+    "decision": "open",
+    "decided_by": [],
+    "pilot_words": "",
+    "reading": ""
+  },
+  "slug_name": "smuggler-s-share-each-end-step-draw-a-card-for-e",
+  "facts": [
+    {
+      "id": "S-566800db-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-566800db-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-566800db-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-566800db-04",
+      "kind": "oracle",
+      "text": "Enchantment · {2}{W} — At the beginning of each end step, draw a card for each opponent who drew two or more cards this turn, then create a Treasure token for each opponent who had two or more lands enter the battlefield under their control this turn.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Smuggler's Share"
+    },
+    {
+      "id": "S-566800db-05",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Smothering Tithe (0.93), Prismari Command (0.92), Winds of Change (0.78)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Smuggler's Share",
+      "neighbours": [
+        {
+          "name": "Smothering Tithe",
+          "score": 0.9286
+        },
+        {
+          "name": "Prismari Command",
+          "score": 0.9177
+        },
+        {
+          "name": "Winds of Change",
+          "score": 0.7812
+        }
+      ]
+    },
+    {
+      "id": "S-566800db-06",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Smuggler's Share",
+      "state": "seen",
+      "channels": [
+        "bodies"
+      ]
+    },
+    {
+      "id": "S-566800db-07",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 1 named card(s) read: 6 rows better, 10 worse, 2 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-566800db-08",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 309.97 -> 171.30, a change of -138.67 (-45%) [-145.8507, -131.4901] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -138.6704,
+      "ci95": [
+        -145.8507,
+        -131.4901
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-566800db-09",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0045, -0.0009] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0027,
+      "ci95": [
+        -0.0045,
+        -0.0009
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-566800db-10",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 17.17 -> 15.18, a change of -1.99 (-12%) [-2.2076, -1.773] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -1.9903,
+      "ci95": [
+        -2.2076,
+        -1.773
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-566800db-11",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 26.95 -> 20.30, a change of -6.65 (-25%) [-7.0197, -6.2777] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -6.6487,
+      "ci95": [
+        -7.0197,
+        -6.2777
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-566800db-12",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 34 in 100, a swing of 3 games per 100 [0.022, 0.0362] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0291,
+      "ci95": [
+        0.022,
+        0.0362
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-566800db-13",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0071, 0.0155] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0113,
+      "ci95": [
+        0.0071,
+        0.0155
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Smuggler's Share"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "e1f43629cdb68b8c7cf9aba6542f7655f23236e875bd54e32fda1f33422f8486",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T21:02:07-08:00",
+    "facts": 13
+  }
+}

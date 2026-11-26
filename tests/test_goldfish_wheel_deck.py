@@ -320,3 +320,23 @@ def test_cards_seen_counts_how_deep_the_deck_digs():
     flat = _games(deck("Vigilance"), iterations=200)
     assert all(g["cards_seen_by_turn"][4] >= 7 for g in digs + flat)
     assert _mean(digs, "cards_seen_by_turn", 4) > _mean(flat, "cards_seen_by_turn", 4) + 3
+
+
+SMUGGLERS_SHARE = ("At the beginning of each end step, draw a card for each opponent who drew two or "
+                   "more cards this turn, then create a Treasure token for each opponent who had two "
+                   "or more lands enter the battlefield under their control this turn.")
+
+
+def test_smugglers_share_draws_one_per_opponent_after_a_wheel():
+    """Our wheel makes every opponent draw seven, so at our end step Smuggler's Share draws a card
+    per opponent: extra cards by turn eight read 22.3 against 10.0. Put the bug back -- drop the
+    end-step draw -- and the arms match."""
+    grow = "Whenever you draw a card, put a +1/+1 counter on this creature."
+
+    def deck(text):
+        return _doc(_c("Share", text, 3, "Enchantment", quantity=6),
+                    _c("Grower", grow, 2, "Creature — Shark", quantity=6, power="1",
+                       toughness="1"),
+                    _c("Wheel", WHEEL, 3, "Sorcery", quantity=10))
+    assert _mean(_games(deck(SMUGGLERS_SHARE)), "drawn_extra_by_turn", 7) \
+        > _mean(_games(deck("Hexproof")), "drawn_extra_by_turn", 7) + 5

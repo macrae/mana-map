@@ -20,7 +20,11 @@
     "stale": [
       "frame"
     ],
-    "older_model": [],
+    "older_model": [
+      "goldfish",
+      "mana",
+      "benchmark"
+    ],
     "invalid": [],
     "verified": true,
     "missing": [],
@@ -519,22 +523,25 @@
       ],
       "has_cards": true,
       "study": {
-        "id": "024",
-        "question": "A tutor that finds Krang (an artifact creature) or Smothering Tithe (an enchantment) inside bracket 3 -- Enlightened Tutor is a Game Changer, and Consecrated Sphinx, Smothering Tithe and Rhystic Study are 'sooo money'; or a non-Game-Changer tutor -- still targeting a first kill by turn six",
+        "id": "027",
+        "question": "Violent Eruption (instant, 4 damage divided; madness {1}{R}{R} off the deck's discards) in -- and for what?",
         "branch": "jaws-v1",
-        "file": "024-a-tutor-that-finds-krang-an-artifact-creature-or.json",
+        "file": "027-violent-eruption-instant-4-damage-divided-madnes.json",
         "decision": "no-change",
         "decided_by": [
           "pilot",
           "deck-doctor"
         ],
-        "pilot_words": "yeah I'm not sure long term plans for enduring curiosity is worth it",
+        "pilot_words": "ok... pass on these three cards :)",
         "decided_at": "2026-11-25",
         "opened": "2026-11-25",
-        "swap": null,
+        "swap": {
+          "out": null,
+          "in": "Violent Eruption"
+        },
         "goldfish_saw": [
-          4,
-          4
+          0,
+          1
         ]
       },
       "summary": {
@@ -8763,6 +8770,91 @@
   ],
   "studies": [
     {
+      "id": "028",
+      "question": "Smuggler's Share (each end step: draw a card for each opponent who drew two or more cards this turn; a Treasure for each who had two or more lands enter) in -- every symmetric wheel becomes three cards for us -- and for what?",
+      "branch": "jaws-v1",
+      "file": "028-smuggler-s-share-each-end-step-draw-a-card-for-e.json",
+      "decision": "open",
+      "decided_by": [],
+      "pilot_words": "",
+      "decided_at": null,
+      "opened": "2026-11-25",
+      "swap": {
+        "out": null,
+        "in": "Smuggler's Share"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "027",
+      "question": "Violent Eruption (instant, 4 damage divided; madness {1}{R}{R} off the deck's discards) in -- and for what?",
+      "branch": "jaws-v1",
+      "file": "027-violent-eruption-instant-4-damage-divided-madnes.json",
+      "decision": "no-change",
+      "decided_by": [
+        "pilot",
+        "deck-doctor"
+      ],
+      "pilot_words": "ok... pass on these three cards :)",
+      "decided_at": "2026-11-25",
+      "opened": "2026-11-25",
+      "swap": {
+        "out": null,
+        "in": "Violent Eruption"
+      },
+      "goldfish_saw": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "026",
+      "question": "Fiery Confluence (choose three, repeats allowed: 1 to each creature, 2 to each opponent, or destroy an artifact) in -- goblin and zombie tokens, Sol Ring, or 6 to each opponent -- and for what?",
+      "branch": "jaws-v1",
+      "file": "026-fiery-confluence-choose-three-repeats-allowed-1.json",
+      "decision": "no-change",
+      "decided_by": [
+        "pilot",
+        "deck-doctor"
+      ],
+      "pilot_words": "ok... pass on these three cards :)",
+      "decided_at": "2026-11-25",
+      "opened": "2026-11-25",
+      "swap": {
+        "out": null,
+        "in": "Fiery Confluence"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "025",
+      "question": "Zndrsplt, Eye of Wisdom (flip coins at combat until you lose; any player's won flip draws us a card -- each a Shabraz counter, doubled by Krang) in -- the pilot loves the chaos -- and for what?",
+      "branch": "jaws-v1",
+      "file": "025-zndrsplt-eye-of-wisdom-flip-coins-at-combat-unti.json",
+      "decision": "no-change",
+      "decided_by": [
+        "pilot",
+        "deck-doctor"
+      ],
+      "pilot_words": "ok... pass on these three cards :)",
+      "decided_at": "2026-11-25",
+      "opened": "2026-11-25",
+      "swap": {
+        "out": null,
+        "in": "Zndrsplt, Eye of Wisdom"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
       "id": "024",
       "question": "A tutor that finds Krang (an artifact creature) or Smothering Tithe (an enchantment) inside bracket 3 -- Enlightened Tutor is a Game Changer, and Consecrated Sphinx, Smothering Tithe and Rhystic Study are 'sooo money'; or a non-Game-Changer tutor -- still targeting a first kill by turn six",
       "branch": "jaws-v1",
@@ -10609,8 +10701,10 @@
   },
   "next": [
     "stale: frame — regenerate against the current list (`/publish-deck` sequences it)",
+    "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug sharknado` re-reads them when you want, never on its own",
     "DeckCheck copy is V12, sleeved is V14 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-28) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
+    "study 028 is open: Smuggler's Share (each end step: draw a card for each opponent who dre — `manamap pilot study sharknado call 028 …`, then `install`",
     "study 006 is open: Audit: things seem sideways. The strategy, in the pilot's words: land  — `manamap pilot study sharknado call 006 …`, then `install`",
     "engine.json's reading was written for another list — `/engine-reading sharknado` rewrites it over the computed graph",
     "open questions routed: diagnose ×9, goldfish ×7, research-strategy ×5, resolve-stack ×5",
