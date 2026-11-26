@@ -976,6 +976,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # "flying" or a creature type. Read at the attack step only.
     haste_grants = []
     drain_permanents = []
+    # QALA (2026-11-25): (name, drain profile) of each attacker that pumps the OTHER attackers by
+    # its own counters, and the counters each has gained -- her own, not the pooled ones.
+    own_counter_pumps = []
+    own_counters = {}
     # Permanents that pay when another of a named type lands ("whenever another
     # Shrine you control enters"). A one-shot ETB and a per-type trigger are
     # DIFFERENT from a per-turn one, and reading all three as recurring is what
@@ -2605,6 +2609,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         "drain_recurring", "drain_per_enchantment",
                         "gain_team_counters", "gain_self_counter")):
                     drain_permanents.append(card["drain"])
+                    if card["drain"]["attack_pump_own_counters"] and model_combat:
+                        own_counter_pumps.append((card["name"], card["drain"]))
                 if model_discard and has_event_payoff(card.get("event")):
                     _payoff_arrives(card["event"])
                     first_right_card_turn = first_right_card_turn or turn
@@ -5192,6 +5198,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # no blockers is every attack. Double strike rides in `mult` for
             # both, as printed.
             swing = sum(d for d, pz in attackers if not pz[0]) + _combat_bonus(_able)
+            # QALA'S PUMP (2026-11-25): when she attacks, every OTHER attacker gets +X power, X her
+            # own counters -- the commander's hit below included. A floor: her counters from this
+            # turn's gains land after combat, like every life-gain counter here.
+            qala_pump = 0
+            for _qn, _qd in own_counter_pumps:
+                _x = own_counters.get(id(_qd), 0)
+                if _x and any(len(battlefield[i]) > 12 and battlefield[i][12]
+                              and battlefield[i][12].get("name") == _qn for i in _able):
+                    qala_pump += _x
+                    swing += _x * _power_mult * max(0, len(attackers) - 1)
             # An uncopied single-target pump landed on ONE attacker.
             if flat_pump and any(not pz[0] for _d, pz in attackers):
                 swing += flat_pump
@@ -5227,7 +5243,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 _b_c = bonus_for({"colors": (_src or {}).get("colors", ()), "deals": True},
                                  damage_bonuses, combat=True)
                 _hit = (((_cp["power"] + team_anthem + turn_pump + _eq_pow.get(id(_cp), 0)
-                          + commander_counter_of.get(id(_ce), 0)) * _power_mult + _b_c)
+                          + commander_counter_of.get(id(_ce), 0) + qala_pump) * _power_mult + _b_c)
                         * _strk * _combat_mult())
                 # HIS COUNTERS STRIKE TWICE TOO when the double strike is his own Equipment's
                 # (a team grant already doubled them in `_ctr_strikes` above).
@@ -6227,8 +6243,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         battlefield[_i] = (_c[0] + _k,) + _c[1:]
                     commander_counters += _k * _cmd_out_now
                 if d["gain_self_counter"] and gain_events:
-                    counter_power += apply_counter_mod(d["gain_self_counter"], counter_plus,
-                                                       counter_times) * gain_events
+                    _gk = apply_counter_mod(d["gain_self_counter"], counter_plus,
+                                            counter_times) * gain_events
+                    counter_power += _gk
+                    if d["attack_pump_own_counters"]:
+                        own_counters[id(d)] = own_counters.get(id(d), 0) + _gk
             drained = deaths_drained + deaths_damaged + etb_drained
             for d in drain_permanents:
                 drained += d["drain_recurring"] * _x_for(d)

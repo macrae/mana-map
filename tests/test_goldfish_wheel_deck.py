@@ -340,3 +340,29 @@ def test_smugglers_share_draws_one_per_opponent_after_a_wheel():
                     _c("Wheel", WHEEL, 3, "Sorcery", quantity=10))
     assert _mean(_games(deck(SMUGGLERS_SHARE)), "drawn_extra_by_turn", 7) \
         > _mean(_games(deck("Hexproof")), "drawn_extra_by_turn", 7) + 5
+
+
+QALA = ("Whenever Qala attacks, other attacking creatures you control get +X/+0 until end of turn, "
+        "where X is the number of counters on Qala. Whenever you gain life, put a +1/+1 counter on "
+        "Qala. {3}{W}: You gain 1 life.")
+
+
+def test_qala_pumps_the_other_attackers_by_her_own_counters():
+    """A drawer that gains a life per card grows Qala a counter per card, and when she attacks the
+    OTHER attackers get +X: damage by turn eight read 40.1 against 26.3 with the pump struck. Put
+    the bug back -- never add `qala_pump` to the swing -- and the arms match."""
+    drawer = ("Flying\nWhenever you draw a card, put a +1/+1 counter on this creature and you "
+              "gain 1 life.")
+    no_pump = QALA.split("Whenever you gain")[1]
+
+    def deck(text):
+        return _doc(_c("Qala, Ajani's Pridemate", text, 4, "Legendary Creature — Cat Warrior",
+                       quantity=2, power="2", toughness="3"),
+                    _c("Shark", drawer, 2, "Creature — Shark", quantity=6, power="1",
+                       toughness="1"),
+                    _c("Bear", "", 2, "Creature — Bear", quantity=14, power="2", toughness="2"),
+                    _c("Wheel", WHEEL, 3, "Sorcery", quantity=8))
+    pump = _mean(_games(deck(QALA), model_drain=True, iterations=1000), "damage_by_turn", 7)
+    flat = _mean(_games(deck("Whenever you gain" + no_pump), model_drain=True, iterations=1000),
+                 "damage_by_turn", 7)
+    assert pump > flat + 5, (pump, flat)

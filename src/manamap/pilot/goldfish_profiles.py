@@ -3958,6 +3958,9 @@ _GAIN_TEAM_COUNTER_RE = re.compile(
 #: "target creature" (Spider-Man) in the first sweep. Type-scoped team counters
 #: (Lyra's Angels, Minwu's Clerics, Citizen V's Villains) and one-target shapes
 #: are named by the sweep and left unread.
+_ATTACK_PUMP_OWN_COUNTERS_RE = re.compile(
+    r"whenever [^.]{1,40} attacks, other attacking creatures you control get \+X/\+0 until end of "
+    r"turn, where X is the number of counters on", re.I)
 _GAIN_SELF_COUNTER_RE = re.compile(
     r"whenever you gain life[^.]*?, put an? \+1/\+1 counter on ([^.]+?)\.", re.I)
 
@@ -4201,6 +4204,9 @@ def drain_profile(card):
            "drain_per_type": 0, "gain_per_type": 0, "per_type": None,
            "lifelink": False, "grants_lifelink_to": None,
            "gain_team_counters": 0, "gain_self_counter": 0,
+           # Qala, Ajani's Pridemate (2026-11-25): "Whenever Qala attacks, other attacking
+           # creatures you control get +X/+0 ..., where X is the number of counters on Qala."
+           "attack_pump_own_counters": False,
            "scales_with": None, "unmodelled": None}
     if not re.search(r"gain .*life|loses? .*life|lifelink", text, re.I):
         return out
@@ -4218,6 +4224,8 @@ def drain_profile(card):
     elif _sm and (_sm.group(1).lower() in ("this creature", "it")
                   or (_own and _own.lower().startswith(_sm.group(1).lower()))):
         out["gain_self_counter"] = 1
+    if out["gain_self_counter"] and _ATTACK_PUMP_OWN_COUNTERS_RE.search(text):
+        out["attack_pump_own_counters"] = True
     if _DRAIN_EQUAL_RE.search(text):
         out["payoff_equal"] = True
     m = _DRAIN_FIXED_RE.search(text)
