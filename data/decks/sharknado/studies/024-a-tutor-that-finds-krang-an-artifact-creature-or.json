@@ -1,0 +1,365 @@
+{
+  "id": "024",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "A tutor that finds Krang (an artifact creature) or Smothering Tithe (an enchantment) inside bracket 3 -- Enlightened Tutor is a Game Changer, and Consecrated Sphinx, Smothering Tithe and Rhystic Study are 'sooo money'; or a non-Game-Changer tutor -- still targeting a first kill by turn six",
+  "opened": "2026-11-25",
+  "decided_at": "2026-11-25",
+  "cards": [
+    "Enlightened Tutor",
+    "Long-Term Plans",
+    "Search for Glory",
+    "Fabricate"
+  ],
+  "swap": null,
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 300.0,
+      "slice": "MODE prescribe: which tutor, its cut, and the turn-6 goal; the doctor's write-up as saved",
+      "text": "{\n  \"reading\": \"He asked for a non-Game-Changer way to find Krang or Smothering Tithe while still aiming at a first kill by turn 6. The tutors axis reads 0. But no measured source says a tutor is a clear upgrade. Across three paired screens a working tutor beat a dead card by about 3.5-3.9 damage @T10 and nothing on killed-by-T6. If he wants one anyway, Long-Term Plans is the pick, because it is the only non-GC candidate that reaches both Krang and Tithe. A tutor does not move the turn-6 kill.\",\n  \"log_entries_read\": [\"003\", \"004\", \"006\", \"008\", \"009\"],\n  \"axes_engaged\": [\n    {\"axis\": \"tutors\", \"verdict\": \"adequate\", \"measured\": {\"value\": 0}, \"reading\": \"Zero tutors, but the frame's '4-8 tutors' is the combo row and this is a draw-engine deck with 25 card-advantage copies.\"},\n    {\"axis\": \"card-advantage\", \"verdict\": \"strength\", \"measured\": {\"value\": 25}, \"reading\": \"The draw density is what makes a third-from-top tutor nearly a to-hand tutor: Brainstorm and all four wheels draw it.\"},\n    {\"axis\": \"power\", \"verdict\": \"adequate\", \"measured\": {\"value\": 3}, \"reading\": \"Three of three Game Changers. Enlightened Tutor would be a fourth, so it is out.\"}\n  ],\n  \"cut_candidates\": [\n    {\"card\": \"Enduring Curiosity\", \"why\": \"Today's Krang screen read it as the cheapest draw engine to lose. It only draws off combat damage, and that overlaps Mask, Mastermind and the sharks.\", \"cost_of_cutting\": \"A flash, recurring draw engine. Krang doubles its draws, so each one is two Shabraz counters. Swapping it for each tutor read killed by T6 -0.9 to -1.0 pts, damage @T10 -8.0 to -11.9 and extra cards by T8 -0.7 to -0.9, all worse (goldfish).\", \"orphans_stack\": [], \"difficulty\": \"contested\"}\n  ],\n  \"add_candidates\": [\n    {\"card\": \"Long-Term Plans\", \"closes\": \"tutors\", \"source\": \"prompt\", \"why\": \"An instant that reaches any card: Krang, Tithe, Sphinx, a wheel. Third from the top is drawn within about a turn on this list (Brainstorm, wheels, Rhystic). The risk is the 4 fetchlands, which shuffle it away. Not a Game Changer.\", \"natural_cut\": \"Enduring Curiosity\"},\n    {\"card\": \"Fabricate\", \"closes\": \"tutors\", \"source\": \"prompt\", \"why\": \"To hand, so it is immune to wheels and fetches. But it is artifact-only: Krang, Monument, Leng, Lizard Blades, Sol Ring. It cannot reach Tithe.\", \"natural_cut\": \"Enduring Curiosity\"},\n    {\"card\": \"Search for Glory\", \"closes\": \"tutors\", \"source\": \"prompt\", \"why\": \"To hand, and it reaches every legendary card here (Krang, Jaws, Bard, Teferi's Ageless Insight and more). It cannot reach Tithe. The goldfish misreads it (see gaps).\", \"natural_cut\": \"Enduring Curiosity\"}\n  ],\n  \"open_questions\": [\n    {\"question\": \"Does the goldfish's tutor_filter regex read 'a snow permanent card, a legendary card, or a Saga card' as snow-permanent-only?\", \"settled_by\": \"goldfish\", \"why_it_matters\": \"tutor_filter returns (('Snow','Permanent'),). That makes Search for Glory a dead card in its screen, and any 'X card, a Y card' tutor is misread the same way.\"}\n  ],\n  \"gaps\": [\n    \"The goldfish's tutor policy takes 'the biggest card next turn's mana can pay'. It does not aim at Krang or Tithe, so no row prices the find he asked for.\",\n    \"The goldfish has no opponents. Tithe's Treasure is an authored 50% pay rate, so turning an early Tithe into a turn-6 kill is judgment, not a measurement.\",\n    \"Enduring Curiosity's value in the face of blockers is invisible to the goldfish.\"\n  ]\n}",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-25T20:09:58-08:00",
+      "from": "data/decks/sharknado/.agent-out/deck-doctor-prescribe-024.json"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "yeah I'm not sure long term plans for enduring curiosity is worth it",
+    "reading": "",
+    "at": "2026-11-25"
+  },
+  "slug_name": "a-tutor-that-finds-krang-an-artifact-creature-or",
+  "facts": [
+    {
+      "id": "S-1cd46fc6-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-1cd46fc6-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-1cd46fc6-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-1cd46fc6-04",
+      "kind": "oracle",
+      "text": "Instant · {W} — Search your library for an artifact or enchantment card, reveal it, then shuffle and put that card on top.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Enlightened Tutor",
+      "game_changer": true
+    },
+    {
+      "id": "S-1cd46fc6-05",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Chaos Warp (0.76), Smothering Tithe (0.73), Mind Stone (0.73)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Enlightened Tutor",
+      "neighbours": [
+        {
+          "name": "Chaos Warp",
+          "score": 0.7563
+        },
+        {
+          "name": "Smothering Tithe",
+          "score": 0.7314
+        },
+        {
+          "name": "Mind Stone",
+          "score": 0.7288
+        }
+      ]
+    },
+    {
+      "id": "S-1cd46fc6-06",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Enlightened Tutor",
+      "state": "seen",
+      "channels": [
+        "tutor"
+      ]
+    },
+    {
+      "id": "S-1cd46fc6-07",
+      "kind": "oracle",
+      "text": "Instant · {2}{U} — Search your library for a card, then shuffle and put that card third from the top.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Long-Term Plans"
+    },
+    {
+      "id": "S-1cd46fc6-08",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Chaos Warp (0.77), Teferi's Ageless Insight (0.73), Winds of Change (0.73)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Long-Term Plans",
+      "neighbours": [
+        {
+          "name": "Chaos Warp",
+          "score": 0.7747
+        },
+        {
+          "name": "Teferi's Ageless Insight",
+          "score": 0.728
+        },
+        {
+          "name": "Winds of Change",
+          "score": 0.7272
+        }
+      ]
+    },
+    {
+      "id": "S-1cd46fc6-09",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Long-Term Plans",
+      "state": "seen",
+      "channels": [
+        "tutor"
+      ]
+    },
+    {
+      "id": "S-1cd46fc6-10",
+      "kind": "oracle",
+      "text": "Snow Sorcery · {2}{W} — Search your library for a snow permanent card, a legendary card, or a Saga card, reveal it, put it into your hand, then shuffle. You gain 1 life for each {S} spent to cast this spell. ({S} is mana from a snow source.)",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Search for Glory"
+    },
+    {
+      "id": "S-1cd46fc6-11",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Chaos Warp (0.76), Talisman of Conviction (0.74), Smothering Tithe (0.73)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Search for Glory",
+      "neighbours": [
+        {
+          "name": "Chaos Warp",
+          "score": 0.7617
+        },
+        {
+          "name": "Talisman of Conviction",
+          "score": 0.7395
+        },
+        {
+          "name": "Smothering Tithe",
+          "score": 0.7331
+        }
+      ]
+    },
+    {
+      "id": "S-1cd46fc6-12",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Search for Glory",
+      "state": "seen",
+      "channels": [
+        "tutor"
+      ]
+    },
+    {
+      "id": "S-1cd46fc6-13",
+      "kind": "oracle",
+      "text": "Sorcery · {2}{U} — Search your library for an artifact card, reveal it, put it into your hand, then shuffle.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Fabricate"
+    },
+    {
+      "id": "S-1cd46fc6-14",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Chaos Warp (0.75), Arid Mesa (0.72), Scalding Tarn (0.72)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Fabricate",
+      "neighbours": [
+        {
+          "name": "Chaos Warp",
+          "score": 0.7459
+        },
+        {
+          "name": "Arid Mesa",
+          "score": 0.7247
+        },
+        {
+          "name": "Scalding Tarn",
+          "score": 0.724
+        }
+      ]
+    },
+    {
+      "id": "S-1cd46fc6-15",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Fabricate",
+      "state": "seen",
+      "channels": [
+        "tutor"
+      ]
+    },
+    {
+      "id": "S-1cd46fc6-16",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 4 of 4 named card(s) read; an OLDER list of this branch: 5 rows better, 8 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": false,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-1cd46fc6-17",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 309.97 -> 161.48, a change of -148.49 (-48%) [-155.5975, -141.3761] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -148.4868,
+      "ci95": [
+        -155.5975,
+        -141.3761
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-1cd46fc6-18",
+      "kind": "goldfish_row",
+      "text": "killed by T10: no call — the gap of 0.002 is smaller than the 0.002 this run can resolve [-0.0041, -0.0007] — noise",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0024,
+      "ci95": [
+        -0.0041,
+        -0.0007
+      ],
+      "measure": "killed by T10",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-1cd46fc6-19",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 17.17 -> 15.09, a change of -2.08 (-12%) [-2.2967, -1.8635] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -2.0801,
+      "ci95": [
+        -2.2967,
+        -1.8635
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-1cd46fc6-20",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 26.95 -> 20.03, a change of -6.92 (-26%) [-7.2863, -6.5621] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -6.9242,
+      "ci95": [
+        -7.2863,
+        -6.5621
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-1cd46fc6-21",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 34 in 100, a swing of 3 games per 100 [0.0237, 0.0377] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0307,
+      "ci95": [
+        0.0237,
+        0.0377
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-1cd46fc6-22",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0054, 0.014] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0097,
+      "ci95": [
+        0.0054,
+        0.014
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 4,
+    "seen": [
+      "Enlightened Tutor",
+      "Long-Term Plans",
+      "Search for Glory",
+      "Fabricate"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "e1f43629cdb68b8c7cf9aba6542f7655f23236e875bd54e32fda1f33422f8486",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T20:14:08-08:00",
+    "facts": 22
+  }
+}
