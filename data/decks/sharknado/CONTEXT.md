@@ -1,6 +1,6 @@
 # Shabraz, the Skyshark + Brallin, Skyshark Rider — Deck Context
 
-<!-- ctx:written-for version=v3.0.0 sha=55ebf09cf33f at=2026-11-13 -->
+<!-- ctx:written-for version=v3.0.0 sha=55ebf09cf33f at=2026-11-25 -->
 
 <!-- ctx:gen summary -->
 - **Commander:** [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) + [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider)
@@ -12,47 +12,43 @@
 
 ## Summary
 
-This is the Sharknado, now a Shabraz-first deck. [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) and [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider) are still the partner commanders, in white, blue and red, but almost every line goes through Shabraz. He flies, and every card drawn is a +1/+1 counter on him and a life for you. So the deck is built on one axis: draw cards, and the shark grows.
+This is the Sharknado, a Shabraz-first deck and, in Sean's words, "a bit of a theme/gaga deck". [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) and [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider) are the partner commanders, in white, blue and red, but almost every line goes through Shabraz. He flies, and every card drawn is a +1/+1 counter on him and a life for you.
 
-The plan has three steps. Draw to grow him. Protect him the moment he lands, with [Swiftfoot Boots](https://manamap.seanmacrae.com/viz/index.html?cards=Swiftfoot+Boots), [Shelter](https://manamap.seanmacrae.com/viz/index.html?cards=Shelter) and [Slip Out the Back](https://manamap.seanmacrae.com/viz/index.html?cards=Slip+Out+the+Back). Then make him big and evasive, with [Fireshrieker](https://manamap.seanmacrae.com/viz/index.html?cards=Fireshrieker) and [Lizard Blades](https://manamap.seanmacrae.com/viz/index.html?cards=Lizard+Blades) for double strike. [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider) is cast late, as the second road, when [Torbran, Thane of Red Fell](https://manamap.seanmacrae.com/viz/index.html?cards=Torbran%2C+Thane+of+Red+Fell) or [Gratuitous Violence](https://manamap.seanmacrae.com/viz/index.html?cards=Gratuitous+Violence) is out or when a rider needs trample.
+Sean restated the strategy on 2026-11-25, in his own words: "land the shark, make it big through card draw, give humans flying (evasive attackers/blockers), make treasure, wheel and do big damage with a flying shark, take a person or two out with commander damage." Everything below is read against that sentence.
 
-This came from Sean's note after game 007, when the old list felt clunky, slow, brittle and convoluted. The wheel-and-burn engine, where every discard pinged the table, was traded away. The wheels that stay are the draw-sevens, and each one is a pile of counters on Shabraz. They are never cut.
+The sleeved list is v3.0.0 (V14). It does most of that: it draws, protects the shark, and wheels. It is thin on the Treasure and the "artifacts to sac" half, and it still carries the red damage multipliers from an older plan. The list in development, jaws-v1, is the attempt to close that gap. It is described under Change history, because most of its cards are not in the 99 yet.
 
-Merged as v3.0.0 on 2026-11-10 and sleeved the same day: twelve cards from his bulk, nine printed proxies, two Islands. Two games have been played on it, both losses, and Sean is happy with how it works: in game 009 he said it "did its thing, was a real threat" and that Shabraz "worked the table". The bracket line above is the gate's word on where the list sits.
+Sean's own verdict on how it plays, after game 009: it "did its thing, was a real threat" and Shabraz "worked the table". The target is the A table: optimized bracket 3, fast and unforgiving, with Purphoros pingers, Krenko and Tiny Bones. The seat notes live in `data/opponents/*/NOTES.md`.
 
 ## How it plays
 
-**The plan.** Land Shabraz, keep him alive, feed him cards, swing in the air. He is the default winner by 21 commander damage. [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider) stays in the command zone until the board wants him.
+**The plan, in Sean's order.** Land the shark. Make it big through card draw. Give Humans flying so they attack and block in the air. Make Treasure. Wheel, and hit hard with a flying Shabraz. Take a player or two out with commander damage. [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) wins by himself on commander damage. [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider) stays in the command zone until the board wants him.
 
-**Draw that grows him every turn.** The cheap ways to draw are the heart of the new list. [Valeria Richards, Precocious](https://manamap.seanmacrae.com/viz/index.html?cards=Valeria+Richards%2C+Precocious) makes noncreature spells cost one less and draws on the first one each turn. [Archmage Emeritus](https://manamap.seanmacrae.com/viz/index.html?cards=Archmage+Emeritus) draws on every instant and sorcery, so the cantrips and draw-sevens pay twice. [Brainstorm](https://manamap.seanmacrae.com/viz/index.html?cards=Brainstorm) and [Shelter](https://manamap.seanmacrae.com/viz/index.html?cards=Shelter) are a card each for a single mana. [Rhystic Study](https://manamap.seanmacrae.com/viz/index.html?cards=Rhystic+Study) and [Faerie Mastermind](https://manamap.seanmacrae.com/viz/index.html?cards=Faerie+Mastermind) draw off what the table does, and [Consecrated Sphinx](https://manamap.seanmacrae.com/viz/index.html?cards=Consecrated+Sphinx) draws two every time an opponent draws. [Teferi, Master of Time](https://manamap.seanmacrae.com/viz/index.html?cards=Teferi%2C+Master+of+Time) draws on anyone's turn and [Kitsa, Otterball Elite](https://manamap.seanmacrae.com/viz/index.html?cards=Kitsa%2C+Otterball+Elite) loots. Kitsa is on the keep list.
+**Land the shark and keep him alive.** The plan is one five-drop that dies to everything, so the shield is part of the plan. [Swiftfoot Boots](https://manamap.seanmacrae.com/viz/index.html?cards=Swiftfoot+Boots) gives hexproof and haste. [Shelter](https://manamap.seanmacrae.com/viz/index.html?cards=Shelter) gives protection from a colour and draws. [Slip Out the Back](https://manamap.seanmacrae.com/viz/index.html?cards=Slip+Out+the+Back) adds a counter and phases him out. [Loran's Escape](https://manamap.seanmacrae.com/viz/index.html?cards=Loran%27s+Escape) gives hexproof and indestructible. [Flawless Maneuver](https://manamap.seanmacrae.com/viz/index.html?cards=Flawless+Maneuver) and [Deflecting Swat](https://manamap.seanmacrae.com/viz/index.html?cards=Deflecting+Swat) are free with a commander out. [Grand Abolisher](https://manamap.seanmacrae.com/viz/index.html?cards=Grand+Abolisher) stops the table casting on your turn. [Otawara, Soaring City](https://manamap.seanmacrae.com/viz/index.html?cards=Otawara%2C+Soaring+City) can bounce a threat.
 
-**Humans that draw and fly.** Shabraz can give one Human flying for a single white or blue mana, so a cheap Human that draws is both an engine and an evasive attacker. [Willie Lumpkin, Postman](https://manamap.seanmacrae.com/viz/index.html?cards=Willie+Lumpkin%2C+Postman) cannot be blocked and draws when he connects. [Sokka, Lateral Strategist](https://manamap.seanmacrae.com/viz/index.html?cards=Sokka%2C+Lateral+Strategist) draws when he attacks with company. [Shang-Chi and the Ten Rings](https://manamap.seanmacrae.com/viz/index.html?cards=Shang-Chi+and+the+Ten+Rings) grows on every card you draw. [Esper Sentinel](https://manamap.seanmacrae.com/viz/index.html?cards=Esper+Sentinel) draws when the table casts its first noncreature spell. Sean loves these. [Enduring Curiosity](https://manamap.seanmacrae.com/viz/index.html?cards=Enduring+Curiosity) draws for every creature that connects, flies in with flash, and comes back as an enchantment when it dies. [Mask of Memory](https://manamap.seanmacrae.com/viz/index.html?cards=Mask+of+Memory) draws two on a hit, for two counters.
+**Make him big through card draw.** [Valeria Richards, Precocious](https://manamap.seanmacrae.com/viz/index.html?cards=Valeria+Richards%2C+Precocious) makes noncreature spells cost one less and draws on the first one each turn. [Archmage Emeritus](https://manamap.seanmacrae.com/viz/index.html?cards=Archmage+Emeritus) draws on every instant and sorcery. [Brainstorm](https://manamap.seanmacrae.com/viz/index.html?cards=Brainstorm) and [Shelter](https://manamap.seanmacrae.com/viz/index.html?cards=Shelter) are a card each for one mana. [Rhystic Study](https://manamap.seanmacrae.com/viz/index.html?cards=Rhystic+Study) and [Faerie Mastermind](https://manamap.seanmacrae.com/viz/index.html?cards=Faerie+Mastermind) draw off what the table does, and [Consecrated Sphinx](https://manamap.seanmacrae.com/viz/index.html?cards=Consecrated+Sphinx) draws two every time an opponent draws. [Teferi, Master of Time](https://manamap.seanmacrae.com/viz/index.html?cards=Teferi%2C+Master+of+Time) draws on anyone's turn and [Kitsa, Otterball Elite](https://manamap.seanmacrae.com/viz/index.html?cards=Kitsa%2C+Otterball+Elite) loots. [Shark Typhoon](https://manamap.seanmacrae.com/viz/index.html?cards=Shark+Typhoon) is the namesake: it cycles at instant speed for a card, or leaves a flying Shark.
 
-**Double the draws.** [Teferi's Ageless Insight](https://manamap.seanmacrae.com/viz/index.html?cards=Teferi%27s+Ageless+Insight) and [Bard, King of Dale](https://manamap.seanmacrae.com/viz/index.html?cards=Bard%2C+King+of+Dale) each double every extra draw. [Lae'zel, Vlaakith's Champion](https://manamap.seanmacrae.com/viz/index.html?cards=Lae%27zel%2C+Vlaakith%27s+Champion) adds one more to every counter put on Shabraz.
+**Double the draws.** [Teferi's Ageless Insight](https://manamap.seanmacrae.com/viz/index.html?cards=Teferi%27s+Ageless+Insight) and [Bard, King of Dale](https://manamap.seanmacrae.com/viz/index.html?cards=Bard%2C+King+of+Dale) each double what you draw, and Bard doubles tokens too. Sean calls Teferi's Ageless Insight "doing WORK!!!! for shabraz". [Lae'zel, Vlaakith's Champion](https://manamap.seanmacrae.com/viz/index.html?cards=Lae%27zel%2C+Vlaakith%27s+Champion) adds one more counter to every counter put on Shabraz.
 
-**Draw-sevens.** The one-shot wheels are [Wheel of Fortune](https://manamap.seanmacrae.com/viz/index.html?cards=Wheel+of+Fortune), [Windfall](https://manamap.seanmacrae.com/viz/index.html?cards=Windfall), [Time Reversal](https://manamap.seanmacrae.com/viz/index.html?cards=Time+Reversal), [Echo of Eons](https://manamap.seanmacrae.com/viz/index.html?cards=Echo+of+Eons) (flashback too), [Reforge the Soul](https://manamap.seanmacrae.com/viz/index.html?cards=Reforge+the+Soul) and [Winds of Change](https://manamap.seanmacrae.com/viz/index.html?cards=Winds+of+Change). [Will of the Jeskai](https://manamap.seanmacrae.com/viz/index.html?cards=Will+of+the+Jeskai) is a wheel and a second cast of your instants and sorceries, but only with a commander out. [Magus of the Wheel](https://manamap.seanmacrae.com/viz/index.html?cards=Magus+of+the+Wheel) and [Jace's Archivist](https://manamap.seanmacrae.com/viz/index.html?cards=Jace%27s+Archivist) are wheels on a body. Each is a pile of counters on Shabraz, so none is a cut. Cast one under [Consecrated Sphinx](https://manamap.seanmacrae.com/viz/index.html?cards=Consecrated+Sphinx) and the table draws as well. Stack 009 proved that line on an earlier list, and the Sphinx and Wheel of Fortune are both still here.
+**Humans that draw and fly.** Shabraz can give a Human flying for a single white or blue mana, so a cheap Human that draws is both an engine and an evasive attacker or blocker. [Willie Lumpkin, Postman](https://manamap.seanmacrae.com/viz/index.html?cards=Willie+Lumpkin%2C+Postman) cannot be blocked and draws when he connects. [Sokka, Lateral Strategist](https://manamap.seanmacrae.com/viz/index.html?cards=Sokka%2C+Lateral+Strategist) draws when he attacks with company. [Shang-Chi and the Ten Rings](https://manamap.seanmacrae.com/viz/index.html?cards=Shang-Chi+and+the+Ten+Rings) grows on every card you draw. [Esper Sentinel](https://manamap.seanmacrae.com/viz/index.html?cards=Esper+Sentinel) draws when the table casts its first noncreature spell. [Enduring Curiosity](https://manamap.seanmacrae.com/viz/index.html?cards=Enduring+Curiosity) draws for every creature that connects, flies in with flash, and comes back as an enchantment. [Mask of Memory](https://manamap.seanmacrae.com/viz/index.html?cards=Mask+of+Memory) draws on a hit. Sean is having "way more fun with the draw/discard human side of things, and Shabraz can give them flying".
 
-**Protect him on landing.** The whole plan is one five-drop that dies to everything, so the shield is part of the plan, not an afterthought. [Swiftfoot Boots](https://manamap.seanmacrae.com/viz/index.html?cards=Swiftfoot+Boots) gives hexproof and haste. [Shelter](https://manamap.seanmacrae.com/viz/index.html?cards=Shelter) gives protection from a colour and draws. [Slip Out the Back](https://manamap.seanmacrae.com/viz/index.html?cards=Slip+Out+the+Back) adds a counter and phases him out. [Loran's Escape](https://manamap.seanmacrae.com/viz/index.html?cards=Loran%27s+Escape) gives hexproof and indestructible. [Flawless Maneuver](https://manamap.seanmacrae.com/viz/index.html?cards=Flawless+Maneuver) and [Deflecting Swat](https://manamap.seanmacrae.com/viz/index.html?cards=Deflecting+Swat) are free with a commander out. [Grand Abolisher](https://manamap.seanmacrae.com/viz/index.html?cards=Grand+Abolisher) stops the table casting on your turn. [Otawara, Soaring City](https://manamap.seanmacrae.com/viz/index.html?cards=Otawara%2C+Soaring+City) can bounce a threat.
+**Make Treasure.** This is the thin part of the sleeved list. [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe) makes a Treasure when the table draws, and Bard doubles it. [Rhystic Study](https://manamap.seanmacrae.com/viz/index.html?cards=Rhystic+Study), [Esper Sentinel](https://manamap.seanmacrae.com/viz/index.html?cards=Esper+Sentinel) and [Faerie Mastermind](https://manamap.seanmacrae.com/viz/index.html?cards=Faerie+Mastermind) punish the table's draws too. Beyond that the 99 has little that makes Treasure or any artifact to sacrifice. Sean wants "blood or treasure... just artifacts to sac". The Numbers section's artifact-token row is the measure of that gap.
 
-**Make him big and evasive.** [Fireshrieker](https://manamap.seanmacrae.com/viz/index.html?cards=Fireshrieker) and [Lizard Blades](https://manamap.seanmacrae.com/viz/index.html?cards=Lizard+Blades) give double strike, and [Blade Historian](https://manamap.seanmacrae.com/viz/index.html?cards=Blade+Historian) gives it to every attacker. [Akroma's Will](https://manamap.seanmacrae.com/viz/index.html?cards=Akroma%27s+Will) gives the team flying and double strike, and protects them with a commander out. [Brotherhood Regalia](https://manamap.seanmacrae.com/viz/index.html?cards=Brotherhood+Regalia) makes him unblockable with ward. [Gratuitous Violence](https://manamap.seanmacrae.com/viz/index.html?cards=Gratuitous+Violence) and [Fiery Emancipation](https://manamap.seanmacrae.com/viz/index.html?cards=Fiery+Emancipation) double and triple the damage. Shabraz is not red, so [Torbran, Thane of Red Fell](https://manamap.seanmacrae.com/viz/index.html?cards=Torbran%2C+Thane+of+Red+Fell) does not add to his commander damage. The two enchantments do.
+**Wheel and hit hard.** Wheels are how the shark gets big in one turn. [Wheel of Fortune](https://manamap.seanmacrae.com/viz/index.html?cards=Wheel+of+Fortune), [Windfall](https://manamap.seanmacrae.com/viz/index.html?cards=Windfall), [Time Reversal](https://manamap.seanmacrae.com/viz/index.html?cards=Time+Reversal), [Echo of Eons](https://manamap.seanmacrae.com/viz/index.html?cards=Echo+of+Eons), [Reforge the Soul](https://manamap.seanmacrae.com/viz/index.html?cards=Reforge+the+Soul) and [Winds of Change](https://manamap.seanmacrae.com/viz/index.html?cards=Winds+of+Change) are the one-shot wheels. [Will of the Jeskai](https://manamap.seanmacrae.com/viz/index.html?cards=Will+of+the+Jeskai) is a wheel that also grants flashback to your instants and sorceries, with a commander out. [Magus of the Wheel](https://manamap.seanmacrae.com/viz/index.html?cards=Magus+of+the+Wheel) and [Jace's Archivist](https://manamap.seanmacrae.com/viz/index.html?cards=Jace%27s+Archivist) are wheels on a body. Cast one under [Consecrated Sphinx](https://manamap.seanmacrae.com/viz/index.html?cards=Consecrated+Sphinx) and the table draws as well. Stack 009 proved that line on an earlier list, and the Sphinx and Wheel of Fortune are both still here. Sean's caution is "too many wheels, not enough permanent spells": a wheel is a spell, and the deck wants more things that stay on the table. [Windfall](https://manamap.seanmacrae.com/viz/index.html?cards=Windfall) he calls "an amazing card in this deck".
 
-**Brallin, late.** He is cast once Shabraz is safe. His red ability gives trample to a rider. Torbran and the two damage enchantments are real commander-damage cards for him. His discard ping is no longer the plan. He is a pivot, and game 009 showed the other use: when Shabraz is not castable, Brallin comes down a mana cheaper as a blocker, and the discard engine still works with him. Shabraz gives the Humans flying and Brallin gives the shark trample, so spare Treasure can buy either evasion on the attack or a flying blocker on defence.
+**Make him evasive and finish.** [Fireshrieker](https://manamap.seanmacrae.com/viz/index.html?cards=Fireshrieker) and [Lizard Blades](https://manamap.seanmacrae.com/viz/index.html?cards=Lizard+Blades) give double strike, and [Blade Historian](https://manamap.seanmacrae.com/viz/index.html?cards=Blade+Historian) gives it to every attacker. [Akroma's Will](https://manamap.seanmacrae.com/viz/index.html?cards=Akroma%27s+Will) gives the team flying and double strike. [Brotherhood Regalia](https://manamap.seanmacrae.com/viz/index.html?cards=Brotherhood+Regalia) makes him unblockable with ward. A flying, double-striking Shabraz with a pile of counters takes a player out in a swing or two.
 
-**Spend the Treasure on the Humans.** Game 009's lesson. A Human in hand is a flying blocker the moment Shabraz is out and there is mana to spare, so cast it rather than hold the Treasure. Humans with flying and the shark with trample, all paid for with Treasure, was the standout play of the night.
+**Brallin, a side road.** He is cast once Shabraz is safe, or as the fallback when Shabraz is not castable: he costs one less and blocks. His discard pings are an old plan and a side road, not the strategy. [Torbran, Thane of Red Fell](https://manamap.seanmacrae.com/viz/index.html?cards=Torbran%2C+Thane+of+Red+Fell), [Gratuitous Violence](https://manamap.seanmacrae.com/viz/index.html?cards=Gratuitous+Violence) and [Fiery Emancipation](https://manamap.seanmacrae.com/viz/index.html?cards=Fiery+Emancipation) are the red damage multipliers from that plan. Sean now calls Torbran "weak in this deck now". Shabraz is not red, so Torbran adds nothing to his commander damage. The two enchantments do help when Shabraz connects, but they are late finishers. They stay in the 99 until a swap says otherwise.
 
-**The table pays for its draws.** [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe) makes a Treasure when the table draws and does not pay. [Rhystic Study](https://manamap.seanmacrae.com/viz/index.html?cards=Rhystic+Study), [Esper Sentinel](https://manamap.seanmacrae.com/viz/index.html?cards=Esper+Sentinel) and [Faerie Mastermind](https://manamap.seanmacrae.com/viz/index.html?cards=Faerie+Mastermind) work the same way. [Shark Typhoon](https://manamap.seanmacrae.com/viz/index.html?cards=Shark+Typhoon) cycles at instant speed, which is a card for Shabraz, and leaves a flying Shark.
+**Spend the Treasure.** Game 009's lesson. A Human in hand is a flying blocker the moment Shabraz is out and there is mana to spare, so cast it rather than hold the Treasure.
 
-**Answers.** [Swords to Plowshares](https://manamap.seanmacrae.com/viz/index.html?cards=Swords+to+Plowshares), [Get Lost](https://manamap.seanmacrae.com/viz/index.html?cards=Get+Lost) and [Chaos Warp](https://manamap.seanmacrae.com/viz/index.html?cards=Chaos+Warp) clear a creature or any permanent. [Negate](https://manamap.seanmacrae.com/viz/index.html?cards=Negate) and [Stubborn Denial](https://manamap.seanmacrae.com/viz/index.html?cards=Stubborn+Denial) counter noncreature spells. [Prismari Command](https://manamap.seanmacrae.com/viz/index.html?cards=Prismari+Command) is two damage, a draw-and-discard, or an artifact kill. Nothing here counters a creature spell.
+**The mulligan.** A hand with no play by the third turn goes back. Game 009's land-heavy keep had no creature and no blocker, and the whole table attacked.
 
-**Mana.** Rocks come early: [Sol Ring](https://manamap.seanmacrae.com/viz/index.html?cards=Sol+Ring), [Mind Stone](https://manamap.seanmacrae.com/viz/index.html?cards=Mind+Stone), [Arcane Signet](https://manamap.seanmacrae.com/viz/index.html?cards=Arcane+Signet), the four Signets and Talismans, and [Fellwar Stone](https://manamap.seanmacrae.com/viz/index.html?cards=Fellwar+Stone). Four fetches and the dual lands fix three colours. The Numbers block describes the list on disk when it says so on its own line.
+**Answer the threat the table names.** From game 008. When the table names the threat and only you can answer it, answer it that turn, before landing the shark. [Swords to Plowshares](https://manamap.seanmacrae.com/viz/index.html?cards=Swords+to+Plowshares), [Get Lost](https://manamap.seanmacrae.com/viz/index.html?cards=Get+Lost) and [Chaos Warp](https://manamap.seanmacrae.com/viz/index.html?cards=Chaos+Warp) clear a creature or any permanent. [Negate](https://manamap.seanmacrae.com/viz/index.html?cards=Negate) and [Stubborn Denial](https://manamap.seanmacrae.com/viz/index.html?cards=Stubborn+Denial) counter noncreature spells only. [Prismari Command](https://manamap.seanmacrae.com/viz/index.html?cards=Prismari+Command) is two damage, a draw-and-discard, or an artifact kill. Nothing in the 99 counters a creature spell, which is the gap the A table exposes.
 
-**What the goldfish can say.** It has no blockers and no removal, and it does not model the modal plan, protection or the equipment. Read the Numbers section as a ceiling. The Numbers section needs a reading for v3.0.0.
+**What the goldfish can say.** It has no blockers and no removal, and it does not model the modal plan, protection or the equipment. Read the Numbers section as a ceiling.
 
-**Keep the land-and-ramp hand and cast the first commander on curve.** This is Sean's play rule since 2026-10-27. Q012 and Q013 in Open questions hold the proof. The commander and the cantrips dig to the payoffs.
 
-**The fast table: Alex's warp deck.** Tannuk dies to [Swords to Plowshares](https://manamap.seanmacrae.com/viz/index.html?cards=Swords+to+Plowshares), [Get Lost](https://manamap.seanmacrae.com/viz/index.html?cards=Get+Lost) or [Chaos Warp](https://manamap.seanmacrae.com/viz/index.html?cards=Chaos+Warp). The Sundial dies to [Chaos Warp](https://manamap.seanmacrae.com/viz/index.html?cards=Chaos+Warp), [Prismari Command](https://manamap.seanmacrae.com/viz/index.html?cards=Prismari+Command) or [Otawara, Soaring City](https://manamap.seanmacrae.com/viz/index.html?cards=Otawara%2C+Soaring+City). Hold [Chaos Warp](https://manamap.seanmacrae.com/viz/index.html?cards=Chaos+Warp) at that table. The seat's notes live in `data/opponents/tannuk-warp/NOTES.md`.
-
-**What the table misreads.** They see a draw deck and two creatures and rank you low. A flying shark with a pile of counters and double strike is the correction.
 
 ## Cards by role
 
@@ -60,7 +56,19 @@ Merged as v3.0.0 on 2026-11-10 and sleeved the same day: twelve cards from his b
 - [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark)
 - [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider)
 
-### draw that grows Shabraz every turn
+### land the shark and keep him alive
+- [Swiftfoot Boots](https://manamap.seanmacrae.com/viz/index.html?cards=Swiftfoot+Boots)
+- [Shelter](https://manamap.seanmacrae.com/viz/index.html?cards=Shelter)
+- [Slip Out the Back](https://manamap.seanmacrae.com/viz/index.html?cards=Slip+Out+the+Back)
+- [Loran's Escape](https://manamap.seanmacrae.com/viz/index.html?cards=Loran%27s+Escape)
+- [Flawless Maneuver](https://manamap.seanmacrae.com/viz/index.html?cards=Flawless+Maneuver)
+- [Deflecting Swat](https://manamap.seanmacrae.com/viz/index.html?cards=Deflecting+Swat)
+- [Grand Abolisher](https://manamap.seanmacrae.com/viz/index.html?cards=Grand+Abolisher)
+- [Otawara, Soaring City](https://manamap.seanmacrae.com/viz/index.html?cards=Otawara%2C+Soaring+City)
+- [Akroma's Will](https://manamap.seanmacrae.com/viz/index.html?cards=Akroma%27s+Will)
+- [Brotherhood Regalia](https://manamap.seanmacrae.com/viz/index.html?cards=Brotherhood+Regalia)
+
+### make it big through card draw
 - [Valeria Richards, Precocious](https://manamap.seanmacrae.com/viz/index.html?cards=Valeria+Richards%2C+Precocious)
 - [Archmage Emeritus](https://manamap.seanmacrae.com/viz/index.html?cards=Archmage+Emeritus)
 - [Brainstorm](https://manamap.seanmacrae.com/viz/index.html?cards=Brainstorm)
@@ -74,9 +82,11 @@ Merged as v3.0.0 on 2026-11-10 and sleeved the same day: twelve cards from his b
 - [Enduring Curiosity](https://manamap.seanmacrae.com/viz/index.html?cards=Enduring+Curiosity)
 - [Esper Sentinel](https://manamap.seanmacrae.com/viz/index.html?cards=Esper+Sentinel)
 - [Shark Typhoon](https://manamap.seanmacrae.com/viz/index.html?cards=Shark+Typhoon)
-- [Mind Stone](https://manamap.seanmacrae.com/viz/index.html?cards=Mind+Stone)
-- [Fiery Islet](https://manamap.seanmacrae.com/viz/index.html?cards=Fiery+Islet)
-- [Raugrin Triome](https://manamap.seanmacrae.com/viz/index.html?cards=Raugrin+Triome)
+
+### double the draws and the counters
+- [Teferi's Ageless Insight](https://manamap.seanmacrae.com/viz/index.html?cards=Teferi%27s+Ageless+Insight)
+- [Bard, King of Dale](https://manamap.seanmacrae.com/viz/index.html?cards=Bard%2C+King+of+Dale)
+- [Lae'zel, Vlaakith's Champion](https://manamap.seanmacrae.com/viz/index.html?cards=Lae%27zel%2C+Vlaakith%27s+Champion)
 
 ### Humans that draw and fly
 - [Willie Lumpkin, Postman](https://manamap.seanmacrae.com/viz/index.html?cards=Willie+Lumpkin%2C+Postman)
@@ -87,13 +97,13 @@ Merged as v3.0.0 on 2026-11-10 and sleeved the same day: twelve cards from his b
 - [Archmage Emeritus](https://manamap.seanmacrae.com/viz/index.html?cards=Archmage+Emeritus)
 - [Grand Abolisher](https://manamap.seanmacrae.com/viz/index.html?cards=Grand+Abolisher)
 - [Blade Historian](https://manamap.seanmacrae.com/viz/index.html?cards=Blade+Historian)
-
-### double the draws and the counters
-- [Teferi's Ageless Insight](https://manamap.seanmacrae.com/viz/index.html?cards=Teferi%27s+Ageless+Insight)
 - [Bard, King of Dale](https://manamap.seanmacrae.com/viz/index.html?cards=Bard%2C+King+of+Dale)
-- [Lae'zel, Vlaakith's Champion](https://manamap.seanmacrae.com/viz/index.html?cards=Lae%27zel%2C+Vlaakith%27s+Champion)
 
-### draw-sevens and wheels (never cut a draw-seven)
+### make Treasure (thin in this list)
+- [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe)
+- [Bard, King of Dale](https://manamap.seanmacrae.com/viz/index.html?cards=Bard%2C+King+of+Dale)
+
+### wheel the table
 - [Wheel of Fortune](https://manamap.seanmacrae.com/viz/index.html?cards=Wheel+of+Fortune)
 - [Windfall](https://manamap.seanmacrae.com/viz/index.html?cards=Windfall)
 - [Time Reversal](https://manamap.seanmacrae.com/viz/index.html?cards=Time+Reversal)
@@ -106,36 +116,23 @@ Merged as v3.0.0 on 2026-11-10 and sleeved the same day: twelve cards from his b
 - [Collective Defiance](https://manamap.seanmacrae.com/viz/index.html?cards=Collective+Defiance)
 - [Prismari Command](https://manamap.seanmacrae.com/viz/index.html?cards=Prismari+Command)
 
-### protect Shabraz the moment he lands
-- [Swiftfoot Boots](https://manamap.seanmacrae.com/viz/index.html?cards=Swiftfoot+Boots)
-- [Shelter](https://manamap.seanmacrae.com/viz/index.html?cards=Shelter)
-- [Slip Out the Back](https://manamap.seanmacrae.com/viz/index.html?cards=Slip+Out+the+Back)
-- [Loran's Escape](https://manamap.seanmacrae.com/viz/index.html?cards=Loran%27s+Escape)
-- [Flawless Maneuver](https://manamap.seanmacrae.com/viz/index.html?cards=Flawless+Maneuver)
-- [Deflecting Swat](https://manamap.seanmacrae.com/viz/index.html?cards=Deflecting+Swat)
-- [Grand Abolisher](https://manamap.seanmacrae.com/viz/index.html?cards=Grand+Abolisher)
-- [Akroma's Will](https://manamap.seanmacrae.com/viz/index.html?cards=Akroma%27s+Will)
-- [Brotherhood Regalia](https://manamap.seanmacrae.com/viz/index.html?cards=Brotherhood+Regalia)
-- [Otawara, Soaring City](https://manamap.seanmacrae.com/viz/index.html?cards=Otawara%2C+Soaring+City)
-
-### make him big and evasive
+### big damage in the air, commander damage to close
 - [Fireshrieker](https://manamap.seanmacrae.com/viz/index.html?cards=Fireshrieker)
 - [Lizard Blades](https://manamap.seanmacrae.com/viz/index.html?cards=Lizard+Blades)
 - [Blade Historian](https://manamap.seanmacrae.com/viz/index.html?cards=Blade+Historian)
 - [Akroma's Will](https://manamap.seanmacrae.com/viz/index.html?cards=Akroma%27s+Will)
 - [Brotherhood Regalia](https://manamap.seanmacrae.com/viz/index.html?cards=Brotherhood+Regalia)
-- [Gratuitous Violence](https://manamap.seanmacrae.com/viz/index.html?cards=Gratuitous+Violence)
-- [Fiery Emancipation](https://manamap.seanmacrae.com/viz/index.html?cards=Fiery+Emancipation)
 - [Lae'zel, Vlaakith's Champion](https://manamap.seanmacrae.com/viz/index.html?cards=Lae%27zel%2C+Vlaakith%27s+Champion)
 - [Shark Typhoon](https://manamap.seanmacrae.com/viz/index.html?cards=Shark+Typhoon)
 
-### Brallin's late road (keep: Torbran)
+### the old ping plan and Brallin's side road
 - [Torbran, Thane of Red Fell](https://manamap.seanmacrae.com/viz/index.html?cards=Torbran%2C+Thane+of+Red+Fell)
 - [Gratuitous Violence](https://manamap.seanmacrae.com/viz/index.html?cards=Gratuitous+Violence)
 - [Fiery Emancipation](https://manamap.seanmacrae.com/viz/index.html?cards=Fiery+Emancipation)
 - [Collective Defiance](https://manamap.seanmacrae.com/viz/index.html?cards=Collective+Defiance)
+- [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider)
 
-### the table pays for its draws
+### make the table pay for its draws
 - [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe)
 - [Rhystic Study](https://manamap.seanmacrae.com/viz/index.html?cards=Rhystic+Study)
 - [Consecrated Sphinx](https://manamap.seanmacrae.com/viz/index.html?cards=Consecrated+Sphinx)
@@ -152,7 +149,7 @@ Merged as v3.0.0 on 2026-11-10 and sleeved the same day: twelve cards from his b
 - [Deflecting Swat](https://manamap.seanmacrae.com/viz/index.html?cards=Deflecting+Swat)
 - [Otawara, Soaring City](https://manamap.seanmacrae.com/viz/index.html?cards=Otawara%2C+Soaring+City)
 
-### rocks that get the first commander out
+### rocks that get the shark out on time
 - [Sol Ring](https://manamap.seanmacrae.com/viz/index.html?cards=Sol+Ring)
 - [Mind Stone](https://manamap.seanmacrae.com/viz/index.html?cards=Mind+Stone)
 - [Arcane Signet](https://manamap.seanmacrae.com/viz/index.html?cards=Arcane+Signet)
@@ -165,7 +162,7 @@ Merged as v3.0.0 on 2026-11-10 and sleeved the same day: twelve cards from his b
 - [Talisman of Progress](https://manamap.seanmacrae.com/viz/index.html?cards=Talisman+of+Progress)
 
 ### lands
-Three colours from four fetches, shocks, pathways, a Triome and the untapped duals. The Island count went up by one with this change, and [Gemstone Caverns](https://manamap.seanmacrae.com/viz/index.html?cards=Gemstone+Caverns) can start on the battlefield.
+Three colours from fetches, shocks, pathways, a Triome and the untapped duals. [Gemstone Caverns](https://manamap.seanmacrae.com/viz/index.html?cards=Gemstone+Caverns) can start on the battlefield, and [Otawara, Soaring City](https://manamap.seanmacrae.com/viz/index.html?cards=Otawara%2C+Soaring+City) doubles as a bounce spell. Fiery Islet and Raugrin Triome cantrip.
 - [Adarkar Wastes](https://manamap.seanmacrae.com/viz/index.html?cards=Adarkar+Wastes)
 - [Arid Mesa](https://manamap.seanmacrae.com/viz/index.html?cards=Arid+Mesa)
 - [Battlefield Forge](https://manamap.seanmacrae.com/viz/index.html?cards=Battlefield+Forge)
@@ -185,7 +182,6 @@ Three colours from four fetches, shocks, pathways, a Triome and the untapped dua
 - [Mana Confluence](https://manamap.seanmacrae.com/viz/index.html?cards=Mana+Confluence)
 - [Mountain](https://manamap.seanmacrae.com/viz/index.html?cards=Mountain)
 - [Needleverge Pathway // Pillarverge Pathway](https://manamap.seanmacrae.com/viz/index.html?cards=Needleverge+Pathway+%2F%2F+Pillarverge+Pathway)
-- [Otawara, Soaring City](https://manamap.seanmacrae.com/viz/index.html?cards=Otawara%2C+Soaring+City)
 - [Polluted Delta](https://manamap.seanmacrae.com/viz/index.html?cards=Polluted+Delta)
 - [Raugrin Triome](https://manamap.seanmacrae.com/viz/index.html?cards=Raugrin+Triome)
 - [Riverglide Pathway // Lavaglide Pathway](https://manamap.seanmacrae.com/viz/index.html?cards=Riverglide+Pathway+%2F%2F+Lavaglide+Pathway)
@@ -232,7 +228,7 @@ Goldfish, 10,000 seeded games, measured on v3.0.0 (V14), 2026-11-10. Each group 
 - Forge (an optional probe, not a gate): last run 2026-10-25, 6/40 won (15% (95% CI 7%–29%)) on V9 — on an older list
 <!-- /ctx:gen numbers -->
 
-The goldfish does not model the modal plan, the equipment, protection or interaction, so treat these as a ceiling and read the block's own line for which version it describes. The block was measured on an earlier list, before the Shabraz-first change. What is missing: a reading for v3.0.0, how often Shabraz is protected when he lands, and how often a cheap Human carries counters in the air.
+The goldfish block above was measured on v3.0.0 (V14), so it describes the sleeved list. The Krang and Jaws rows read empty because neither is in V14: they belong to jaws-v1. The Brallin row is labelled the old ping plan. The goldfish has no blockers, no removal and no opponents, and it cannot see protection or the equipment, so it is a ceiling. What is missing: a reading of how often Shabraz survives landing at the A table, and how many Humans carry counters in the air.
 
 ## Pilot notes
 
@@ -241,41 +237,47 @@ The goldfish does not model the modal plan, the equipment, protection or interac
 - **How games ended:** raced 4, combo 3, stalled 1, won 1
 <!-- /ctx:gen record -->
 
-Games 001 to 007 were played on lists before v3.0.0. The cards they name, such as Embercleave, Ledger Shredder, Marauding Mako and Rielle, have since left. Games 008 and 009 are on v3.0.0. The full retelling is in the log.
+**The strategy, restated 2026-11-25, in Sean's words.** "land the shark, make it big through card draw, give humans flying (evasive attackers/blockers), make treasure, wheel and do big damage with a flying shark, take a person or two out with commander damage." And: "blood or treasure... just artifacts to sac... wheels to find jaws... nice smooth distribution of humans/sharks and various sizes, creating treasures, drawing cards, wheeling... all the best red spells and instants and sorceries... some storm and red spell flashback."
 
-**007 (2026-11-05, the last game before this change, v2.3.0).** Sean's words: "it still feels clunky and slow as hell! and it's brittle--two commanders, two taxes, 9 CMC total to get them out.. I found the wheels, got them big and actually could have won... but something about it didn't feel fun... the card draw and discard is laborious.. and all the stack triggers is fine.. but it just feels convoluted a bit lol"
+**What he says about the list itself.**
+- "Nothing is untouchable... I just want the absolute best possible deck that will win at a highly competitive table, so it needs to be precision tuned."
+- There is no keep list. The file was deleted on 2026-11-25: "there is no keep list right now, it's all open!!!!" The old rules (keep Kitsa and Torbran, never cut a draw-seven) are gone.
+- "Too many wheels, not enough permanent spells."
+- "I am having way more fun with the draw/discard human side of things, and Shabraz can give them flying."
+- Torbran is "weak in this deck now". The red multipliers "aren't in our strategy as much anymore". They are the old ping plan.
+- Sharknado is "a bit of a theme/gaga deck", so Jaws is liked for the look as well as the job.
 
-- **The engine worked and it was not fun.** The finisher was not the problem. The stepping through draw and discard was.
-- **Brittle at the front door.** Two commanders, two taxes. The same complaint as 001, 002 and 005. The change moves the weight onto Shabraz and casts Brallin late.
+**What he emphatically kept on 2026-11-25.** These are calls on particular swaps, not a keep list. Anything can still be argued.
+- [Teferi's Ageless Insight](https://manamap.seanmacrae.com/viz/index.html?cards=Teferi%27s+Ageless+Insight), over Council's Judgment (study 020): "doing WORK!!!! for shabraz!!!"
+- [Windfall](https://manamap.seanmacrae.com/viz/index.html?cards=Windfall), over Violent Eruption (study 021): "an amazing card in this deck".
+- [Will of the Jeskai](https://manamap.seanmacrae.com/viz/index.html?cards=Will+of+the+Jeskai): a wheel that grants flashback.
+- [Bard, King of Dale](https://manamap.seanmacrae.com/viz/index.html?cards=Bard%2C+King+of+Dale), over Thraben Inspector (study 018): "keep Bard; keep exploring". It doubles tokens.
+- [Shark Typhoon](https://manamap.seanmacrae.com/viz/index.html?cards=Shark+Typhoon), the namesake.
+- [Sokka, Lateral Strategist](https://manamap.seanmacrae.com/viz/index.html?cards=Sokka%2C+Lateral+Strategist), over Killmonger (study 022): "sokka is probably better than killmonger".
+- [Grand Abolisher](https://manamap.seanmacrae.com/viz/index.html?cards=Grand+Abolisher).
+- Inti, Seneschal of the Sun, which is on jaws-v1.
 
-**008 (2026-11-10, Oliver's house, v3.0.0, a loss to Oliver's Krenko, Mob Boss).** Four-player bracket 3 table, fast and optimized. Oliver landed Krenko and the whole table asked Sean to kill him. Sean held [Swords to Plowshares](https://manamap.seanmacrae.com/viz/index.html?cards=Swords+to+Plowshares) and a second two-mana removal spell, cast Shabraz instead, then passed another turn with mana open. Oliver went off for 30-plus damage in one turn.
-- **Sean's verdict: 100% piloting error, no deck changes.** Right hand, right lines. It needs reps, and the games get tracked before any tuning review.
-- **The rule: when the whole table names the threat and only you can answer it, answer it.** Kill Krenko on sight, the turn he lands, before Oliver untaps. Tempo plays like landing Shabraz wait.
-- **What in this deck answers him:** [Swords to Plowshares](https://manamap.seanmacrae.com/viz/index.html?cards=Swords+to+Plowshares) and [Get Lost](https://manamap.seanmacrae.com/viz/index.html?cards=Get+Lost) remove him outright. [Chaos Warp](https://manamap.seanmacrae.com/viz/index.html?cards=Chaos+Warp) does too. [Otawara, Soaring City](https://manamap.seanmacrae.com/viz/index.html?cards=Otawara%2C+Soaring+City) only sets him back a turn. [Negate](https://manamap.seanmacrae.com/viz/index.html?cards=Negate) and [Stubborn Denial](https://manamap.seanmacrae.com/viz/index.html?cards=Stubborn+Denial) cannot touch a creature spell.
-- **What the game taught about Oliver's deck** lives in `data/opponents/krenko-tokens/NOTES.md`, not here.
+**007 (2026-11-05, v2.3.0).** "it still feels clunky and slow as hell! and it's brittle... the card draw and discard is laborious.. and all the stack triggers is fine.. but it just feels convoluted a bit lol." The engine worked and was not fun. That is why v3.0.0 went to one axis.
 
-**009 (2026-11-12, Steven's house, v3.0.0, a loss in a four-player pod).** The table was Steven's mono-red Magda deck (cheap Dwarves make Treasure, it fetches a big dragon and pops off fast), David's slow Golem deck still being built, and Stuart's Rotcleaver zombies with [Blood Artist](https://manamap.seanmacrae.com/viz/index.html?cards=Blood+Artist) and sacrifice drain. Sean mulliganed once and kept a land-heavy seven with no small creatures and no blockers. He missed a land drop, had no board for the opening turns, and the whole table attacked him. Short of mana for Shabraz, he cast Brallin as the fallback.
-- **The key turn.** [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe) was out with Brallin as the blocker. Sean activated the wheel on legs, [Jace's Archivist](https://manamap.seanmacrae.com/viz/index.html?cards=Jace%27s+Archivist), which pinged the table through Brallin and gave everyone a fresh hand. Tithe paid out a huge pile of Treasure in that one activation, [Faerie Mastermind](https://manamap.seanmacrae.com/viz/index.html?cards=Faerie+Mastermind) kept the table drawing, and Shabraz landed and grew fast on the wheels.
-- **Shabraz did the work.** He swung into Steven's two big dragons, six commander damage got through, and the blocks took out the evasive bodies Steven's deck leans on. Sean's read: Shabraz "did great work and worked the table".
-- **The mistake he named: holding Treasure.** He kept it instead of casting the Humans in hand. Steven swung back, he sacrificed [Esper Sentinel](https://manamap.seanmacrae.com/viz/index.html?cards=Esper+Sentinel) and another Human, blocked with Brallin, and sat at one life. The Humans would have been flying blockers.
-- **[Blood Artist](https://manamap.seanmacrae.com/viz/index.html?cards=Blood+Artist) stayed on Stuart's side.** Every death drained the table and fed Stuart. Remove it early. On Stuart's end step he sacrificed a zombie and the drain finished Sean at one life, one turn before a [Wheel of Fortune](https://manamap.seanmacrae.com/viz/index.html?cards=Wheel+of+Fortune) that was meant to turn the game around. Steven died after him and Stuart took the win.
-- **The thin start was the hand.** Land-heavy, no early creatures, no blockers: no board and early damage from everyone. That is the keep question again (Q011), though the deck was not at fault.
+**008 (2026-11-10, Oliver's house, v3.0.0, a loss to Oliver's Krenko).** The table was Tom on Purphoros, Oliver on Balin and Krenko, Ryan on Tiny Bones: bracket 3, optimized, and fast. Sean held removal, cast Shabraz instead, and Krenko went off. His verdict: "100% piloting error", no deck change.
+- The rule: when the whole table names the threat and only you can answer it, answer it. Kill Purphoros and Krenko on sight.
+- Deny the Sol Ring opener when you can.
+- What the game taught about Oliver's deck lives in `data/opponents/krenko-tokens/NOTES.md`.
+
+**009 (2026-11-12, Steven's house, v3.0.0, a loss).** The table was Steven's mono-red Magda, David's slow Golem deck and Stuart's Rotcleaver zombies with [Blood Artist](https://manamap.seanmacrae.com/viz/index.html?cards=Blood+Artist)-style drain. Sean mulliganed once, then kept a land-heavy hand with no creatures and no blockers. Everyone attacked him. Brallin came down as the fallback blocker.
+- The key turn: [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe) was out, Sean wheeled with [Jace's Archivist](https://manamap.seanmacrae.com/viz/index.html?cards=Jace%27s+Archivist), Tithe paid out a huge pile of Treasure, [Faerie Mastermind](https://manamap.seanmacrae.com/viz/index.html?cards=Faerie+Mastermind) kept the table drawing, Shabraz landed and grew. He swung into Steven's dragons and got commander damage through.
+- The mistake he named: holding the Treasure instead of casting the Humans in hand. They would have been flying blockers. He died at one life, a turn before a [Wheel of Fortune](https://manamap.seanmacrae.com/viz/index.html?cards=Wheel+of+Fortune) that was meant to turn it around.
+- Lessons that stay: spend the Treasure, and mulligan a hand with no play by the third turn.
 
 **What the games say together.**
-- **Commanders first, wheels second.** From 001 and 002. Wheels are finishers.
-- **Slow and expensive to start.** 001, 002, 003, 005 and 007. 004 added that a land-heavy keep with no wheel and no payoff found nothing.
-- **Payoffs lag the engine.** 006: the engine ran and the finisher did not show.
-- **Discard is a cost.** 005, 006 and 007 all say it. This is why v3.0.0 keeps discard only where a draw comes with it.
-- **The hand he keeps is the doubt** in 002, 004 and 005. Q011 stays open.
-- **Opponents that outrun it.** 004: Alex's warp deck. 005: Alex piloting the Goblin Storm deck. 006: Ryan's Teval, near a bracket-4 table. Without the other deck's best turns, Sean thinks Sharknado does much more.
-- **Holding removal while the table begs for it.** 008: right hand, wrong turn order. Pilot error, not the list.
-- **Spend the Treasure.** 009: held Treasure left Sean at one life with Humans still in hand.
-- **Shabraz works the table.** 009, and Sean was happy with the deck. The loss came from the thin start and the held Treasure.
-- **Playing the deck.** He says some of it is piloting, sequencing, and small creatures eating resources that belonged to the win line.
+- Commanders first, wheels second (001, 002). Wheels finish, they do not start.
+- Slow to start (001, 002, 003, 005, 007). A land-heavy keep with no wheel and no payoff found nothing (004).
+- Discard is a cost (005, 006, 007).
+- Opponents outrun it: Alex's warp deck (004), the Goblin Storm deck (005), Teval (006), and the fast A table (008).
+- Holding removal while the table begs for it (008). Piloting, not the list.
+- Shabraz works the table (009).
 
-One line each: 001 (2026-10-06, no result): Sol Ring fast start, no removal, "fun, needs some finesse". 002 (2026-10-20, a loss): "too many wheels in the wheel deck". 003 (2026-10-25, no result): "slooooowwwww". 004 (2026-10-27, a loss, raced): the engine ran, no wheel came, commanders held back. 005 (2026-10-29, a loss): Alex's Goblin Storm won. 006 (2026-11-03, a loss): Teval went infinite with the board assembled and no wheel in the digging. 007: above.
-
-Standing rules from Sean for this deck: never cut a draw-seven, keep Kitsa and Torbran, and the Humans are loved. Marauding Mako and Rielle came off the keep list for this change.
+One line each for the older games: 001 (2026-10-06, no result): Sol Ring fast start, no removal, "fun, needs some finesse". 002 (2026-10-20, a loss): "too many wheels in the wheel deck". 003 (2026-10-25, no result): "slooooowwwww". 004 (2026-10-27, a loss, raced): the engine ran, no wheel came. 005 (2026-10-29, a loss): the Goblin Storm deck won. 006 (2026-11-03, a loss): Teval went infinite with no wheel in the digging. Games 001 to 007 were on lists before v3.0.0, and cards they name, such as Embercleave, Marauding Mako and Rielle, have left.
 
 ## Studies
 
@@ -318,15 +320,20 @@ Standing rules from Sean for this deck: never cut a draw-seven, keep Kitsa and T
 - … 6 earlier version(s): `manamap pilot deck-version sharknado list`
 <!-- /ctx:gen history -->
 
+**In development: jaws-v1 (opened 2026-11-14, studies 001 to 024).** The sleeved list stays v3.0.0 until Sean says otherwise. The branch is the list built for his restated strategy, and it changes the deck in four ways.
+- **Artifacts to sacrifice.** Jaws, Relentless Predator comes in for Fiery Emancipation: he pings the table whenever a Blood or Treasure token is sacrificed, and Sean likes him as the namesake shark. Big Score takes Torbran's slot for instant draw and Treasure. Ragavan, Nimble Pilferer replaces Magus of the Wheel for a cheap body that makes Treasure. Monument to Endurance replaces Esper Sentinel for a draw, a Treasure or a drain on each discard.
+- **More Humans and permanents, fewer wheels.** The Queen of Dale replaces Prince Imrahil, Conspiracy Theorist and Irencrag Pyromancer join, Longshot, Rebel Bowman and Inti, Seneschal of the Sun come in, and Unsettled Mariner takes a Human-and-Shark body. Time Reversal, Reforge the Soul, Winds of Change and Echo of Eons leave, the "too many wheels" answer.
+- **An answer for the A table.** Counterspell and Mana Drain replace Negate and Stubborn Denial so creature spells can be countered. Venser, Shaper Savant, Banishing Light and Delayed Blast Fireball cover Purphoros, Krenko and go-wide boards. Voracious Greatshark and Kozilek's Return came and went along the way.
+- **Doubling the draws.** Krang, the All-Powerful replaces Archmage Emeritus so every draw-caused trigger fires twice. Library of Leng lets a wheel discard go on top while the hand is kept.
+
+Sean declined Tataru Taru and Path to Exile there, and said no change for Leitmotif Composer, Pip-Boy 3000, Thraben Inspector, Killmonger and the Enlightened Tutor idea. Study 006 is still open: the audit that asked which cards serve the strategy and which serve the old ping plan.
+
 **v3.0.0, shabraz-v1 (merged 2026-11-10, sleeved the same day).** Sean's direction from 2026-11-06, after game 007. One axis: card draw grows the flying shark, he is protected the moment he lands, then made big and evasive. In came the cheap draw and the Humans (Valeria Richards, Archmage Emeritus, Willie Lumpkin, Sokka, Shang-Chi, Esper Sentinel, Enduring Curiosity, Mask of Memory, Brainstorm, Echo of Eons, Time Reversal, Winds of Change), the protection (Swiftfoot Boots, Shelter, Slip Out the Back), the double strike (Fireshrieker, Lizard Blades) and more rocks (Boros Signet, Fellwar Stone, Talisman of Conviction), plus a second Island.
 
 Out went the wheel-and-burn engine and its helpers: Glint-Horn Buccaneer, Psychosis Crawler, Razorkin Needlehead, Marauding Mako, Rielle, Incendiary Command and Fateful Showdown, with the middling steady draw (Mind Spring, Rush of Knowledge, Prosperity, Borrowed Knowledge, Shattered Perception, Tolarian Winds, Heartwarming Redemption, Cathartic Reunion, Faithless Looting) and the Treasure side (Gleaming Splendor, Xorn, Zirda, Mirrormade). Lightning Greaves, Idyllic Tutor and Thought Vessel left too. The branch carries no objective and no cast proofs, so it rests on Sean's word and a reading of the oracle text. The pre-merge reading of Archmage Emeritus for Idyllic Tutor is Q044 below.
 
-**v2.3.0, draw-engine-v1 (2026-11-05).** An attempt to fix a deck that spent cards faster than it replaced them, with steady draw, flexible wheels and a Treasure package. Game 007 said the feel did not change. That is why v3.0.0 goes the other way: fewer steps, one axis.
-
-**v2.2.0, sharks-v1 (2026-10-27).** Needlehead and Shark Typhoon in, with two lands. **v2.1.0, answers-v1 (2026-10-26).** Interaction and standing draw, after games 001 and 003 missed removal. **v2.0.0, modal voltron (2026-10-24).** Double strike, Gratuitous Violence and Fiery Emancipation, and protection. **v1.3.0, torbran-v1 (2026-10-19).** Torbran and the first answers.
-
 ## Open questions
+
 <!-- ctx:gen queue -->
 - **Q002** decided — What a Jeskai-identity (W/U/R) card-search returns for cards that discard the whole hand and also counter, bounce, destroy or exile, split by whether they discard (pay Brallin) or shuffle/bottom (pay only Shabraz). The output is the list; no premise about its length. → _supported: 25 WUR cards outside the 99 wheel AND interact; the best fits for both commanders (YOUR discard pays Brallin, YOUR draw pays Shabraz) are Fateful Showdown, Collective Defiance, Incendiary Command and The Elder Dragon War; Rites of Refusal and Null Brooch are discard-as-counter (Brallin only); Snort and Moonveil Regent are wheel momentum, not answers_
 - **Q004** promoted — Break-even: a protection piece (Greaves 2, Boots 2 + equip, Teferi's Protection one-shot) beats a ramp piece only if P(removal lands on a commander by T6) exceeds a threshold set by the recast tax (CR 903.8: Brallin 4 then 6 then 8; Shabraz 5 then 7 then 9) over the protection piece's own deploy cost, and Greaves/Boots-style permanent protection is the case where it does.
@@ -351,31 +358,22 @@ Out went the wheel-and-burn engine and its helpers: Glint-Horn Buccaneer, Psycho
 - 19 dropped or killed: `manamap pilot queue list --deck sharknado --all`
 <!-- /ctx:gen queue -->
 
-Most of the numbered questions above were asked about the wheel-and-burn list. Read them as history where they name cards that have left. These are things to test, not swaps.
+Most of the numbered questions above were asked about older lists. Where they name Torbran, the red multipliers, the discard ping or a keep list, read them as history. These are things to test, not swaps.
 
-**For the first games on v3.0.0.**
-- Protection on landing: when Shabraz lands, is Swiftfoot Boots, Shelter or Slip Out the Back in hand? Note what was aimed at him and whether he survived. Expected: he survives more often than he did on v2.3.0.
-- The grind: does the new list need fewer separate draw, discard and trigger steps per turn? Expected: Sean's fun call comes up, and the stepping list in his notes is short.
-- Humans: do Willie, Sokka, Shang-Chi and the rest carry counters in the air, and which ones draw? Q045 counts the carriers; only games say how often they connect.
-- Brallin late: does casting Brallin only when Torbran, Gratuitous Violence or a trample rider is ready make the front less brittle?
-- Red on curve: the Numbers block predates this change, and the red sources were sized for the three RRR cards. Does red come on time when Torbran, Gratuitous Violence and Fiery Emancipation are in hand?
-- Missing: a goldfish reading for v3.0.0, and a stack for Shabraz with Teferi's Ageless Insight or Bard under a draw-seven.
-- Nine proxies are still to be ordered: the Numbers and the games stay on proxies until then.
+**For the games on v3.0.0.**
+- Protection on landing: when Shabraz lands, is a shield in hand, what was aimed at him, and did he survive?
+- Humans: do the cheap Humans carry counters in the air, and which ones draw?
+- Treasure: does the sleeved list make enough Treasure and artifacts to sacrifice to matter, or is that the half only jaws-v1 fills? The Numbers section's artifact-token row says how often one is drawn; the games say whether it was enough.
+- Permanents over wheels: when a game is lost with wheels in hand and little on the table, does Sean wish for a permanent instead? That tests his "too many wheels, not enough permanent spells".
+- Brallin: does casting him only as the fallback blocker keep the front door from being brittle?
 
-**From game 008.**
-- Kill on sight: in the next games against Oliver's Krenko, does Sean spend removal on Krenko the turn he lands, before casting his own threat? Expected: Krenko never gets a second activation, and the 30-plus-damage turn does not come.
-- Track before tuning: over the next few v3.0.0 games, how many losses carry the pilot-error label and how many are the deck? Expected: Sean's no-change call holds until the deck-side losses outnumber the piloting ones. Q018 gives the labels.
+**Offered for the A table.**
+- Can the 99 answer a creature spell? Claim: with no counter for a creature spell, Krenko or a Purphoros engine that lands is answered only after it resolves. Expected: the jaws-v1 counters and Venser answer it the turn it lands. Needs games at the A table to see it.
+- Do the red multipliers earn a slot? Claim: Gratuitous Violence and Fiery Emancipation do little when Shabraz is the winner and Brallin is a side road. Expected: games that end on commander damage never need them. Sean has not called this; study 006 holds the audit.
 
-**From game 009.**
-- Brallin swing: was swinging Brallin at Steven a mistake? He blocked with two creatures, Sean killed one of his dragons, and Sean does not know. Testable: on a table with blockers that outclass Brallin, swinging him loses more than the one kill gains. Needs the board at the time, which the log does not hold.
-- Spend the Treasure: when Shabraz is out and Humans sit in hand with Treasure available, does casting them first (as flying blockers) keep Sean's life total higher than holding the Treasure for later? Expected: fewer games where he is brought to one life by the swing-back.
-- Early blockers: does a land-heavy seven with no creature under three mana get mulliganed more often, or does the deck want one more cheap body? Sean calls the deck fine, so this is an observation first, tracked beside the keep question in Q011.
-- Missing: the answer to Blood Artist. [Swords to Plowshares](https://manamap.seanmacrae.com/viz/index.html?cards=Swords+to+Plowshares), [Get Lost](https://manamap.seanmacrae.com/viz/index.html?cards=Get+Lost) and [Chaos Warp](https://manamap.seanmacrae.com/viz/index.html?cards=Chaos+Warp) take it out if held for it. The question is whether Sean can afford to.
-
-**Still open from earlier games.**
-- Interaction: does the commander survive to swing more often on a real table?
+**From games 009 and earlier.**
+- Early blockers: does a hand with no creature by the third turn get mulliganed more often, or does the list want one more cheap body?
 - Wheel under the Sphinx: does Wheel of Fortune with Consecrated Sphinx out end a real game the way stack 009 does?
-- Opening hands (002, 004, 005): when Sean keeps a hand with a wheel and no commander line, does he reach a commander later? His log can show it.
 
 ## Context changelog
 
@@ -398,3 +396,4 @@ Most of the numbered questions above were asked about the wheel-and-burn list. R
 - 2026-11-10 · Keeper · deck change: shabraz-v1 merged as v3.0.0: Shabraz-first, card draw grows the flying shark, protected on landing, made big and evasive; wheel-and-burn engine traded away; sleeved 2026-11-10
 - 2026-11-11 · Keeper · pilot log 008: loss to Oliver's Krenko, piloting error, no deck changes; kill Krenko on sight
 - 2026-11-13 · Keeper · pilot log 009: loss at Steven's on v3.0.0; Shabraz worked the table; spend treasure on Humans as flying blockers
+- 2026-11-25 · Keeper · strategy rewrite: the pilot's 2026-11-25 vision (land the shark, draw to grow, flying Humans, Treasure, wheels, commander damage); no keep list; the red multipliers are the old ping plan; jaws-v1 described as the list in development
